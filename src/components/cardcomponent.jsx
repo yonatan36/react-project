@@ -16,12 +16,12 @@ const useStyles = makeStyles({
   },
 });
 
-export default function CardComponent({ imgSrc, title, price, description }) {
+export default function CardComponent({ img, title, price, description }) {
   const classes = useStyles();
 
   return (
     <Card className={classes.root}>
-      <CardMedia className={classes.media} image={imgSrc} title={title} />
+      <CardMedia className={classes.media} image={img} title={title} />
       <CardContent>
         <Typography gutterBottom variant="h5" component="h2">
           {title}
