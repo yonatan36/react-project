@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import CardComponent from '../components/cardcomponent'
 import { Box, Grid } from '@mui/material';
+import { json } from 'react-router-dom';
 
 
 const initalCardArr = [
@@ -22,7 +23,7 @@ const initalCardArr = [
   },
   {
     id: 3,
-    img: "https://picsum.photos/200/300",
+  
     title: "id 3",
     price: 112,
     description:
@@ -40,12 +41,20 @@ const initalCardArr = [
 
 
 const Home = () => {
+  const [cardsArr,setCardArr] = useState(initalCardArr)
+  const handleDeleteFromInitialCardsArr = (id)=> {
+    let newCardArr = JSON.parse(JSON.stringify(cardsArr))
+   newCardArr = newCardArr.filter((item) => item.id != id);
+   setCardArr(newCardArr)
+  }
   return (
     <Box>
-      <Grid container spacing={8}>
-        {initalCardArr.map((item) => (
+      <Grid container spacing={2}>
+        {cardsArr.map((item) => (
           <Grid item xs={4} key={item.id + Date.now()}>
-            <CardComponent {...item} />
+            <CardComponent {...item}
+            onDelete={handleDeleteFromInitialCardsArr}
+            />
           </Grid>
         ))}
       </Grid>

@@ -60,7 +60,7 @@ function ResponsiveAppBar() {
                   <Typography
                     sx={{
                       my: 2,
-                      color: `${isActive ? "red" : "white"}`,
+                      color: `${isActive ? "green" : "white"}`,
                       display: "block",
                       p: 2,
                     }}

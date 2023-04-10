@@ -1,38 +1,51 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
+import {
+  Card,
+  CardActionArea,
+  CardMedia,
+  CardHeader,
+  CardContent,
+  Typography,
+  CardActions,
+  Button,
+} from "@mui/material";
+import PropTypes from "prop-types";
 
-
-const useStyles = makeStyles({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 0,
-    paddingTop: "56.25%", // 16:9
-  },
-});
-
-export default function CardComponent({ img, title, price, description }) {
-  const classes = useStyles();
-
+const CardComponent = ({ img, title, price, description, id, onDelete }) => {
+  const handleDeleteBtnClick = () => {
+    console.log("id", id);
+onDelete(id)
+  };
   return (
-    <Card className={classes.root}>
-      <CardMedia className={classes.media} image={img} title={title} />
+    <Card square raised>
+      <CardActionArea>
+        <CardMedia component="img" image={img} />
+      </CardActionArea>
+      <CardHeader title={title} subheader={price}></CardHeader>
       <CardContent>
-        <Typography gutterBottom variant="h5" component="h2">
-          {title}
-        </Typography>
-        <Typography gutterBottom variant="h6" component="h3">
-          {price}
-        </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {description}
-        </Typography>
+        <Typography>{description}</Typography>
       </CardContent>
+      <CardActions>
+        <Button variant="text" color="primary">
+          Buy now
+        </Button>
+        <Button variant="text" color="error" onClick={handleDeleteBtnClick}>
+          Delete
+        </Button>
+      </CardActions>
     </Card>
   );
-}
+};
+CardComponent.propTypes = {
+  id:PropTypes.number,
+  img: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
+  price: PropTypes.number.isRequired,
+  description: PropTypes.string.isRequired,
+  onDelete:PropTypes.func,
+};
+CardComponent.defaultProps = {
+  img: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xMS41IC0xMC4yMzE3NCAyMyAyMC40NjM0OCI+CiAgPHRpdGxlPlJlYWN0IExvZ288L3RpdGxlPgogIDxjaXJjbGUgY3g9IjAiIGN5PSIwIiByPSIyLjA1IiBmaWxsPSIjNjFkYWZiIi8+CiAgPGcgc3Ryb2tlPSIjNjFkYWZiIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIi8+CiAgICA8ZWxsaXBzZSByeD0iMTEiIHJ5PSI0LjIiIHRyYW5zZm9ybT0icm90YXRlKDYwKSIvPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIiB0cmFuc2Zvcm09InJvdGF0ZSgxMjApIi8+CiAgPC9nPgo8L3N2Zz4K",
+  price: 0,
+};
+
+export default CardComponent;
