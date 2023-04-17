@@ -1,58 +1,38 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { Box,Typography ,Grid} from "@mui/material";
+import { Box, Typography, Grid } from "@mui/material";
 import Alert from "@mui/material/Alert";
 import validetionRegisterSchema from "../validation/registerValidation";
-
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    "& .MuiTextField-root": {
-      margin: theme.spacing(2),
-      width: "90%",
-      maxWidth: "55ch",
-    },
-  },
-  button: {
-    margin: theme.spacing(2),
-    minWidth: "10ch",
-  },
-
-}));
+import Avatar from "@mui/material/Avatar";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import { Link, useNavigate } from "react-router-dom";
+import ROUTES from "../routes/ROUTES";
+import { useTheme } from "@mui/material/styles";
+import SyncIcon from "@mui/icons-material/Sync";
+import axios from "axios";
 
 
 const RegistrationForm = () => {
-  const classes = useStyles();
-
-const [inputState, SetInputState] = useState({
-  firstName: "",
-  middleName: "",
-  lastName: "",
-  phone: "",
-  email: "",
-  password: "",
-  imgUrl: "",
-  imgAlt: "",
-  state: "",
-  country: "",
-  city: "",
-  street: "",
-  houseNumber: "",
-});
-
-
-
-
-  const handleInputChange = (event) => {
-let newInputState = JSON.parse(JSON.stringify(inputState));
-newInputState[event.target.id] = event.target.value;
-SetInputState(newInputState)
-  };
+  const theme = useTheme();
+  const [inputState, SetInputState] = useState({
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    phone: "",
+    email: "",
+    password: "",
+    imgUrl: "",
+    imgAlt: "",
+    state: "",
+    country: "",
+    city: "",
+    street: "",
+    houseNumber: "",
+    zipCode: "",
+  });
 
   const handleCancel = () => {
     SetInputState({
@@ -68,245 +48,382 @@ SetInputState(newInputState)
       country: "",
       city: "",
       street: "",
-      houseNumber:"",
-
-
-      
+      houseNumber: "",
+      zipCode: "",
     });
+    setErrorFromJoi({});
   };
 
-  const [errorFroemJoi, setErrorFromJoi] = useState({});
-  const handleSubmit = (event) => {
-  const joiRespone = validetionRegisterSchema(inputState);
-setErrorFromJoi(joiRespone)
-// clear the form after submission
-  };
+  const [errorFroemJoi, setErrorFromJoi] = useState(null);
+  const navigate = useNavigate();
+  const handleSubmit = async (event) => {
+    try {
+      const joiRespone = validetionRegisterSchema(inputState);
+      setErrorFromJoi(joiRespone);
+      // clear the form after submission
+      if (joiRespone) {
+        return;
+      }
 
- return (
-   <form className={classes.root} onSubmit={handleSubmit}>
-     <Typography>register -</Typography>
-     <Box>
-       <Grid container spacing={2}>
-         <Grid item xs={12} sm={6}>
-           <TextField
-             required
-             label="First Name"
-             name="firstName"
-             id="firstName"
-             value={inputState.firstName}
-             onChange={handleInputChange}
-           />
-           {errorFroemJoi.firstName && (
-             <Alert severity="warning">
-               {errorFroemJoi.firstName.join("<br>")}
-             </Alert>
-           )}
-         </Grid>
-         <Grid item xs={12} sm={6}>
-           <TextField
-             label="Middle Name"
-             name="middleName"
-             id="middleName"
-             value={inputState.middleName}
-             onChange={handleInputChange}
-           />
-           {errorFroemJoi.middleName && (
-             <Alert severity="warning">
-               {errorFroemJoi.middleName.join("<br>")}
-             </Alert>
-           )}
-         </Grid>
-         <Grid item xs={12} sm={6}>
-           <TextField
-             required
-             label="Last Name"
-             name="lastName"
-             id="lastName"
-             value={inputState.lastName}
-             onChange={handleInputChange}
-           />
-           {errorFroemJoi.lastName && (
-             <Alert severity="warning">
-               {errorFroemJoi.lastName.join("<br>")}
-             </Alert>
-           )}
-         </Grid>
-         <Grid item xs={12} sm={6}>
-           <TextField
-             required
-             label="Phone"
-             name="phone"
-             id="phone"
-             value={inputState.phone}
-             onChange={handleInputChange}
-           />
-           {errorFroemJoi.phone && (
-             <Alert severity="warning">
-               {errorFroemJoi.phone.join("<br>")}
-             </Alert>
-           )}
-         </Grid>
-         <Grid item xs={12} sm={6}>
-           <TextField
-             required
-             label="email"
-             name="email"
-             id="email"
-             value={inputState.email}
-             onChange={handleInputChange}
-           />
-           {errorFroemJoi.email && (
-             <Alert severity="warning">
-               {errorFroemJoi.email.join("<br>")}
-             </Alert>
-           )}
-         </Grid>
-         <Grid item xs={12} sm={6}>
-           <TextField
-             required
-             label="password"
-             name="password"
-             id="password"
-             value={inputState.password}
-             onChange={handleInputChange}
-           />
-           {errorFroemJoi.password && (
-             <Alert severity="warning">
-               {errorFroemJoi.password.join("<br>")}
-             </Alert>
-           )}
-         </Grid>
-         <Grid item xs={12} sm={6}>
-           <TextField
-             required
-             label="Image URL"
-             name="imgUrl"
-             id="imgUrl"
-             value={inputState.imgUrl}
-             onChange={handleInputChange}
-           />
-           {errorFroemJoi.imgUrl && (
-             <Alert severity="warning">
-               {errorFroemJoi.imgUrl.join("<br>")}
-             </Alert>
-           )}
-         </Grid>
-         <Grid item xs={12} sm={6}>
-           <TextField
-             required
-             label="Image Alt"
-             name="imgAlt"
-             id="imgAlt"
-             value={inputState.imgAlt}
-             onChange={handleInputChange}
-           />
-           {errorFroemJoi.imgAlt && (
-             <Alert severity="warning">
-               {errorFroemJoi.imgAlt.join("<br>")}
-             </Alert>
-           )}
-         </Grid>
-         <Grid item xs={12} sm={6}>
-           <TextField
-             required
-             label="State"
-             name="state"
-             id="state"
-             value={inputState.state}
-             onChange={handleInputChange}
-           />
-           {errorFroemJoi.state && (
-             <Alert severity="warning">
-               {errorFroemJoi.state.join("<br>")}
-             </Alert>
-           )}
-         </Grid>
-         <Grid item xs={12} sm={6}>
-           <TextField
-             required
-             label="Country"
-             name="country"
-             id="country"
-             value={inputState.country}
-             onChange={handleInputChange}
-           />
-           {errorFroemJoi.country && (
-             <Alert severity="warning">
-               {errorFroemJoi.country.join("<br>")}
-             </Alert>
-           )}
-         </Grid>
-         <Grid item xs={12} sm={6}>
-           <TextField
-             required
-             label="City"
-             name="city"
-             id="city"
-             value={inputState.city}
-             onChange={handleInputChange}
-           />
-           {errorFroemJoi.city && (
-             <Alert severity="warning">{errorFroemJoi.city.join("<br>")}</Alert>
-           )}
-         </Grid>
-         <Grid item xs={12} sm={6}>
-           <TextField
-             required
-             label="Street"
-             name="street"
-             id="street"
-             value={inputState.street}
-             onChange={handleInputChange}
-           />
-           {errorFroemJoi.street && (
-             <Alert severity="warning">
-               {errorFroemJoi.street.join("<br>")}
-             </Alert>
-           )}
-         </Grid>
-         <Grid item xs={12} sm={6}>
-           <TextField
-             required
-             label="House Number"
-             name="houseNumber"
-             id="houseNumber"
-             value={inputState.houseNumber}
-             onChange={handleInputChange}
-           />
-           {errorFroemJoi.houseNumber && (
-             <Alert severity="warning">
-               {errorFroemJoi.houseNumber.join("<br>")}
-             </Alert>
-           )}
-         </Grid>
-       </Grid>
-     </Box>
-     <Grid container spacing={2}>
-       <Grid item xs={12} sm={6} md={4} lg={3}>
-         <Button className={classes.button} fullWidth onClick={handleCancel}>
-           Cancel
-         </Button>
-       </Grid>
-       <Grid item xs={12} sm={6} md={4} lg={3}>
-         <Button
-           onClick={handleSubmit}
-           className={classes.button}
-           fullWidth
-           type="button"
-           variant="contained"
-           color="primary"
-         >
-           Submit
-         </Button>
-       </Grid>
-       <Grid item xs={12} sm={6} md={4} lg={3}>
-         <Button className={classes.button} fullWidth>
-           Return
-         </Button>
-       </Grid>
-     </Grid>
-   </form>
- );
+      const { data } = await axios.post("/users/register", {
+        firstName: inputState.firstName,
+        middleName: inputState.middleName,
+        lastName: inputState.lastName,
+        phone: inputState.phone,
+        email: inputState.email,
+        password: inputState.password,
+        imageUrl: inputState.imgUrl,
+        imageAlt: inputState.imgAlt,
+        state: inputState.state,
+        country: inputState.country,
+        city: inputState.city,
+        street: inputState.street,
+        houseNumber: inputState.houseNumber,
+        zipCode: inputState.zipCode,
+      });
+    //move to login page
+      navigate(ROUTES.LOGIN);
+  
+    } catch (err) {
+      console.log("register", err.response.data);
+    }
+  };
+  const handleInputChange = (event) => {
+    let newInputState = JSON.parse(JSON.stringify(inputState));
+    newInputState[event.target.id] = event.target.value;
+    SetInputState(newInputState);
+
+    if (event.target.value !== "") {
+      // check if input is not empty
+      setErrorFromJoi({});
+    } else {
+      // clear the error if input is empty
+      const joiResponse = validetionRegisterSchema(newInputState);
+      setErrorFromJoi(joiResponse);
+    }
+  };
+  return (
+    <Container component="main" maxWidth="md">
+      <Paper
+        sx={{
+          p: 4,
+          bgcolor: theme.palette.mode === "dark" ? "#424242" : "#f5f5f5",
+          borderRadius: "20px",
+          boxShadow: "0px 3px 15px rgba(0,0,0,0.2)",
+          mt: 2,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Avatar sx={{ m: 2, bgcolor: "#6495ED" }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign up
+          </Typography>
+          <Box component="div" noValidate sx={{ mt: 2 }}>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  required
+                  label="First Name"
+                  name="firstName"
+                  id="firstName"
+                  value={inputState.firstName}
+                  onChange={handleInputChange}
+                />
+                {errorFroemJoi && errorFroemJoi.firstName && (
+                  <Alert severity="warning">
+                    {errorFroemJoi.firstName.map((item) => (
+                      <div key={"firstname-errors" + item}>{item}</div>
+                    ))}
+                  </Alert>
+                )}
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  label="Middle Name"
+                  name="middleName"
+                  id="middleName"
+                  value={inputState.middleName}
+                  onChange={handleInputChange}
+                />
+                {errorFroemJoi && errorFroemJoi.middleName && (
+                  <Alert severity="warning">
+                    {errorFroemJoi.middleName.map((item) => (
+                      <div key={"middlename-errors" + item}>{item}</div>
+                    ))}
+                  </Alert>
+                )}
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  required
+                  label="Last Name"
+                  name="lastName"
+                  id="lastName"
+                  value={inputState.lastName}
+                  onChange={handleInputChange}
+                />
+                {errorFroemJoi && errorFroemJoi.lastName && (
+                  <Alert severity="warning">
+                    {errorFroemJoi.lastName.map((item) => (
+                      <div key={"lastname-errors" + item}>{item}</div>
+                    ))}
+                  </Alert>
+                )}
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  required
+                  label="Phone"
+                  name="phone"
+                  id="phone"
+                  value={inputState.phone}
+                  onChange={handleInputChange}
+                />
+                {errorFroemJoi && errorFroemJoi.phone && (
+                  <Alert severity="warning">
+                    {errorFroemJoi.phone.map((item) => (
+                      <div key={"phone-errors" + item}>{item}</div>
+                    ))}
+                  </Alert>
+                )}
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  required
+                  label="email"
+                  name="email"
+                  id="email"
+                  value={inputState.email}
+                  onChange={handleInputChange}
+                />
+                {errorFroemJoi && errorFroemJoi.email && (
+                  <Alert severity="warning">
+                    {errorFroemJoi.email.map((item) => (
+                      <div key={"email-errors" + item}>{item}</div>
+                    ))}
+                  </Alert>
+                )}
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  required
+                  label="password"
+                  name="password"
+                  id="password"
+                  value={inputState.password}
+                  onChange={handleInputChange}
+                />
+                {errorFroemJoi && errorFroemJoi.password && (
+                  <Alert severity="warning">
+                    {errorFroemJoi.password.map((item) => (
+                      <div key={"password-errors" + item}>{item}</div>
+                    ))}
+                  </Alert>
+                )}
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  required
+                  label="Image URL"
+                  name="imgUrl"
+                  id="imgUrl"
+                  value={inputState.imgUrl}
+                  onChange={handleInputChange}
+                />
+                {errorFroemJoi && errorFroemJoi.imgUrl && (
+                  <Alert severity="warning">
+                    {errorFroemJoi.imgUrl.map((item) => (
+                      <div key={"imgUrl-errors" + item}>{item}</div>
+                    ))}
+                  </Alert>
+                )}
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  required
+                  label="Image Alt"
+                  name="imgAlt"
+                  id="imgAlt"
+                  value={inputState.imgAlt}
+                  onChange={handleInputChange}
+                />
+                {errorFroemJoi && errorFroemJoi.imgAlt && (
+                  <Alert severity="warning">
+                    {errorFroemJoi.imgAlt.map((item) => (
+                      <div key={"imgAlt-errors" + item}>{item}</div>
+                    ))}
+                  </Alert>
+                )}
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  required
+                  label="State"
+                  name="state"
+                  id="state"
+                  value={inputState.state}
+                  onChange={handleInputChange}
+                />
+                {errorFroemJoi && errorFroemJoi.state && (
+                  <Alert severity="warning">
+                    {errorFroemJoi.state.map((item) => (
+                      <div key={"state-errors" + item}>{item}</div>
+                    ))}
+                  </Alert>
+                )}
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  required
+                  label="Country"
+                  name="country"
+                  id="country"
+                  value={inputState.country}
+                  onChange={handleInputChange}
+                />
+                {errorFroemJoi && errorFroemJoi.country && (
+                  <Alert severity="warning">
+                    {errorFroemJoi.country.map((item) => (
+                      <div key={"country-errors" + item}>{item}</div>
+                    ))}
+                  </Alert>
+                )}
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  required
+                  label="City"
+                  name="city"
+                  id="city"
+                  value={inputState.city}
+                  onChange={handleInputChange}
+                />
+                {errorFroemJoi && errorFroemJoi.city && (
+                  <Alert severity="warning">
+                    {errorFroemJoi.city.map((item) => (
+                      <div key={"city-errors" + item}>{item}</div>
+                    ))}
+                  </Alert>
+                )}
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  required
+                  label="Street"
+                  name="street"
+                  id="street"
+                  value={inputState.street}
+                  onChange={handleInputChange}
+                />
+                {errorFroemJoi && errorFroemJoi.street && (
+                  <Alert severity="warning">
+                    {errorFroemJoi.street.map((item) => (
+                      <div key={"street-errors" + item}>{item}</div>
+                    ))}
+                  </Alert>
+                )}
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  required
+                  label="House Number"
+                  name="houseNumber"
+                  id="houseNumber"
+                  value={inputState.houseNumber}
+                  onChange={handleInputChange}
+                />
+                {errorFroemJoi && errorFroemJoi.houseNumber && (
+                  <Alert severity="warning">
+                    {errorFroemJoi.houseNumber.map((item) => (
+                      <div key={"housenumber-errors" + item}>{item}</div>
+                    ))}
+                  </Alert>
+                )}
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <TextField
+                  fullWidth
+                  required
+                  label="zipCode"
+                  name="zipCode"
+                  id="zipCode"
+                  value={inputState.zipCode}
+                  onChange={handleInputChange}
+                />
+                {errorFroemJoi && errorFroemJoi.zipCode && (
+                  <Alert severity="warning">
+                    {errorFroemJoi.zipCode.map((item) => (
+                      <div key={"zipCode-errors" + item}>{item}</div>
+                    ))}
+                  </Alert>
+                )}
+              </Grid>
+            </Grid>
+
+            <Grid container spacing={2} mt={3}>
+              <Grid item xs={6}>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  fullWidth
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </Button>
+              </Grid>
+              <Grid item xs={6}>
+                <Button fullWidth color="primary" variant="outlined">
+                  <SyncIcon />
+                </Button>
+              </Grid>
+              <Grid item xs={12}>
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  onClick={handleSubmit}
+                >
+                  Submit
+                </Button>
+              </Grid>
+            </Grid>
+
+            <br />
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link to={ROUTES.LOGIN}>
+                  <Typography variant="body2" color="initial">
+                    Already have an account? Sign in
+                  </Typography>
+                </Link>
+              </Grid>
+            </Grid>
+          </Box>
+        </Box>
+      </Paper>
+    </Container>
+  );
 };
 
 export default RegistrationForm;

@@ -7,12 +7,15 @@ import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Button from "@mui/material/Button";
+import PropTypes from "prop-types";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import Link from "@mui/icons-material/Link";
 import { NavLink } from "react-router-dom";
 import ROUTES from "../../routes/ROUTES";
+import WbSunnyIcon from "@mui/icons-material/WbSunny";
+import BedtimeIcon from "@mui/icons-material/Bedtime";
+
+
 
 const pages = [
   {
@@ -33,8 +36,11 @@ const pages = [
   },
 ];
 
-function ResponsiveAppBar() {
+
+
+const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
+
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -52,17 +58,55 @@ function ResponsiveAppBar() {
           <Typography variant="h6" noWrap>
             LOGO
           </Typography>
+
           {/* main navbar */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <NavLink key={page.url} to={page.url}>
                 {({ isActive }) => (
                   <Typography
+               
                     sx={{
                       my: 2,
-                      color: `${isActive ? "green" : "white"}`,
+                      color: "white",
                       display: "block",
                       p: 2,
+                      color: `${isActive ? "yellow" : "turquoise"}`,
+                      fontWeight: "bold",
+                      textShadow: "1px 1px 1px rgba(0,0,0,0.3)",
+                      transition: "all 0.3s ease-in-out",
+                      position: "relative",
+                      overflow: "hidden",
+                      "&::before, &::after": {
+                        content: "''",
+                        position: "absolute",
+                        top: 0,
+                        left: 0,
+                        width: "100%",
+                        height: "100%",
+                        opacity: 0,
+                        transition:
+                          "all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1) 0s",
+                      },
+                      "&::before": {
+                        backgroundColor: "rgba(255, 255, 255, 0.15)",
+                        transform: "translateX(-100%) skewX(-15deg)",
+                      },
+                      "&::after": {
+                        backgroundColor: "rgba(255, 255, 255, 0.15)",
+                        transform: "translateX(100%) skewX(15deg)",
+                      },
+                      "&:hover::before": {
+                        transform: "translateX(0%) skewX(-15deg)",
+                        opacity: 1,
+                      },
+                      "&:hover::after": {
+                        transform: "translateX(0%) skewX(15deg)",
+                        opacity: 1,
+                      },
+                      "&:hover": {
+                        textShadow: "2px 2px 2px rgba(0,0,0,0.5)",
+                      },
                     }}
                   >
                     {page.label}
@@ -71,6 +115,12 @@ function ResponsiveAppBar() {
               </NavLink>
             ))}
           </Box>
+          <Typography sx={{ display: { xs: "none", md: "inline" } }}>
+            {darkMode ? "Dark" : "Light"} Mode
+          </Typography>
+          <IconButton color="inherit" onClick={onThemeChange} sx={{ ml: 1 }}>
+            {darkMode ? <BedtimeIcon /> : <WbSunnyIcon />}
+          </IconButton>
           {/* hamburger with menu */}
           <Box
             sx={{
@@ -87,6 +137,7 @@ function ResponsiveAppBar() {
             >
               <MenuIcon />
             </IconButton>
+
             <Menu
               id="menu-appbar"
               anchorEl={anchorElNav}
@@ -114,9 +165,18 @@ function ResponsiveAppBar() {
                     {/* if the current page and the link is the same then it will change the color of the link */}
                     {({ isActive }) => (
                       <Typography
+                       
                         sx={{
-                          textAlign: "center",
-                          color: `${isActive ? "red" : ""}`,
+                          color: "white",
+                          display: "block",
+                          color: `${isActive ? "yellow" : "turquoise"}`,
+                          fontWeight: "bold",
+                          textShadow: "1px 1px 1px rgba(0,0,0,0.3)",
+                          transition: "all 0.3s ease-in-out",
+                          "&:hover": {
+                         
+                            textShadow: "2px 2px 2px rgba(0,0,0,0.5)",
+                          },
                         }}
                       >
                         {page.label}
@@ -131,6 +191,10 @@ function ResponsiveAppBar() {
       </Container>
     </AppBar>
   );
-}
+};
+ResponsiveAppBar.propTypes = {
+  darkMode: PropTypes.bool.isRequired,
+  onThemeChange: PropTypes.func.isRequired,
+};
 
 export default ResponsiveAppBar;

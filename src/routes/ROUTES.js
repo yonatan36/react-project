@@ -2,6 +2,8 @@ const ROUTES ={
     HOME: "/",
     LOGIN:"/login",
     REGISTER:"/register",
-    ABOUT:"/about"
+    ABOUT:"/about",
+
+
 }
 export default ROUTES;
