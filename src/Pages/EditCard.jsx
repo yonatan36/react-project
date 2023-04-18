@@ -275,8 +275,9 @@ const EditCardPage = () => {
                   id="street"
                   autoComplete="street"
                   onChange={handleInputChange}
-                  value={inputState.street}
+                  value={inputState.street || ""}
                 />
+
                 {errorFroemJoi && errorFroemJoi.street && (
                   <Alert severity="warning">
                     {errorFroemJoi.street.map((item) => (
@@ -294,7 +295,7 @@ const EditCardPage = () => {
                   id="houseNumber"
                   autoComplete="houseNumber"
                   onChange={handleInputChange}
-                  value={inputState.houseNumber}
+                  value={inputState.houseNumber !== undefined ? inputState.houseNumber : ''}
                 />
                 {errorFroemJoi && errorFroemJoi.houseNumber && (
                   <Alert severity="warning">
@@ -323,7 +324,7 @@ const EditCardPage = () => {
                   </Alert>
                 )}
               </Grid>
-      
+
               <Grid item xs={12}>
                 <TextField
                   required
@@ -332,7 +333,7 @@ const EditCardPage = () => {
                   label="Phone"
                   id="phone"
                   autoComplete="phone"
-                  value={inputState.phone}
+                  value={inputState.phone || ""}
                   onChange={handleInputChange}
                 />
                 {errorFroemJoi && errorFroemJoi.phone && (
