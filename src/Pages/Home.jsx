@@ -16,18 +16,7 @@ const Home = () => {
         setCardArr(data);
       })
       .catch((err) => console.log(err));
-          toast.error("so eesy", {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            newestOnTop: false,
-            closeOnClick: true,
-            rtl: false,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
+        
   }, []);
 
   const handleDeleteFromInitialCardsArr = async (id) => {
@@ -46,7 +35,20 @@ const Home = () => {
     navigate(`edit/${id}`);
   };
   if (!cardsArr) {
+        toast.error("so eesy", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          newestOnTop: false,
+          closeOnClick: true,
+          rtl: false,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
     return <CircularProgress />;
+    
   }
 
   return (
