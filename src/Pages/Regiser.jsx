@@ -12,6 +12,7 @@ import { Link, useNavigate } from "react-router-dom";
 import ROUTES from "../routes/ROUTES";
 import { useTheme } from "@mui/material/styles";
 import SyncIcon from "@mui/icons-material/Sync";
+import { toast } from "react-toastify";
 import axios from "axios";
 
 
@@ -54,7 +55,7 @@ const RegistrationForm = () => {
     setErrorFromJoi({});
   };
 
-  const [errorFroemJoi, setErrorFromJoi] = useState(null);
+  const [errorFroemJoi, setErrorFromJoi] = useState();
   const navigate = useNavigate();
   const handleSubmit = async (event) => {
     try {
@@ -62,6 +63,7 @@ const RegistrationForm = () => {
       setErrorFromJoi(joiRespone);
       // clear the form after submission
       if (joiRespone) {
+         toast.error("try again");
         return;
       }
 
@@ -85,6 +87,7 @@ const RegistrationForm = () => {
       navigate(ROUTES.LOGIN);
   
     } catch (err) {
+        toast.error(" Oops, try again");
       console.log("register", err.response.data);
     }
   };
@@ -92,15 +95,6 @@ const RegistrationForm = () => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
     newInputState[event.target.id] = event.target.value;
     SetInputState(newInputState);
-
-    if (event.target.value !== "") {
-      // check if input is not empty
-      setErrorFromJoi({});
-    } else {
-      // clear the error if input is empty
-      const joiResponse = validetionRegisterSchema(newInputState);
-      setErrorFromJoi(joiResponse);
-    }
   };
   return (
     <Container component="main" maxWidth="md">

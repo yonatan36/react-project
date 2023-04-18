@@ -3,11 +3,17 @@ import Joi from "joi";
 import validation from "./validation";
 
 const editCardSchema = Joi.object({
-  id: Joi.string().min(1).required(),
-  img: Joi.string().required(),
-  title: Joi.string().required(),
-  price: Joi.number().required(),
-  description: Joi.string().required().min(3).max(2500),
+  title: Joi.string().min(2).max(256).required(),
+  subTitle: Joi.string().min(2).max(256).required(),
+  description: Joi.string().min(2).max(1024).required(),
+  country: Joi.string().min(2).max(1024).required(),
+  city: Joi.string().min(2).max(1024).required(),
+  street: Joi.string().min(2).max(1024).required(),
+  houseNumber: Joi.number().required(),
+  email: Joi.string().min(2).max(1024).required(),
+  phone: Joi.string().min(9).max(14).required(),
+  url: Joi.string().min(6).max(1024).allow(""),
+  alt: Joi.string().min(2).max(256).allow(""),
 });
 
 const editCardParamsSchema = Joi.object({

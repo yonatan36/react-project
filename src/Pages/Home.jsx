@@ -16,7 +16,6 @@ const Home = () => {
         setCardArr(data);
       })
       .catch((err) => console.log(err));
-        
   }, []);
 
   const handleDeleteFromInitialCardsArr = async (id) => {
@@ -26,8 +25,7 @@ const Home = () => {
       );
       await axios.delete("/cards/" + id);
     } catch (err) {
-  
-      console.log("error dealte", err.response.data);
+      console.log("error delate", err.response.data);
     }
   };
 
@@ -35,20 +33,7 @@ const Home = () => {
     navigate(`edit/${id}`);
   };
   if (!cardsArr) {
-        toast.error("so eesy", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          newestOnTop: false,
-          closeOnClick: true,
-          rtl: false,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
     return <CircularProgress />;
-    
   }
 
   return (
@@ -60,7 +45,17 @@ const Home = () => {
               id={item._id}
               title={item.title}
               subTitle={item.subTitle}
-              img={item.image.url}
+              phone={item.phone}
+              address={
+                item.country +
+                ", " +
+                item.city +
+                ", " +
+                item.street +
+                " " +
+                item.houseNumber
+              }
+              img={item.image ? item.image.url : ""}
               description={item.description}
               onDelete={handleDeleteFromInitialCardsArr}
               onEdit={handleEditFromInitialCardsArr}

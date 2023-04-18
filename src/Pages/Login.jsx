@@ -13,7 +13,7 @@ import ROUTES from "../routes/ROUTES";
 import { useTheme } from "@mui/material/styles";
 import SyncIcon from "@mui/icons-material/Sync";
 import axios from "axios";
-
+import { toast } from "react-toastify";
 
 const Login = () => {
   const theme = useTheme();
@@ -27,26 +27,37 @@ const Login = () => {
       email: "",
       password: "",
     });
-    setErrorFromJoi({});
+    setErrorFromJoi();
   };
 
-  const [errorFroemJoi, setErrorFromJoi] = useState(null);
+  const [errorFroemJoi, setErrorFromJoi] = useState();
   const navigate = useNavigate();
   const handleSubmit = async (event) => {
     try {
       const joiRespone = validetionLoginSchema(inputState);
       setErrorFromJoi(joiRespone);
       if (joiRespone) {
+        toast.error("try again");
         return;
       }
       const { data } = await axios.post("/users/login", {
         email: inputState.email,
         password: inputState.password,
       });
-      localStorage.setItem("token", data.token)
-      //move to homepage
+      localStorage.setItem("token", data.token);
       navigate(ROUTES.HOME);
+      toast.success("Welcome to our website!", {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     } catch (err) {
+      toast.error(" Oops, try again");
       console.log("error from axios", err.response.data);
     }
   };

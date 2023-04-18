@@ -15,40 +15,94 @@ import validateEditSchema, {
 } from "../validation/editValidtion";
 import { useNavigate, useParams } from "react-router-dom";
 import ROUTES from "../routes/ROUTES";
-import atom from "../logo.svg";
 import CircularProgress from "@mui/material/CircularProgress";
 import axios from "axios";
-
-
+import atom from "../logo.svg";
+import { toast } from "react-toastify";
 
 const EditCardPage = () => {
   const { id } = useParams();
   const theme = useTheme();
   const navigate = useNavigate();
-  const [inputState, setInputState] = useState(null);
+  const [inputState, setInputState] = useState();
   const [errorFroemJoi, setErrorFromJoi] = useState({});
 
-
-  
   useEffect(() => {
-    (async () =>{
-
-    try{
-    const errors = validateEditCardParamsSchema({ id });
-    if (errors) {
-      navigate("/");
-      return;
-    }
-  const {data}  = await axios.get("/cards/card/" + id);
-  console.log(data);
-
-
-  } catch (err){
-    console.log(err);
-  }
-     })()
-    //setInputState(card);
+    (async () => {
+      try {
+        const errors = validateEditCardParamsSchema({ id });
+        if (errors) {
+          navigate("/");
+          return;
+        }
+        const { data } = await axios.get("/cards/card/" + id);
+        //if inputs is empty
+        let newInputState = {
+          ...data,
+        };
+        if (data.image && data.image.url) {
+          newInputState.url = data.image.url;
+        } else {
+          newInputState.url = "";
+        }
+        if (data.image && data.image.alt) {
+          newInputState.alt = data.image.alt;
+        } else {
+          newInputState.alt = "";
+        }
+        if (data.country && data.country) {
+          newInputState.country = data.country;
+        } else {
+          newInputState.country = "";
+        }
+        if (data.city && data.city) {
+          newInputState.city = data.city;
+        } else {
+          newInputState.city = "";
+        }
+        if (data.street && data.street) {
+          newInputState.street = data.street;
+        } else {
+          newInputState.street = "";
+        }
+        if (data.houseNumber && data.houseNumber) {
+          newInputState.houseNumber = data.houseNumber;
+        } else {
+          newInputState.houseNumber = "";
+        }
+        if (data.email && data.email) {
+          newInputState.email = data.email;
+        } else {
+          newInputState.email = "";
+        }
+        delete newInputState.image;
+        delete newInputState.likes;
+        delete newInputState._id;
+        delete newInputState.user_id;
+        delete newInputState.bizNumber;
+        delete newInputState.createdAt;
+        setInputState(newInputState);
+      } catch (err) {
+        console.log("error from axios", err);
+      }
+    })();
   }, [id]);
+
+  const handleSaveBtnClick = async (ev) => {
+    try {
+      const joiResponse = validateEditSchema(inputState);
+      setErrorFromJoi(joiResponse);
+      console.log(joiResponse);
+      if (!joiResponse) {
+        //move to homepage
+        await axios.put("/cards/" + id, inputState);
+        navigate(ROUTES.HOME);
+      }
+    } catch (err) {
+      console.log("err", err);
+      toast.error("errrrrrrrrrrrrrrrror");
+    }
+  };
 
   const handleInputChange = (event) => {
     let newInputState = JSON.parse(JSON.stringify(inputState));
@@ -56,14 +110,6 @@ const EditCardPage = () => {
     setInputState(newInputState);
   };
 
-  const handleSaveBtnClick = () => {
-    console.log(handleSaveBtnClick)
-    const joiRespone = validateEditSchema(inputState);
-    setErrorFromJoi(joiRespone);
-    if (!joiRespone) {
-      navigate(ROUTES.HOME);
-    }
-  };
   if (!inputState) {
     return <CircularProgress />;
   }
@@ -103,23 +149,24 @@ const EditCardPage = () => {
               boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
               marginBottom: 2,
             }}
-            src={inputState.img ? inputState.img : atom}
+            alt={inputState.alt ? inputState.alt : ""}
+            src={inputState.url ? inputState.url : atom}
           />
           <Box component="div" noValidate sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
                   fullWidth
-                  id="img"
-                  label="img"
-                  name="img"
-                  autoComplete="img"
+                  id="url"
+                  label="Url"
+                  name="url"
+                  autoComplete="url"
                   onChange={handleInputChange}
-                  value={inputState.img}
+                  value={inputState.url ? inputState.url : ""}
                 />
-                {errorFroemJoi.img && (
+                {errorFroemJoi && errorFroemJoi.url && (
                   <Alert severity="warning">
-                    {errorFroemJoi.img.join("<br>")}
+                    {errorFroemJoi.url.join("<br>")}
                   </Alert>
                 )}
               </Grid>
@@ -134,7 +181,7 @@ const EditCardPage = () => {
                   onChange={handleInputChange}
                   value={inputState.title}
                 />
-                {errorFroemJoi.title && (
+                {errorFroemJoi && errorFroemJoi.title && (
                   <Alert severity="warning">
                     {errorFroemJoi.title.map((item) => (
                       <div key={"title-errors" + item}>{item}</div>
@@ -146,15 +193,15 @@ const EditCardPage = () => {
                 <TextField
                   required
                   fullWidth
-                  name="price"
-                  label="price"
+                  name="subTitle"
+                  label="subTitle"
+                  id="subTitle"
                   type="text"
-                  id="price"
-                  autoComplete="price"
+                  autoComplete="subTitle"
                   onChange={handleInputChange}
-                  value={inputState.price}
+                  value={inputState.subTitle}
                 />
-                {errorFroemJoi.price && (
+                {errorFroemJoi && errorFroemJoi.price && (
                   <Alert severity="warning">
                     {errorFroemJoi.price.map((item) => (
                       <div key={"price-errors" + item}>{item}</div>
@@ -173,7 +220,7 @@ const EditCardPage = () => {
                   onChange={handleInputChange}
                   value={inputState.description}
                 />
-                {errorFroemJoi.description && (
+                {errorFroemJoi && errorFroemJoi.description && (
                   <Alert severity="warning">
                     {errorFroemJoi.description.map((item) => (
                       <div key={"description-errors" + item}>{item}</div>
@@ -181,7 +228,121 @@ const EditCardPage = () => {
                   </Alert>
                 )}
               </Grid>
-
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="country"
+                  label="country"
+                  id="country"
+                  autoComplete="country"
+                  onChange={handleInputChange}
+                  value={inputState.country}
+                />
+                {errorFroemJoi && errorFroemJoi.country && (
+                  <Alert severity="warning">
+                    {errorFroemJoi.country.map((item) => (
+                      <div key={"country-errors" + item}>{item}</div>
+                    ))}
+                  </Alert>
+                )}
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="city"
+                  label="city"
+                  id="city"
+                  autoComplete="city"
+                  onChange={handleInputChange}
+                  value={inputState.city}
+                />
+                {errorFroemJoi && errorFroemJoi.city && (
+                  <Alert severity="warning">
+                    {errorFroemJoi.city.map((item) => (
+                      <div key={"city-errors" + item}>{item}</div>
+                    ))}
+                  </Alert>
+                )}
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="street"
+                  label="street"
+                  id="street"
+                  autoComplete="street"
+                  onChange={handleInputChange}
+                  value={inputState.street}
+                />
+                {errorFroemJoi && errorFroemJoi.street && (
+                  <Alert severity="warning">
+                    {errorFroemJoi.street.map((item) => (
+                      <div key={"street-errors" + item}>{item}</div>
+                    ))}
+                  </Alert>
+                )}
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="houseNumber"
+                  label="houseNumber"
+                  id="houseNumber"
+                  autoComplete="houseNumber"
+                  onChange={handleInputChange}
+                  value={inputState.houseNumber}
+                />
+                {errorFroemJoi && errorFroemJoi.houseNumber && (
+                  <Alert severity="warning">
+                    {errorFroemJoi.houseNumber.map((item) => (
+                      <div key={"houseNumber-errors" + item}>{item}</div>
+                    ))}
+                  </Alert>
+                )}
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="email"
+                  label="email"
+                  id="email"
+                  autoComplete="email"
+                  onChange={handleInputChange}
+                  value={inputState.email}
+                />
+                {errorFroemJoi && errorFroemJoi.email && (
+                  <Alert severity="warning">
+                    {errorFroemJoi.email.map((item) => (
+                      <div key={"email-errors" + item}>{item}</div>
+                    ))}
+                  </Alert>
+                )}
+              </Grid>
+      
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="phone"
+                  label="Phone"
+                  id="phone"
+                  autoComplete="phone"
+                  value={inputState.phone}
+                  onChange={handleInputChange}
+                />
+                {errorFroemJoi && errorFroemJoi.phone && (
+                  <Alert severity="warning">
+                    {errorFroemJoi.phone.map((item) => (
+                      <div key={"phone-errors" + item}>{item}</div>
+                    ))}
+                  </Alert>
+                )}
+              </Grid>
               <Grid item xs={6}>
                 <Button
                   fullWidth

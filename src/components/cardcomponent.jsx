@@ -14,7 +14,8 @@ const CardComponent = ({
   img,
   title,
   subTitle,
-  description,
+  phone,
+  address,
   id,
   onDelete,
   onEdit,
@@ -43,7 +44,9 @@ const CardComponent = ({
       </CardActionArea>
       <CardHeader title={title} subheader={subTitle}></CardHeader>
       <CardContent>
-        <Typography>{description}</Typography>
+        <Typography>{`phone: ${phone}`}</Typography>
+        <Typography>{`Address: ${address}`}</Typography>
+        <Typography>{`Card Number: ${id}`}</Typography>
       </CardContent>
       <CardActions>
         <Button variant="text" color="primary">
