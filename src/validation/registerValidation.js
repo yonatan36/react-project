@@ -14,8 +14,8 @@ const rgisterSchema = Joi.object({
     .min(2)
     .max(10)
     .required(),
-  imgUrl: Joi.string().required(),
-  imgAlt: Joi.string().min(2).max(100).required(),
+  imgUrl: Joi.string(),
+  imgAlt: Joi.string().min(2).max(100),
   state: Joi.string().min(2).max(100).required(),
   country: Joi.string().min(2).max(100).required(),
   city: Joi.string().min(2).max(100).required(),

@@ -23,6 +23,7 @@ const Home = () => {
       setCardArr((newCardsArr) =>
         newCardsArr.filter((item) => item._id !== id)
       );
+      toast.success("Deletion was successful");
       await axios.delete("/cards/" + id);
     } catch (err) {
       console.log("error delate", err.response.data);

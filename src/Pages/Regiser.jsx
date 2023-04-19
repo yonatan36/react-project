@@ -84,6 +84,7 @@ const RegistrationForm = () => {
         zipCode: inputState.zipCode,
       });
     //move to login page
+    toast.success("The registration was successful");
       navigate(ROUTES.LOGIN);
   
     } catch (err) {

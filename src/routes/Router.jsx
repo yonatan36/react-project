@@ -7,7 +7,7 @@ import About from "../Pages/About";
 import ROUTES from "./ROUTES";
 import EditCard from "../Pages/EditCard";
 import Stam from "../Pages/stam";
-
+import CreateCard  from "../Pages/CreateCard"
 
 
  const Router = () =>{
@@ -20,6 +20,7 @@ import Stam from "../Pages/stam";
            <Route exact path={ROUTES.ABOUT} element={<About />} />
            <Route exact path="/stam" element={<Stam />} />
            <Route exact path="/edit/:id" element={<EditCard />} />
+           <Route exact path="/create" element={<CreateCard />} />
            <Route exact path="*" element={<h1>404</h1>}/>
         </Routes>
     );

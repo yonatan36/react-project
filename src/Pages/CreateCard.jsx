@@ -1,5 +1,3 @@
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -10,123 +8,140 @@ import Alert from "@mui/material/Alert";
 import EditIcon from "@mui/icons-material/Edit";
 import { useTheme } from "@mui/material/styles";
 import { useEffect, useState } from "react";
-import validateEditSchema, {
-  validateEditCardParamsSchema,
-} from "../validation/editValidtion";
+
 import { useNavigate, useParams } from "react-router-dom";
 import ROUTES from "../routes/ROUTES";
-import CircularProgress from "@mui/material/CircularProgress";
+import { Button } from "@mui/material";
 import axios from "axios";
 import atom from "../logo.svg";
 import { toast } from "react-toastify";
+import Avatar from "@mui/material/Avatar";
+import { Theme } from "@mui/material";
+import validateCreateSchema, {
+  validateCreateCardParamsSchema,
+} from "../validation/createValidation";
 
-const EditCardPage = () => {
+
+
+
+const CardCreationForm = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const theme = useTheme();
-  const navigate = useNavigate();
-  const [inputState, setInputState] = useState();
+  // State variables to capture form data
   const [errorFroemJoi, setErrorFromJoi] = useState({});
+  const [inputState, setInputState] = useState();
+  const [url, setUrl] = useState("");
+  const [title, setTitle] = useState("");
+  const [subTitle, setSubTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
+  const [street, setStreet] = useState("");
+  const [houseNumber, setHouseNumber] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
 
-  useEffect(() => {
-    (async () => {
-      try {
-        const errors = validateEditCardParamsSchema({ id });
-        if (errors) {
-          navigate("/");
-          return;
-        }
-        const { data } = await axios.get("/cards/card/" + id);
-        //if inputs is empty
-        let newInputState = {
-          ...data,
-        };
- 
-        if (data.image && data.image.url) {
-          newInputState.url = data.image.url;
-        } else {
-          newInputState.url = "";
-        }
-        if (data.image && data.image.alt) {
-          newInputState.alt = data.image.alt;
-        } else {
-          newInputState.alt = "";
-        }
-        if (data.country && data.country) {
-          newInputState.country = data.country;
-        } else {
-          newInputState.country = "";
-        }
-        if (data.city && data.city) {
-          newInputState.city = data.city;
-        } else {
-          newInputState.city = "";
-        }
-        if (data.street && data.street) {
-          newInputState.street = data.street;
-        } else {
-          newInputState.street = "";
-        }
-        if (data.houseNumber && data.houseNumber) {
-          newInputState.houseNumber = data.houseNumber;
-        } else {
-          newInputState.houseNumber = "";
-        }
-        if (data.email && data.email) {
-          newInputState.email = data.email;
-        } else {
-          newInputState.email = "";
-        }
-        delete newInputState.image;
-        delete newInputState.likes;
-        delete newInputState._id;
-        delete newInputState.user_id;
-        delete newInputState.bizNumber;
-        delete newInputState.createdAt;
-        setInputState(newInputState);
-      } catch (err) {
-        console.log("error from axios", err);
-      }
-    })();
-  }, [id]);
 
-  const handleSaveBtnClick = async (ev) => {
+
+useEffect(() => {
+  (async () => {
     try {
-      const joiResponse = validateEditSchema(inputState);
+      // Fetch data from backend
+      const { data } = await axios.get("/cards/" + id);
+
+      // Extract necessary data from fetched data
+      let newInputState = {
+        ...data,
+      };
+
+      // Update inputState with fetched data
+      setInputState(newInputState);
+
+      // Perform validation on fetched data
+      const joiResponse = validateCreateSchema(newInputState);
+
+      // Update errorFromJoi state with validation result
       setErrorFromJoi(joiResponse);
-      console.log(joiResponse);
-      if (!joiResponse) {
-        //move to homepage
-
-        await axios.put("/cards/" + id, inputState);
-        navigate(ROUTES.HOME);
-
-        toast.success("changes made successfully!");
-      }
     } catch (err) {
-      console.log("err", err);
-      toast.error("error");
+      console.log("error from axios", err);
+    }
+  })();
+}, [id]);
+
+
+  // Event handler for capturing user input
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    if (name === "title") {
+      setTitle(value);
+    } else if (name === "subTitle") {
+      setSubTitle(value);
+    } else if (name === "description") {
+      setDescription(value);
+    } else if (name === "url") {
+      setUrl(value);
+    } else if (name === "country") {
+      setCountry(value);
+    } else if (name === "city") {
+      setCity(value);
+    } else if (name === "street") {
+      setStreet(value);
+    } else if (name === "houseNumber") {
+      setHouseNumber(value);
+    } else if (name === "email") {
+      setEmail(value);
+    } else if (name === "phone") {
+      setPhone(value);
     }
   };
-  const handleCancleBtnClick = () =>{
-    navigate(ROUTES.HOME)
-  }
 
-  const handleInputChange = (event) => {
-    let newInputState = JSON.parse(JSON.stringify(inputState));
-    newInputState[event.target.id] = event.target.value;
-    setInputState(newInputState);
+ // Submit handler for creating the card
+const handleSaveBtnClick = async (event) => {
+  event.preventDefault();
+
+  // Form data to be sent to the backend
+  const formData = {
+    title,
+    subTitle,
+    description,
+    url,
+    country,
+    city,
+    street,
+    houseNumber,
+    email,
+    phone,
   };
 
-  if (!inputState) {
-    return <CircularProgress />;
+  try {
+    // Send POST request to backend server
+    const joiResponse = validateCreateSchema(inputState);
+    setErrorFromJoi(joiResponse); // Update the state variable with the response
+    console.log(joiResponse);
+    if (!joiResponse) {
+      await axios.post("/cards/", formData);
+      toast.success("Card created successfully");
+      navigate(ROUTES.HOME);
+    } else {
+      toast.error("Please fill all required fields");
+    }
+  } catch (err) {
+    console.log("Error creating card", err);
+    toast.error("Error creating card");
   }
+};
 
+
+  const handleCancleBtnClick = () => {
+    navigate(ROUTES.HOME);
+  };
   return (
     <Container component="main" maxWidth="xs">
       <Paper
         sx={{
           p: 4,
-          bgcolor: theme.palette.mode === "dark" ? "#424242" : "#f5f5f5",
+
           borderRadius: "20px",
           boxShadow: "0px 3px 15px rgba(0,0,0,0.2)",
           mt: 2,
@@ -143,7 +158,7 @@ const EditCardPage = () => {
             <EditIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Edit card
+            Create card
           </Typography>
           <Box
             component="img"
@@ -156,8 +171,6 @@ const EditCardPage = () => {
               boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
               marginBottom: 2,
             }}
-            alt={inputState.alt ? inputState.alt : ""}
-            src={inputState.url ? inputState.url : atom}
           />
           <Box component="div" noValidate sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -169,7 +182,7 @@ const EditCardPage = () => {
                   name="url"
                   autoComplete="url"
                   onChange={handleInputChange}
-                  value={inputState.url ? inputState.url : ""}
+                  value={url}
                 />
                 {errorFroemJoi && errorFroemJoi.url && (
                   <Alert severity="warning">
@@ -186,7 +199,7 @@ const EditCardPage = () => {
                   name="title"
                   autoComplete="title"
                   onChange={handleInputChange}
-                  value={inputState.title}
+                  value={title}
                 />
                 {errorFroemJoi && errorFroemJoi.title && (
                   <Alert severity="warning">
@@ -206,7 +219,7 @@ const EditCardPage = () => {
                   type="text"
                   autoComplete="subTitle"
                   onChange={handleInputChange}
-                  value={inputState.subTitle}
+                  value={subTitle}
                 />
                 {errorFroemJoi && errorFroemJoi.price && (
                   <Alert severity="warning">
@@ -225,7 +238,7 @@ const EditCardPage = () => {
                   id="description"
                   autoComplete="description"
                   onChange={handleInputChange}
-                  value={inputState.description}
+                  value={description}
                 />
                 {errorFroemJoi && errorFroemJoi.description && (
                   <Alert severity="warning">
@@ -244,7 +257,7 @@ const EditCardPage = () => {
                   id="country"
                   autoComplete="country"
                   onChange={handleInputChange}
-                  value={inputState.country}
+                  value={country}
                 />
                 {errorFroemJoi && errorFroemJoi.country && (
                   <Alert severity="warning">
@@ -263,7 +276,7 @@ const EditCardPage = () => {
                   id="city"
                   autoComplete="city"
                   onChange={handleInputChange}
-                  value={inputState.city}
+                  value={city}
                 />
                 {errorFroemJoi && errorFroemJoi.city && (
                   <Alert severity="warning">
@@ -282,7 +295,7 @@ const EditCardPage = () => {
                   id="street"
                   autoComplete="street"
                   onChange={handleInputChange}
-                  value={inputState.street || ""}
+                  value={street}
                 />
 
                 {errorFroemJoi && errorFroemJoi.street && (
@@ -302,7 +315,7 @@ const EditCardPage = () => {
                   id="houseNumber"
                   autoComplete="houseNumber"
                   onChange={handleInputChange}
-                  value={inputState.houseNumber}
+                  value={houseNumber}
                 />
                 {errorFroemJoi && errorFroemJoi.houseNumber && (
                   <Alert severity="warning">
@@ -321,7 +334,7 @@ const EditCardPage = () => {
                   id="email"
                   autoComplete="email"
                   onChange={handleInputChange}
-                  value={inputState.email}
+                  value={email}
                 />
                 {errorFroemJoi && errorFroemJoi.email && (
                   <Alert severity="warning">
@@ -340,7 +353,7 @@ const EditCardPage = () => {
                   label="Phone"
                   id="phone"
                   autoComplete="phone"
-                  value={inputState.phone || ""}
+                  value={phone}
                   onChange={handleInputChange}
                 />
                 {errorFroemJoi && errorFroemJoi.phone && (
@@ -378,4 +391,4 @@ const EditCardPage = () => {
     </Container>
   );
 };
-export default EditCardPage;
+export default CardCreationForm;

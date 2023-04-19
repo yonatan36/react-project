@@ -6,6 +6,7 @@ import {
   CardContent,
   Typography,
   CardActions,
+  Divider ,
   Button,
 } from "@mui/material";
 import PropTypes from "prop-types";
@@ -43,6 +44,7 @@ const CardComponent = ({
         />
       </CardActionArea>
       <CardHeader title={title} subheader={subTitle}></CardHeader>
+      <Divider />
       <CardContent>
         <Typography>{`phone: ${phone}`}</Typography>
         <Typography>{`Address: ${address}`}</Typography>
