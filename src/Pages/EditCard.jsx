@@ -40,7 +40,7 @@ const EditCardPage = () => {
         let newInputState = {
           ...data,
         };
- 
+
         if (data.image && data.image.url) {
           newInputState.url = data.image.url;
         } else {
@@ -107,9 +107,9 @@ const EditCardPage = () => {
       toast.error("error");
     }
   };
-  const handleCancleBtnClick = () =>{
-    navigate(ROUTES.HOME)
-  }
+  const handleCancleBtnClick = () => {
+    navigate(ROUTES.HOME);
+  };
 
   const handleInputChange = (event) => {
     let newInputState = JSON.parse(JSON.stringify(inputState));

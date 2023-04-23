@@ -14,6 +14,7 @@ import { NavLink } from "react-router-dom";
 import ROUTES from "../../routes/ROUTES";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import BedtimeIcon from "@mui/icons-material/Bedtime";
+import SearchPartial from "./SearchPartial";
 
 
 
@@ -65,7 +66,6 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
               <NavLink key={page.url} to={page.url}>
                 {({ isActive }) => (
                   <Typography
-               
                     sx={{
                       my: 2,
                       color: "white",
@@ -115,12 +115,14 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
               </NavLink>
             ))}
           </Box>
+
           <Typography sx={{ display: { xs: "none", md: "inline" } }}>
             {darkMode ? "Dark" : "Light"} Mode
           </Typography>
           <IconButton color="inherit" onClick={onThemeChange} sx={{ ml: 1 }}>
             {darkMode ? <BedtimeIcon /> : <WbSunnyIcon />}
           </IconButton>
+          <SearchPartial />
           {/* hamburger with menu */}
           <Box
             sx={{
@@ -165,7 +167,6 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
                     {/* if the current page and the link is the same then it will change the color of the link */}
                     {({ isActive }) => (
                       <Typography
-                       
                         sx={{
                           color: "white",
                           display: "block",
@@ -174,7 +175,6 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
                           textShadow: "1px 1px 1px rgba(0,0,0,0.3)",
                           transition: "all 0.3s ease-in-out",
                           "&:hover": {
-                         
                             textShadow: "2px 2px 2px rgba(0,0,0,0.5)",
                           },
                         }}

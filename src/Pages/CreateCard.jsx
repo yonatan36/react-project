@@ -21,9 +21,6 @@ import validateCreateSchema, {
   validateCreateCardParamsSchema,
 } from "../validation/createValidation";
 
-
-
-
 const CardCreationForm = () => {
   const navigate = useNavigate();
   const { id } = useParams();
@@ -42,34 +39,7 @@ const CardCreationForm = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
 
-
-
-useEffect(() => {
-  (async () => {
-    try {
-      // Fetch data from backend
-      const { data } = await axios.get("/cards/" + id);
-
-      // Extract necessary data from fetched data
-      let newInputState = {
-        ...data,
-      };
-
-      // Update inputState with fetched data
-      setInputState(newInputState);
-
-      // Perform validation on fetched data
-      const joiResponse = validateCreateSchema(newInputState);
-
-      // Update errorFromJoi state with validation result
-      setErrorFromJoi(joiResponse);
-    } catch (err) {
-      console.log("error from axios", err);
-    }
-  })();
-}, [id]);
-
-
+ 
   // Event handler for capturing user input
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -96,42 +66,41 @@ useEffect(() => {
     }
   };
 
- // Submit handler for creating the card
-const handleSaveBtnClick = async (event) => {
-  event.preventDefault();
+  const handleSaveBtnClick = async (event) => {
+    
 
-  // Form data to be sent to the backend
-  const formData = {
-    title,
-    subTitle,
-    description,
-    url,
-    country,
-    city,
-    street,
-    houseNumber,
-    email,
-    phone,
-  };
+    // Form data to be sent to the backend
+    const formData = {
+      title,
+      subTitle,
+      description,
+      url,
+      country,
+      city,
+      street,
+      houseNumber,
+      email,
+      phone,
+    };
 
-  try {
-    // Send POST request to backend server
-    const joiResponse = validateCreateSchema(inputState);
-    setErrorFromJoi(joiResponse); // Update the state variable with the response
-    console.log(joiResponse);
-    if (!joiResponse) {
-      await axios.post("/cards/", formData);
-      toast.success("Card created successfully");
-      navigate(ROUTES.HOME);
-    } else {
-      toast.error("Please fill all required fields");
+    try {
+      // Send POST request to backend server
+      const joiResponse = validateCreateSchema(inputState);
+      setErrorFromJoi(joiResponse);
+      console.log(joiResponse);
+      if (!joiResponse) {
+        await axios.post("/cards/", formData);
+
+        // Handle success response
+        navigate(ROUTES.HOME);
+        toast.success("Card created successfully!");
+        // Reset form data after successful card creation
+      }
+    } catch (error) {
+      // Handle error response
+      toast.error("Failed to create card. Please try again later.");
     }
-  } catch (err) {
-    console.log("Error creating card", err);
-    toast.error("Error creating card");
-  }
-};
-
+  };
 
   const handleCancleBtnClick = () => {
     navigate(ROUTES.HOME);
@@ -219,7 +188,7 @@ const handleSaveBtnClick = async (event) => {
                   type="text"
                   autoComplete="subTitle"
                   onChange={handleInputChange}
-                  value={subTitle}
+                  value={setInputState.subTitle}
                 />
                 {errorFroemJoi && errorFroemJoi.price && (
                   <Alert severity="warning">
