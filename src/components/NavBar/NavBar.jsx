@@ -20,11 +20,17 @@ import NavLinkComponent from "./NavLinkComponent";
 
 
 
+
+
 // access to all
 const pages = [
   {
     label: "Home",
     url: ROUTES.HOME,
+  },
+  {
+    label: "About",
+    url: ROUTES.ABOUT,
   },
 ];
 
@@ -40,15 +46,6 @@ const notAuthPages = [
   },
 ];
 
-//logged in users
-const authedPages = [
-  {
-    label: "Profile",
-    url: ROUTES.REGISTER,
-  },
-
-];
-
 //admin/biz pages
 const adminBizPages = [
   {
@@ -57,12 +54,36 @@ const adminBizPages = [
   },
 ];
 
+//logged in users
+const authedPages = [
+ 
+
+  {
+    label: "FAV CARADS",
+    url: ROUTES.FAV,
+  },
+  {
+    label: "LOGOUT",
+    url: ROUTES.LOGOUT,
+  },
+  
+];
+
+const BizPages = [
+  {
+    label: "MY CARDS",
+    url: ROUTES.MYCARDS,
+  },
+];
 
 
 const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
     const isLoggedIn = useSelector(
     (bigPieBigState) => bigPieBigState.authSlice.isLoggedIn
   );
+    const isBiz = useSelector(
+      (bigPieBigState) => bigPieBigState.bizSlice.biz
+    );
   const [anchorElNav, setAnchorElNav] = React.useState(null);
 
 
@@ -88,6 +109,12 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
             {pages.map((page) => (
               <NavLinkComponent key={page.url} {...page} />
             ))}
+            {isLoggedIn && isBiz
+              ? BizPages.map((page) => (
+                  <NavLinkComponent key={page.url} {...page} />
+                ))
+              : // Render alternative content or an empty string if not logged in or not a business
+                ""}
             {isLoggedIn
               ? authedPages.map((page) => (
                   <NavLinkComponent key={page.url} {...page} />
@@ -95,7 +122,6 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
               : notAuthPages.map((page) => (
                   <NavLinkComponent key={page.url} {...page} />
                 ))}
-          
           </Box>
 
           <Typography sx={{ display: { xs: "none", md: "inline" } }}>
@@ -180,3 +206,5 @@ ResponsiveAppBar.propTypes = {
 };
 
 export default ResponsiveAppBar;
+
+       

@@ -113,6 +113,7 @@ const Home = () => {
               onDelete={handleDeleteFromInitialCardsArr}
               onEdit={handleEditFromInitialCardsArr}
               canEdit={payload && (payload.biz || payload.isAdmin)}
+              notConnected={!payload}
             />
           </Grid>
         ))}

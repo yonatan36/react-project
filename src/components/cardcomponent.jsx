@@ -28,6 +28,7 @@ const CardComponent = ({
   onDelete,
   onEdit,
   canEdit,
+  notConnected,
 }) => {
   const handleDeleteBtnClick = () => {
     onDelete(id);
@@ -71,9 +72,13 @@ const CardComponent = ({
         ) : (
           ""
         )}
-        <Button variant="text" color="primary">
-          <FavoriteIcon />
-        </Button>
+        {notConnected ? (
+          ""
+        ) : (
+          <Button variant="text" color="primary">
+            <FavoriteIcon />
+          </Button>
+        )}
         <Button variant="text" color="success">
           <PhoneIcon />
         </Button>
