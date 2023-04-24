@@ -1,3 +1,9 @@
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import PhoneIcon from "@mui/icons-material/Phone";
+
+
 import {
   Card,
   CardActionArea,
@@ -6,10 +12,11 @@ import {
   CardContent,
   Typography,
   CardActions,
-  Divider ,
+  Divider,
   Button,
 } from "@mui/material";
 import PropTypes from "prop-types";
+import { Fragment } from "react";
 
 const CardComponent = ({
   img,
@@ -20,6 +27,7 @@ const CardComponent = ({
   id,
   onDelete,
   onEdit,
+  canEdit,
 }) => {
   const handleDeleteBtnClick = () => {
     onDelete(id);
@@ -51,20 +59,29 @@ const CardComponent = ({
         <Typography>{`Card Number: ${id}`}</Typography>
       </CardContent>
       <CardActions>
+        {canEdit ? (
+          <Fragment>
+            <Button variant="text" color="error" onClick={handleDeleteBtnClick}>
+              delete <DeleteIcon />
+            </Button>
+            <Button variant="text" color="warning" onClick={handleEditBtnClick}>
+              edit <EditIcon />
+            </Button>
+          </Fragment>
+        ) : (
+          ""
+        )}
         <Button variant="text" color="primary">
-          Buy now
+          <FavoriteIcon />
         </Button>
-
-        <Button variant="text" color="error" onClick={handleDeleteBtnClick}>
-          Delete
-        </Button>
-        <Button variant="text" color="warning" onClick={handleEditBtnClick}>
-          Edit
+        <Button variant="text" color="success">
+          <PhoneIcon />
         </Button>
       </CardActions>
     </Card>
   );
 };
+
 CardComponent.propTypes = {
   id: PropTypes.string,
   img: PropTypes.string.isRequired,
@@ -73,6 +90,7 @@ CardComponent.propTypes = {
   description: PropTypes.string.isRequired,
   onDelete: PropTypes.func,
   onEdit: PropTypes.func,
+  canEdit: PropTypes.bool,
 };
 CardComponent.defaultProps = {
   img: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xMS41IC0xMC4yMzE3NCAyMyAyMC40NjM0OCI+CiAgPHRpdGxlPlJlYWN0IExvZ288L3RpdGxlPgogIDxjaXJjbGUgY3g9IjAiIGN5PSIwIiByPSIyLjA1IiBmaWxsPSIjNjFkYWZiIi8+CiAgPGcgc3Ryb2tlPSIjNjFkYWZiIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIi8+CiAgICA8ZWxsaXBzZSByeD0iMTEiIHJ5PSI0LjIiIHRyYW5zZm9ybT0icm90YXRlKDYwKSIvPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIiB0cmFuc2Zvcm09InJvdGF0ZSgxMjApIi8+CiAgPC9nPgo8L3N2Zz4K",

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -15,14 +16,20 @@ import ROUTES from "../../routes/ROUTES";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import BedtimeIcon from "@mui/icons-material/Bedtime";
 import SearchPartial from "./SearchPartial";
+import NavLinkComponent from "./NavLinkComponent";
 
 
 
+// access to all
 const pages = [
   {
     label: "Home",
     url: ROUTES.HOME,
   },
+];
+
+//not logged in users
+const notAuthPages = [
   {
     label: "Register",
     url: ROUTES.REGISTER,
@@ -31,15 +38,31 @@ const pages = [
     label: "Login",
     url: ROUTES.LOGIN,
   },
+];
+
+//logged in users
+const authedPages = [
   {
-    label: "About",
-    url: ROUTES.ABOUT,
+    label: "Profile",
+    url: ROUTES.REGISTER,
+  },
+
+];
+
+//admin/biz pages
+const adminBizPages = [
+  {
+    label: "Create",
+    url: ROUTES.REGISTER,
   },
 ];
 
 
 
 const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
+    const isLoggedIn = useSelector(
+    (bigPieBigState) => bigPieBigState.authSlice.isLoggedIn
+  );
   const [anchorElNav, setAnchorElNav] = React.useState(null);
 
 
@@ -63,57 +86,16 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
           {/* main navbar */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <NavLink key={page.url} to={page.url}>
-                {({ isActive }) => (
-                  <Typography
-                    sx={{
-                      my: 2,
-                      color: "white",
-                      display: "block",
-                      p: 2,
-                      color: `${isActive ? "yellow" : "turquoise"}`,
-                      fontWeight: "bold",
-                      textShadow: "1px 1px 1px rgba(0,0,0,0.3)",
-                      transition: "all 0.3s ease-in-out",
-                      position: "relative",
-                      overflow: "hidden",
-                      "&::before, &::after": {
-                        content: "''",
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        width: "100%",
-                        height: "100%",
-                        opacity: 0,
-                        transition:
-                          "all 0.5s cubic-bezier(0.215, 0.61, 0.355, 1) 0s",
-                      },
-                      "&::before": {
-                        backgroundColor: "rgba(255, 255, 255, 0.15)",
-                        transform: "translateX(-100%) skewX(-15deg)",
-                      },
-                      "&::after": {
-                        backgroundColor: "rgba(255, 255, 255, 0.15)",
-                        transform: "translateX(100%) skewX(15deg)",
-                      },
-                      "&:hover::before": {
-                        transform: "translateX(0%) skewX(-15deg)",
-                        opacity: 1,
-                      },
-                      "&:hover::after": {
-                        transform: "translateX(0%) skewX(15deg)",
-                        opacity: 1,
-                      },
-                      "&:hover": {
-                        textShadow: "2px 2px 2px rgba(0,0,0,0.5)",
-                      },
-                    }}
-                  >
-                    {page.label}
-                  </Typography>
-                )}
-              </NavLink>
+              <NavLinkComponent key={page.url} {...page} />
             ))}
+            {isLoggedIn
+              ? authedPages.map((page) => (
+                  <NavLinkComponent key={page.url} {...page} />
+                ))
+              : notAuthPages.map((page) => (
+                  <NavLinkComponent key={page.url} {...page} />
+                ))}
+          
           </Box>
 
           <Typography sx={{ display: { xs: "none", md: "inline" } }}>

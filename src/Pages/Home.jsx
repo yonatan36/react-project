@@ -6,12 +6,14 @@ import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "react-toastify";
 import useQueryParams from "../hooks/useQueryParams";
+import { useSelector } from "react-redux";
 
 const Home = () => {
   const [cardsArr, setCardArr] = useState(null);
   const [originalCardsArr, setOriginalCardsArr] = useState(null);
   let qparams = useQueryParams();
   const navigate = useNavigate();
+    const payload = useSelector((bigPie) => bigPie.authSlice.payload);
   useEffect(() => {
     axios
       .get("/cards/cards")
@@ -29,7 +31,7 @@ const Home = () => {
     axios
       .get("/cards/cards")
       .then(({ data }) => {
-        console.log("data", data);
+       // console.log("data", data);
         // setCardsArr(data);
         filterFunc(data);
       })
@@ -110,6 +112,7 @@ const Home = () => {
               description={item.description}
               onDelete={handleDeleteFromInitialCardsArr}
               onEdit={handleEditFromInitialCardsArr}
+              canEdit={payload && (payload.biz || payload.isAdmin)}
             />
           </Grid>
         ))}

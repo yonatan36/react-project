@@ -82,6 +82,7 @@ const EditCardPage = () => {
         delete newInputState.user_id;
         delete newInputState.bizNumber;
         delete newInputState.createdAt;
+        delete newInputState.__v
         setInputState(newInputState);
       } catch (err) {
         console.log("error from axios", err);

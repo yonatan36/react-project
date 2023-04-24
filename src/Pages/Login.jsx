@@ -14,6 +14,7 @@ import { useTheme } from "@mui/material/styles";
 import SyncIcon from "@mui/icons-material/Sync";
 import axios from "axios";
 import { toast } from "react-toastify";
+import useLoggedIn from "../hooks/useLoggedIn";
 
 const Login = () => {
   const theme = useTheme();
@@ -32,6 +33,7 @@ const Login = () => {
 
   const [errorFroemJoi, setErrorFromJoi] = useState();
   const navigate = useNavigate();
+    const loggedIn = useLoggedIn();
   const handleSubmit = async (event) => {
     try {
       const joiRespone = validetionLoginSchema(inputState);
@@ -45,6 +47,7 @@ const Login = () => {
         password: inputState.password,
       });
       localStorage.setItem("token", data.token);
+            loggedIn();
       navigate(ROUTES.HOME);
       toast.success("Welcome to our website!", {
         position: "top-center",

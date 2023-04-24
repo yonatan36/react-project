@@ -1,13 +1,15 @@
 import ResponsiveAppBar from "./components/NavBar/NavBar";
 import { Container } from "@mui/material";
 import Router from "./routes/Router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 
 /*toast*/
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+
+import useLoggedIn from "./hooks/useLoggedIn";
 
 const light = {
   palette: {
@@ -21,6 +23,10 @@ const dark = {
 };
 
 function App() {
+  const loggIn = useLoggedIn();
+  useEffect(() => {
+    loggIn();
+  }, []);
   const [darkMode, setDarkMode] = useState(false);
   const changeTheme = () => {
     setDarkMode(!darkMode);

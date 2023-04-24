@@ -26,70 +26,28 @@ const CardCreationForm = () => {
   const { id } = useParams();
   const theme = useTheme();
   // State variables to capture form data
-  const [errorFroemJoi, setErrorFromJoi] = useState({});
-  const [inputState, setInputState] = useState();
-  const [url, setUrl] = useState("");
-  const [title, setTitle] = useState("");
-  const [subTitle, setSubTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [country, setCountry] = useState("");
-  const [city, setCity] = useState("");
-  const [street, setStreet] = useState("");
-  const [houseNumber, setHouseNumber] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-
- 
-  // Event handler for capturing user input
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    if (name === "title") {
-      setTitle(value);
-    } else if (name === "subTitle") {
-      setSubTitle(value);
-    } else if (name === "description") {
-      setDescription(value);
-    } else if (name === "url") {
-      setUrl(value);
-    } else if (name === "country") {
-      setCountry(value);
-    } else if (name === "city") {
-      setCity(value);
-    } else if (name === "street") {
-      setStreet(value);
-    } else if (name === "houseNumber") {
-      setHouseNumber(value);
-    } else if (name === "email") {
-      setEmail(value);
-    } else if (name === "phone") {
-      setPhone(value);
-    }
-  };
+  const [errorFroemJoi, setErrorFromJoi] = useState();
+  const [inputState, setInputState] = useState({
+    url: "",
+    title: "",
+    subTitle: "",
+    description: "",
+    country: "",
+    city: "",
+    street: "",
+    houseNumber: "",
+    email: "",
+    phone: "",
+  });
 
   const handleSaveBtnClick = async (event) => {
-    
-
-    // Form data to be sent to the backend
-    const formData = {
-      title,
-      subTitle,
-      description,
-      url,
-      country,
-      city,
-      street,
-      houseNumber,
-      email,
-      phone,
-    };
-
     try {
       // Send POST request to backend server
       const joiResponse = validateCreateSchema(inputState);
       setErrorFromJoi(joiResponse);
       console.log(joiResponse);
       if (!joiResponse) {
-        await axios.post("/cards/", formData);
+        await axios.post("/cards/", inputState);
 
         // Handle success response
         navigate(ROUTES.HOME);
@@ -104,6 +62,11 @@ const CardCreationForm = () => {
 
   const handleCancleBtnClick = () => {
     navigate(ROUTES.HOME);
+  };
+  const handleInputChange = (event) => {
+    let newInputState = JSON.parse(JSON.stringify(inputState));
+    newInputState[event.target.id] = event.target.value;
+    setInputState(newInputState);
   };
   return (
     <Container component="main" maxWidth="xs">
@@ -140,6 +103,8 @@ const CardCreationForm = () => {
               boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
               marginBottom: 2,
             }}
+            alt={inputState.alt ? inputState.alt : ""}
+            src={inputState.url ? inputState.url : atom}
           />
           <Box component="div" noValidate sx={{ mt: 3 }}>
             <Grid container spacing={2}>
@@ -151,7 +116,7 @@ const CardCreationForm = () => {
                   name="url"
                   autoComplete="url"
                   onChange={handleInputChange}
-                  value={url}
+                  value={inputState.url}
                 />
                 {errorFroemJoi && errorFroemJoi.url && (
                   <Alert severity="warning">
@@ -168,7 +133,7 @@ const CardCreationForm = () => {
                   name="title"
                   autoComplete="title"
                   onChange={handleInputChange}
-                  value={title}
+                  value={inputState.title}
                 />
                 {errorFroemJoi && errorFroemJoi.title && (
                   <Alert severity="warning">
@@ -188,7 +153,7 @@ const CardCreationForm = () => {
                   type="text"
                   autoComplete="subTitle"
                   onChange={handleInputChange}
-                  value={setInputState.subTitle}
+                  value={inputState.subTitle}
                 />
                 {errorFroemJoi && errorFroemJoi.price && (
                   <Alert severity="warning">
@@ -207,7 +172,7 @@ const CardCreationForm = () => {
                   id="description"
                   autoComplete="description"
                   onChange={handleInputChange}
-                  value={description}
+                  value={inputState.description}
                 />
                 {errorFroemJoi && errorFroemJoi.description && (
                   <Alert severity="warning">
@@ -226,7 +191,7 @@ const CardCreationForm = () => {
                   id="country"
                   autoComplete="country"
                   onChange={handleInputChange}
-                  value={country}
+                  value={inputState.country}
                 />
                 {errorFroemJoi && errorFroemJoi.country && (
                   <Alert severity="warning">
@@ -245,7 +210,7 @@ const CardCreationForm = () => {
                   id="city"
                   autoComplete="city"
                   onChange={handleInputChange}
-                  value={city}
+                  value={inputState.city}
                 />
                 {errorFroemJoi && errorFroemJoi.city && (
                   <Alert severity="warning">
@@ -264,7 +229,7 @@ const CardCreationForm = () => {
                   id="street"
                   autoComplete="street"
                   onChange={handleInputChange}
-                  value={street}
+                  value={inputState.street}
                 />
 
                 {errorFroemJoi && errorFroemJoi.street && (
@@ -284,7 +249,7 @@ const CardCreationForm = () => {
                   id="houseNumber"
                   autoComplete="houseNumber"
                   onChange={handleInputChange}
-                  value={houseNumber}
+                  value={inputState.houseNumber}
                 />
                 {errorFroemJoi && errorFroemJoi.houseNumber && (
                   <Alert severity="warning">
@@ -303,7 +268,7 @@ const CardCreationForm = () => {
                   id="email"
                   autoComplete="email"
                   onChange={handleInputChange}
-                  value={email}
+                  value={inputState.email}
                 />
                 {errorFroemJoi && errorFroemJoi.email && (
                   <Alert severity="warning">
@@ -322,7 +287,7 @@ const CardCreationForm = () => {
                   label="Phone"
                   id="phone"
                   autoComplete="phone"
-                  value={phone}
+                  value={inputState.phone}
                   onChange={handleInputChange}
                 />
                 {errorFroemJoi && errorFroemJoi.phone && (
