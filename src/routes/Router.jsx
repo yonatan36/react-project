@@ -13,7 +13,6 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import SuperProtectedRoute from "../components/SuperProtectedRoute";
 import LogOut from "../components/NavBar/LogOut";
 
-
 const Router = () => {
   return (
     <Routes>
@@ -23,8 +22,12 @@ const Router = () => {
       <Route exact path={ROUTES.LOGIN} element={<Login />} />
       <Route exact path={ROUTES.ABOUT} element={<About />} />
       <Route exact path={ROUTES.FAV} element={<FavCards />} />
- 
-     <Route exact path={ROUTES.LOGOUT} element={<ProtectedRoute element={<LogOut />} />} />
+
+      <Route
+        exact
+        path={ROUTES.LOGOUT}
+        element={<ProtectedRoute element={<LogOut />} />}
+      />
       <Route
         exact
         path={ROUTES.MYCARDS}

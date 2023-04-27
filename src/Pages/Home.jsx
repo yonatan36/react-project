@@ -6,14 +6,16 @@ import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "react-toastify";
 import useQueryParams from "../hooks/useQueryParams";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import Typography from "@mui/material/Typography";
 
 const Home = () => {
   const [cardsArr, setCardArr] = useState(null);
   const [originalCardsArr, setOriginalCardsArr] = useState(null);
   let qparams = useQueryParams();
   const navigate = useNavigate();
-    const payload = useSelector((bigPie) => bigPie.authSlice.payload);
+  const dispatch = useDispatch();
+  const payload = useSelector((bigPie) => bigPie.authSlice.payload);
   useEffect(() => {
     axios
       .get("/cards/cards")
@@ -31,7 +33,7 @@ const Home = () => {
     axios
       .get("/cards/cards")
       .then(({ data }) => {
-       // console.log("data", data);
+        // console.log("data", data);
         // setCardsArr(data);
         filterFunc(data);
       })
@@ -89,8 +91,24 @@ const Home = () => {
     return <CircularProgress />;
   }
 
+  const handleLikeFromInitialCardsArr = async (id) => {
+    try {
+      const { data } = await axios.patch("/cards/card-like/" + id);
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
   return (
     <Box>
+      <Box textAlign="center" mt={4}>
+        <Typography variant="h3"  gutterBottom>
+          Welcome to Our Store!
+        </Typography>
+        <Typography variant="h6" color="textSecondary">
+          Find Your Perfect Nest on Our Home Page
+        </Typography>
+      </Box>
       <Grid container spacing={2}>
         {cardsArr.map((item) => (
           <Grid item xs={4} key={item._id + Date.now()}>
@@ -113,6 +131,7 @@ const Home = () => {
               onDelete={handleDeleteFromInitialCardsArr}
               onEdit={handleEditFromInitialCardsArr}
               canEdit={payload && (payload.biz || payload.isAdmin)}
+              onLike={handleLikeFromInitialCardsArr}
               notConnected={!payload}
             />
           </Grid>

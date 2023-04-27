@@ -1,7 +1,7 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import PhoneIcon from "@mui/icons-material/Phone";
+import HeartBrokenIcon from "@mui/icons-material/HeartBroken";import PhoneIcon from "@mui/icons-material/Phone";
+
 import {
   Card,
   CardActionArea,
@@ -16,7 +16,7 @@ import {
 import PropTypes from "prop-types";
 import { Fragment } from "react";
 
-const CardComponent = ({
+const LikesCardComponent = ({
   img,
   title,
   subTitle,
@@ -25,7 +25,7 @@ const CardComponent = ({
   id,
   onDelete,
   onEdit,
-   onLike,
+  noLike,
   canEdit,
   notConnected,
 }) => {
@@ -36,8 +36,8 @@ const CardComponent = ({
     onEdit(id);
   };
   const handleLikeBtnClick = () => {
-    onLike(id);
- console.log("here")
+    noLike(id);
+    console.log("here");
   };
   return (
     <Card square raised>
@@ -79,7 +79,7 @@ const CardComponent = ({
           ""
         ) : (
           <Button variant="text" color="primary" onClick={handleLikeBtnClick}>
-            <FavoriteIcon />
+            <HeartBrokenIcon />
           </Button>
         )}
         <Button variant="text" color="success">
@@ -90,19 +90,19 @@ const CardComponent = ({
   );
 };
 
-CardComponent.propTypes = {
-  id: PropTypes.string,
-  img: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  subTitle: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
-  onDelete: PropTypes.func,
-  onEdit: PropTypes.func,
-  canEdit: PropTypes.bool,
-};
-CardComponent.defaultProps = {
-  img: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xMS41IC0xMC4yMzE3NCAyMyAyMC40NjM0OCI+CiAgPHRpdGxlPlJlYWN0IExvZ288L3RpdGxlPgogIDxjaXJjbGUgY3g9IjAiIGN5PSIwIiByPSIyLjA1IiBmaWxsPSIjNjFkYWZiIi8+CiAgPGcgc3Ryb2tlPSIjNjFkYWZiIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIi8+CiAgICA8ZWxsaXBzZSByeD0iMTEiIHJ5PSI0LjIiIHRyYW5zZm9ybT0icm90YXRlKDYwKSIvPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIiB0cmFuc2Zvcm09InJvdGF0ZSgxMjApIi8+CiAgPC9nPgo8L3N2Zz4K",
-  subTitle: "",
-};
+ LikesCardComponent.propTypes = {
+   id: PropTypes.string,
+   img: PropTypes.string.isRequired,
+   title: PropTypes.string.isRequired,
+   subTitle: PropTypes.string.isRequired,
+   description: PropTypes.string.isRequired,
+   onDelete: PropTypes.func,
+   onEdit: PropTypes.func,
+   canEdit: PropTypes.bool,
+ };
+ LikesCardComponent.defaultProps = {
+   img: "data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9Ii0xMS41IC0xMC4yMzE3NCAyMyAyMC40NjM0OCI+CiAgPHRpdGxlPlJlYWN0IExvZ288L3RpdGxlPgogIDxjaXJjbGUgY3g9IjAiIGN5PSIwIiByPSIyLjA1IiBmaWxsPSIjNjFkYWZiIi8+CiAgPGcgc3Ryb2tlPSIjNjFkYWZiIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIi8+CiAgICA8ZWxsaXBzZSByeD0iMTEiIHJ5PSI0LjIiIHRyYW5zZm9ybT0icm90YXRlKDYwKSIvPgogICAgPGVsbGlwc2Ugcng9IjExIiByeT0iNC4yIiB0cmFuc2Zvcm09InJvdGF0ZSgxMjApIi8+CiAgPC9nPgo8L3N2Zz4K",
+   subTitle: "",
+ };
 
-export default CardComponent;
+export default LikesCardComponent;

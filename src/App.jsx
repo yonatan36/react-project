@@ -1,4 +1,5 @@
 import ResponsiveAppBar from "./components/NavBar/NavBar";
+import Footer from "./components/Footer";
 import { Container } from "@mui/material";
 import Router from "./routes/Router";
 import React, { useEffect, useState } from "react";
@@ -54,7 +55,7 @@ function App() {
         <main>
           <Router />
         </main>
-        <footer></footer>
+      <Footer />
       </Container>
     </ThemeProvider>
   );

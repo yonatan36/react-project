@@ -17,10 +17,7 @@ import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import BedtimeIcon from "@mui/icons-material/Bedtime";
 import SearchPartial from "./SearchPartial";
 import NavLinkComponent from "./NavLinkComponent";
-
-
-
-
+import Avatar from "@mui/material/Avatar";
 
 // access to all
 const pages = [
@@ -37,12 +34,12 @@ const pages = [
 //not logged in users
 const notAuthPages = [
   {
-    label: "Register",
-    url: ROUTES.REGISTER,
-  },
-  {
     label: "Login",
     url: ROUTES.LOGIN,
+  },
+  {
+    label: "Register",
+    url: ROUTES.REGISTER,
   },
 ];
 
@@ -56,8 +53,6 @@ const adminBizPages = [
 
 //logged in users
 const authedPages = [
- 
-
   {
     label: "FAV CARADS",
     url: ROUTES.FAV,
@@ -66,7 +61,6 @@ const authedPages = [
     label: "LOGOUT",
     url: ROUTES.LOGOUT,
   },
-  
 ];
 
 const BizPages = [
@@ -78,23 +72,23 @@ const BizPages = [
 
 
 const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
-    const isLoggedIn = useSelector(
+  const isLoggedIn = useSelector(
     (bigPieBigState) => bigPieBigState.authSlice.isLoggedIn
   );
-    const isBiz = useSelector(
-      (bigPieBigState) => bigPieBigState.bizSlice.biz
-    );
+  const payload = useSelector(
+    (bigPieBigState) => bigPieBigState.authSlice.payload
+  );
+
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-
-
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
 
   const handleCloseNavMenu = () => {
     setAnchorElNav(null);
   };
 
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -109,12 +103,11 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
             {pages.map((page) => (
               <NavLinkComponent key={page.url} {...page} />
             ))}
-            {isLoggedIn && isBiz
+            {isLoggedIn && payload.biz // Add an if statement to conditionally render BizPages
               ? BizPages.map((page) => (
                   <NavLinkComponent key={page.url} {...page} />
                 ))
-              : // Render alternative content or an empty string if not logged in or not a business
-                ""}
+              : ""}
             {isLoggedIn
               ? authedPages.map((page) => (
                   <NavLinkComponent key={page.url} {...page} />
@@ -131,6 +124,18 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
             {darkMode ? <BedtimeIcon /> : <WbSunnyIcon />}
           </IconButton>
           <SearchPartial />
+          
+
+          {isLoggedIn && (
+            <Box>
+              <IconButton sx={{ ml: 2, p: 0 }}>
+                <Avatar
+                 alt="User Avatar"
+                 src={payload.imageUrl} />
+              </IconButton>
+            </Box>
+          )}
+
           {/* hamburger with menu */}
           <Box
             sx={{
@@ -206,5 +211,3 @@ ResponsiveAppBar.propTypes = {
 };
 
 export default ResponsiveAppBar;
-
-       
