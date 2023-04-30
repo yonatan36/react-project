@@ -16,9 +16,6 @@ const SuperProtectedRoute = ({ element, isAdmin, isBiz }) => {
       toast.error("Opps! You do not have the necessary permissions.");
       return <Navigate to={ROUTES.LOGIN} />;
     }
-  } else {
-    // Redirect to login page if not logged in
-    return <Navigate to={ROUTES.LOGIN} />;
   }
 };
 

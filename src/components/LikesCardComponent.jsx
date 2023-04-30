@@ -1,6 +1,7 @@
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import HeartBrokenIcon from "@mui/icons-material/HeartBroken";import PhoneIcon from "@mui/icons-material/Phone";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import PhoneIcon from "@mui/icons-material/Phone";
 
 import {
   Card,
@@ -79,7 +80,7 @@ const LikesCardComponent = ({
           ""
         ) : (
           <Button variant="text" color="primary" onClick={handleLikeBtnClick}>
-            <HeartBrokenIcon />
+            <FavoriteIcon />
           </Button>
         )}
         <Button variant="text" color="success">

@@ -15,9 +15,11 @@ import SyncIcon from "@mui/icons-material/Sync";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-
 const RegistrationForm = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
+  const [disabled, setDisabled] = useState(true);
+  const [errorFroemJoi, setErrorFromJoi] = useState();
   const [inputState, SetInputState] = useState({
     firstName: "",
     middleName: "",
@@ -55,15 +57,13 @@ const RegistrationForm = () => {
     setErrorFromJoi({});
   };
 
-  const [errorFroemJoi, setErrorFromJoi] = useState();
-  const navigate = useNavigate();
   const handleSubmit = async (event) => {
     try {
       const joiRespone = validetionRegisterSchema(inputState);
       setErrorFromJoi(joiRespone);
       // clear the form after submission
       if (joiRespone) {
-         toast.error("try again");
+        toast.error("try again");
         return;
       }
 
@@ -83,20 +83,34 @@ const RegistrationForm = () => {
         houseNumber: inputState.houseNumber,
         zipCode: inputState.zipCode,
       });
-    //move to login page
-    toast.success("The registration was successful");
+      //move to login page
+      toast.success("The registration was successful");
       navigate(ROUTES.LOGIN);
-  
     } catch (err) {
-        toast.error(" Oops, try again");
+      toast.error(" Oops, try again");
       console.log("register", err.response.data);
     }
   };
+
   const handleInputChange = (event) => {
-    let newInputState = JSON.parse(JSON.stringify(inputState));
-    newInputState[event.target.id] = event.target.value;
+    const { id, value } = event.target;
+    const newInputState = { ...inputState, [id]: value };
     SetInputState(newInputState);
+
+    const joiResponse = validetionRegisterSchema(newInputState);
+
+    if (joiResponse && joiResponse[id]) {
+      setErrorFromJoi({ ...errorFroemJoi, [id]: joiResponse[id] });
+    } else {
+      setErrorFromJoi({ ...errorFroemJoi, [id]: "" });
+    }
+    if (!joiResponse) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
   };
+
   return (
     <Container component="main" maxWidth="md">
       <Paper
@@ -398,6 +412,7 @@ const RegistrationForm = () => {
                   variant="contained"
                   color="primary"
                   onClick={handleSubmit}
+                  disabled={disabled}
                 >
                   Submit
                 </Button>

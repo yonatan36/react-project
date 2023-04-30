@@ -9,17 +9,15 @@ const FAVCARDS = () => {
   const payload = useSelector(
     (bigPieBigState) => bigPieBigState.authSlice.payload
   );
-  // Local state to store the liked cards
 
-  const [likedCards, setLikedCards] = useState([]);
+  const [likedCards, setLikedCards] = useState(null);
   const [cardsArr, setCardArr] = useState(null);
 
-  // Fetch the liked cards from the backend API on component mount
   useEffect(() => {
     const fetchLikedCards = async () => {
       try {
         const { data } = await axios.get("/cards/cards");
-        // Add a check to ensure payload is not null
+
         const filterdData = data.filter((card) =>
           card.likes.includes(payload && payload._id)
         );
@@ -32,7 +30,7 @@ const FAVCARDS = () => {
 
     fetchLikedCards();
   }, []);
-  
+
   const handleDeleteFromInitialCardsArr = async (id) => {
     try {
       setCardArr((newCardsArr) =>
@@ -44,16 +42,17 @@ const FAVCARDS = () => {
       console.log("error delate", err.response.data);
     }
   };
-  // Function to handle card unlike action
+
   const handleCardLike = async (id) => {
     try {
-      // Send unlike request to backend API
+      setLikedCards((prevLikedCards) =>
+        prevLikedCards.filter((cardId) => cardId !== id)
+      );
+      setCardArr((prevCardsArr) =>
+        prevCardsArr.filter((card) => card._id !== id)
+      );
+      toast.success("Card unliked successfully!");
       await axios.patch("/cards/card-like/" + id);
-      // Update likedCards state by removing the card ID from the array
-      const updatedLikedCards = likedCards.filter((cardId) => cardId !== id);
-      setLikedCards(updatedLikedCards);
-           toast.success("Card unliked successfully!");
- 
     } catch (err) {
       console.log(err);
     }
@@ -84,7 +83,7 @@ const FAVCARDS = () => {
                 canEdit={payload && (payload.biz || payload.isAdmin)}
                 notConnected={!payload}
                 onDelete={handleDeleteFromInitialCardsArr}
-                noLike={ handleCardLike} // Pass the cardId to the handleCardLike function
+                noLike={handleCardLike} // Pass the cardId to the handleCardLike function
               />
             </Grid>
           ))}

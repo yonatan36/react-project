@@ -68,7 +68,15 @@ const Router = () => {
         }
       />
 
-      <Route exact path="*" element={<h1>404</h1>} />
+      <Route
+        path="*"
+        element={
+          <span>
+            <h1>404</h1>
+            <p>Opsss... page not found</p>
+          </span>
+        }
+      />
     </Routes>
   );
 };

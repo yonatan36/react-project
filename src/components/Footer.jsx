@@ -1,30 +1,54 @@
 import React from "react";
-import {
+import { makeStyles } from "@mui/styles";
+import { Container, Typography, IconButton } from "@mui/material";
+import LinkedInIcon from "@mui/icons-material/LinkedIn";
+import GitHubIcon from "@mui/icons-material/GitHub";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
-  BottomNavigation,
-  BottomNavigationAction,
-} from "@mui/material";
-import HomeIcon from "@mui/icons-material/Home";
-import FavoriteIcon from "@mui/icons-material/Favorite";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
+const useStyles = makeStyles((theme) => ({
+  footer: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.secondary.contrastText,
+    padding: theme.spacing(1),
+  },
+  iconButton: {
+    color: theme.palette.secondary.contrastText,
+    marginRight: theme.spacing(1),
+  },
+}));
 
-function Footer() {
-  const [value, setValue] = React.useState(0);
+const Footer = () => {
+  const classes = useStyles();
 
   return (
-    <BottomNavigation
-      value={value}
-      onChange={(event, newValue) => {
-        setValue(newValue);
-       
-      }}
-      showLabels
-    >
-      <BottomNavigationAction label="About" icon={<HomeIcon />} />
-      <BottomNavigationAction label="Favorites" icon={<FavoriteIcon />} />
-      <BottomNavigationAction label="My Cards" icon={<LocationOnIcon />} />
-    </BottomNavigation>
+    <footer className={classes.footer}>
+      <Container maxWidth="md">
+        <Typography variant="body2" align="center" fontWeight={600}>
+          © {new Date().getFullYear()} yonatan taub
+        </Typography>
+        <Typography variant="body2" align="center">
+          <IconButton
+            className={classes.iconButton}
+            href="https://www.linkedin.com/in/avraham-gol-5558b3246"
+          >
+            <LinkedInIcon />
+          </IconButton>
+          <IconButton
+            className={classes.iconButton}
+            href="https://github.com/https://github.com/avragol"
+          >
+            <GitHubIcon />
+          </IconButton>
+          <IconButton
+            className={classes.iconButton}
+            href="https://wa.me/972523244426"
+          >
+            <WhatsAppIcon />
+          </IconButton>
+        </Typography>
+      </Container>
+    </footer>
   );
-}
+};
 
 export default Footer;

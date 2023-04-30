@@ -1,7 +1,17 @@
+import React, { useState, useEffect, Fragment } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PhoneIcon from "@mui/icons-material/Phone";
+import PropTypes from "prop-types";
+
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@material-ui/core";
 import {
   Card,
   CardActionArea,
@@ -12,9 +22,8 @@ import {
   CardActions,
   Divider,
   Button,
+  DialogContentText,
 } from "@mui/material";
-import PropTypes from "prop-types";
-import { Fragment } from "react";
 
 const CardComponent = ({
   img,
@@ -22,10 +31,12 @@ const CardComponent = ({
   subTitle,
   phone,
   address,
+  description,
+  email,
   id,
   onDelete,
   onEdit,
-   onLike,
+  onLike,
   canEdit,
   notConnected,
 }) => {
@@ -35,13 +46,44 @@ const CardComponent = ({
   const handleEditBtnClick = () => {
     onEdit(id);
   };
+
+  const [isLiked, setIsLiked] = useState(false);
   const handleLikeBtnClick = () => {
+    const newIsLiked = !isLiked;
+    setIsLiked(newIsLiked);
     onLike(id);
- console.log("here")
+  };
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const [showphone, setShowPhone] = useState(false);
+  const handlephoneBtnopen = () => {
+    const newPhone = !showphone;
+    setShowPhone(newPhone);
   };
   return (
     <Card square raised>
-      <CardActionArea>
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogContent>
+          <Card square raised>
+            <DialogTitle>{title}</DialogTitle>
+            <CardMedia component="img" image={img} />
+            <Divider />
+            <DialogTitle>{subTitle}</DialogTitle>
+            <DialogContent>{description}</DialogContent>
+            <Divider />
+            <DialogContent>{`Address: ${address}`}</DialogContent>
+            <DialogContent>{`phone: ${phone}`}</DialogContent>
+            <DialogContent>{`email: ${email}`}</DialogContent>
+          </Card>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)}>Close</Button>
+        </DialogActions>
+      </Dialog>
+      <CardActionArea onClick={handleOpen}>
         <CardMedia
           component="img"
           image={img}
@@ -55,6 +97,7 @@ const CardComponent = ({
           }}
         />
       </CardActionArea>
+
       <CardHeader title={title} subheader={subTitle}></CardHeader>
       <Divider />
       <CardContent>
@@ -78,12 +121,14 @@ const CardComponent = ({
         {notConnected ? (
           ""
         ) : (
-          <Button variant="text" color="primary" onClick={handleLikeBtnClick}>
-            <FavoriteIcon />
+          <Button variant="text" onClick={handleLikeBtnClick}>
+            {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
           </Button>
         )}
-        <Button variant="text" color="success">
+
+        <Button variant="text" color="success" onClick={handlephoneBtnopen}>
           <PhoneIcon />
+          {showphone && phone}
         </Button>
       </CardActions>
     </Card>

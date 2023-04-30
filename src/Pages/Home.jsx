@@ -6,15 +6,15 @@ import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "react-toastify";
 import useQueryParams from "../hooks/useQueryParams";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Typography from "@mui/material/Typography";
 
 const Home = () => {
   const [cardsArr, setCardArr] = useState(null);
   const [originalCardsArr, setOriginalCardsArr] = useState(null);
+  
   let qparams = useQueryParams();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const navigate = useNavigate()
   const payload = useSelector((bigPie) => bigPie.authSlice.payload);
   useEffect(() => {
     axios
@@ -128,11 +128,13 @@ const Home = () => {
               }
               img={item.image ? item.image.url : ""}
               description={item.description}
+              email={item.email}
               onDelete={handleDeleteFromInitialCardsArr}
               onEdit={handleEditFromInitialCardsArr}
               canEdit={payload && (payload.biz || payload.isAdmin)}
               onLike={handleLikeFromInitialCardsArr}
               notConnected={!payload}
+              
             />
           </Grid>
         ))}

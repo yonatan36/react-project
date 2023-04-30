@@ -19,6 +19,7 @@ import SearchPartial from "./SearchPartial";
 import NavLinkComponent from "./NavLinkComponent";
 import Avatar from "@mui/material/Avatar";
 
+
 // access to all
 const pages = [
   {
@@ -42,7 +43,6 @@ const notAuthPages = [
     url: ROUTES.REGISTER,
   },
 ];
-
 //admin/biz pages
 const adminBizPages = [
   {
@@ -50,11 +50,10 @@ const adminBizPages = [
     url: ROUTES.REGISTER,
   },
 ];
-
 //logged in users
 const authedPages = [
   {
-    label: "FAV CARADS",
+    label: "Fav cards",
     url: ROUTES.FAV,
   },
   {
@@ -62,23 +61,19 @@ const authedPages = [
     url: ROUTES.LOGOUT,
   },
 ];
-
 const BizPages = [
   {
-    label: "MY CARDS",
+    label: "My cards",
     url: ROUTES.MYCARDS,
   },
 ];
 
 
 const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
-  const isLoggedIn = useSelector(
-    (bigPieBigState) => bigPieBigState.authSlice.isLoggedIn
+  const { isLoggedIn } = useSelector(
+    (bigPieBigState) => bigPieBigState.authSlice
   );
-  const payload = useSelector(
-    (bigPieBigState) => bigPieBigState.authSlice.payload
-  );
-
+  const { payload } = useSelector((bigPieBigState) => bigPieBigState.authSlice);
 
   const [anchorElNav, setAnchorElNav] = React.useState(null);
 
@@ -89,6 +84,7 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -124,14 +120,11 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
             {darkMode ? <BedtimeIcon /> : <WbSunnyIcon />}
           </IconButton>
           <SearchPartial />
-          
 
           {isLoggedIn && (
             <Box>
               <IconButton sx={{ ml: 2, p: 0 }}>
-                <Avatar
-                 alt="User Avatar"
-                 src={payload.imageUrl} />
+                <Avatar alt="User Avatar" src={payload.imageUrl} />
               </IconButton>
             </Box>
           )}
@@ -198,6 +191,18 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
                   </NavLink>
                 </MenuItem>
               ))}
+              {isLoggedIn && payload.biz // Add an if statement to conditionally render BizPages
+                ? BizPages.map((page) => (
+                    <NavLinkComponent key={page.url} {...page} />
+                  ))
+                : ""}
+              {isLoggedIn
+                ? authedPages.map((page) => (
+                    <NavLinkComponent key={page.url} {...page} />
+                  ))
+                : notAuthPages.map((page) => (
+                    <NavLinkComponent key={page.url} {...page} />
+                  ))}
             </Menu>
           </Box>
         </Toolbar>

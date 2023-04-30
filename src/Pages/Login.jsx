@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { Box, Typography, Grid } from "@mui/material";
@@ -18,6 +18,11 @@ import useLoggedIn from "../hooks/useLoggedIn";
 
 const Login = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
+  const loggedIn = useLoggedIn();
+  const [errorFroemJoi, setErrorFromJoi] = useState();
+  const [disabled, setDisabled] = useState(true);
+
   const [inputState, SetInputState] = useState({
     email: "",
     password: "",
@@ -31,9 +36,6 @@ const Login = () => {
     setErrorFromJoi();
   };
 
-  const [errorFroemJoi, setErrorFromJoi] = useState();
-  const navigate = useNavigate();
-    const loggedIn = useLoggedIn();
   const handleSubmit = async (event) => {
     try {
       const joiRespone = validetionLoginSchema(inputState);
@@ -42,34 +44,44 @@ const Login = () => {
         toast.error("try again");
         return;
       }
+
       const { data } = await axios.post("/users/login", {
         email: inputState.email,
         password: inputState.password,
       });
+
       localStorage.setItem("token", data.token);
-            loggedIn();
+      loggedIn();
       navigate(ROUTES.HOME);
-      toast.success("Welcome to our website!", {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+      toast.success(
+        `Welcome ${
+          (await axios.get("/users/userInfo")).data.firstName
+        }! Good to see you`
+      );
     } catch (err) {
       toast.error(" Oops, try again");
       console.log("error from axios", err.response.data);
     }
   };
 
-  const handleInputChange = (event) => {
-    let newInputState = JSON.parse(JSON.stringify(inputState));
-    newInputState[event.target.id] = event.target.value;
-    SetInputState(newInputState);
-  };
+const handleInputChange = (event) => {
+  const { id, value } = event.target;
+  const newInputState = { ...inputState, [id]: value };
+  SetInputState(newInputState);
+
+  const joiResponse = validetionLoginSchema(newInputState);
+  
+  if (joiResponse && joiResponse[id]) {
+    setErrorFromJoi({ ...errorFroemJoi, [id]: joiResponse[id] });
+  } else {
+    setErrorFromJoi({ ...errorFroemJoi, [id]: "" });
+  }
+  if (!joiResponse) {
+    setDisabled(false);
+  } else {
+    setDisabled(true);
+  }
+};
 
   return (
     <Container component="main" maxWidth="sm">
@@ -160,6 +172,7 @@ const Login = () => {
                     variant="contained"
                     color="primary"
                     onClick={handleSubmit}
+                    disabled={disabled}
                   >
                     Login
                   </Button>
