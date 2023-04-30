@@ -12,9 +12,8 @@ import Typography from "@mui/material/Typography";
 const Home = () => {
   const [cardsArr, setCardArr] = useState(null);
   const [originalCardsArr, setOriginalCardsArr] = useState(null);
-  
   let qparams = useQueryParams();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const payload = useSelector((bigPie) => bigPie.authSlice.payload);
   useEffect(() => {
     axios
@@ -26,15 +25,9 @@ const Home = () => {
   }, []);
 
   useEffect(() => {
-    /*
-      useEffect cant handle async ()=>{}
-      this is why we use the old promise way
-    */
     axios
       .get("/cards/cards")
       .then(({ data }) => {
-        // console.log("data", data);
-        // setCardsArr(data);
         filterFunc(data);
       })
       .catch((err) => {
@@ -96,13 +89,14 @@ const Home = () => {
       const { data } = await axios.patch("/cards/card-like/" + id);
       console.log(data);
     } catch (err) {
+      toast.info("Card unliked successfully!");
       console.log(err);
     }
   };
   return (
     <Box>
       <Box textAlign="center" mt={4}>
-        <Typography variant="h3"  gutterBottom>
+        <Typography variant="h3" gutterBottom>
           Welcome to Our Store!
         </Typography>
         <Typography variant="h6" color="textSecondary">
@@ -133,8 +127,8 @@ const Home = () => {
               onEdit={handleEditFromInitialCardsArr}
               canEdit={payload && (payload.biz || payload.isAdmin)}
               onLike={handleLikeFromInitialCardsArr}
+              noLike={handleLikeFromInitialCardsArr}
               notConnected={!payload}
-              
             />
           </Grid>
         ))}

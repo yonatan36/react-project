@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState,  Fragment } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
@@ -37,6 +37,7 @@ const CardComponent = ({
   onDelete,
   onEdit,
   onLike,
+  noLike,
   canEdit,
   notConnected,
 }) => {
@@ -47,11 +48,14 @@ const CardComponent = ({
     onEdit(id);
   };
 
+
+
   const [isLiked, setIsLiked] = useState(false);
   const handleLikeBtnClick = () => {
     const newIsLiked = !isLiked;
     setIsLiked(newIsLiked);
     onLike(id);
+    noLike(id);
   };
   const [open, setOpen] = useState(false);
   const handleOpen = () => {

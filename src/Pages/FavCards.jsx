@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
-import LikesCardComponent from "../components/LikesCardComponent";
+import CardComponent from "../components/cardcomponent";
 
 import { Box, Grid } from "@mui/material";
 import { toast } from "react-toastify";
@@ -51,7 +51,7 @@ const FAVCARDS = () => {
       setCardArr((prevCardsArr) =>
         prevCardsArr.filter((card) => card._id !== id)
       );
-      toast.success("Card unliked successfully!");
+       toast.info("Card unliked successfully!");
       await axios.patch("/cards/card-like/" + id);
     } catch (err) {
       console.log(err);
@@ -64,7 +64,7 @@ const FAVCARDS = () => {
         {cardsArr &&
           cardsArr.map((item) => (
             <Grid item xs={4} key={item._id + Date.now()}>
-              <LikesCardComponent
+              <CardComponent
                 id={item._id}
                 title={item.title}
                 subTitle={item.subTitle}
@@ -84,6 +84,7 @@ const FAVCARDS = () => {
                 notConnected={!payload}
                 onDelete={handleDeleteFromInitialCardsArr}
                 noLike={handleCardLike} // Pass the cardId to the handleCardLike function
+                onLike={handleCardLike} // Pass the cardId to the handleCardLike function
               />
             </Grid>
           ))}
