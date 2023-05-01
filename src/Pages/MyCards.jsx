@@ -91,6 +91,7 @@ const MyCards = () => {
       const { data } = await axios.patch("/cards/card-like/" + id);
       console.log(data);
     } catch (err) {
+      toast.info("Card unliked successfully!");
       console.log(err);
     }
   };
@@ -140,6 +141,7 @@ const MyCards = () => {
               onEdit={handleEditFromInitialCardsArr}
               canEdit={payload && (payload.biz || payload.isAdmin)}
               onLike={handleLikeFromInitialCardsArr}
+              noLike={handleLikeFromInitialCardsArr}
               notConnected={!payload}
             />
           </Grid>

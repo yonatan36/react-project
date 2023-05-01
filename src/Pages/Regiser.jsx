@@ -87,7 +87,7 @@ const RegistrationForm = () => {
       toast.success("The registration was successful");
       navigate(ROUTES.LOGIN);
     } catch (err) {
-      toast.error(" Oops, try again");
+      toast.error(err.response.data);
       console.log("register", err.response.data);
     }
   };

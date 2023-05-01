@@ -1,11 +1,11 @@
-import React, { useState,  Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PhoneIcon from "@mui/icons-material/Phone";
 import PropTypes from "prop-types";
-
+import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import {
   Dialog,
   DialogTitle,
@@ -22,7 +22,6 @@ import {
   CardActions,
   Divider,
   Button,
-  DialogContentText,
 } from "@mui/material";
 
 const CardComponent = ({
@@ -33,12 +32,14 @@ const CardComponent = ({
   address,
   description,
   email,
+  createdAt,
   id,
   onDelete,
   onEdit,
   onLike,
   noLike,
   canEdit,
+  
   notConnected,
 }) => {
   const handleDeleteBtnClick = () => {
@@ -47,8 +48,6 @@ const CardComponent = ({
   const handleEditBtnClick = () => {
     onEdit(id);
   };
-
-
 
   const [isLiked, setIsLiked] = useState(false);
   const handleLikeBtnClick = () => {
@@ -78,9 +77,20 @@ const CardComponent = ({
             <DialogTitle>{subTitle}</DialogTitle>
             <DialogContent>{description}</DialogContent>
             <Divider />
-            <DialogContent>{`Address: ${address}`}</DialogContent>
-            <DialogContent>{`phone: ${phone}`}</DialogContent>
-            <DialogContent>{`email: ${email}`}</DialogContent>
+            <DialogContent>
+              <Typography variant="subtitle1" style={{ marginBottom: "8px" }}>
+                <b style={{ color: "#2196f3" }}>Address:</b> {address}
+              </Typography>
+              <Typography variant="subtitle1" style={{ marginBottom: "8px" }}>
+                <b style={{ color: "#2196f3" }}>Phone:</b> {phone}
+              </Typography>
+              <Typography variant="subtitle1" style={{ marginBottom: "8px" }}>
+                <b style={{ color: "#2196f3" }}>Email:</b> {email}
+              </Typography>
+              <Typography variant="subtitle1">
+                <b style={{ color: "#2196f3" }}>Created At:</b> {createdAt}
+              </Typography>
+            </DialogContent>
           </Card>
         </DialogContent>
         <DialogActions>
@@ -100,15 +110,15 @@ const CardComponent = ({
             display: "cover",
           }}
         />
-      </CardActionArea>
 
-      <CardHeader title={title} subheader={subTitle}></CardHeader>
-      <Divider />
-      <CardContent>
-        <Typography>{`phone: ${phone}`}</Typography>
-        <Typography>{`Address: ${address}`}</Typography>
-        <Typography>{`Card Number: ${id}`}</Typography>
-      </CardContent>
+        <CardHeader title={title} subheader={subTitle}></CardHeader>
+        <Divider />
+        <CardContent>
+          <Typography>{`phone: ${phone}`}</Typography>
+          <Typography>{`Address: ${address}`}</Typography>
+          <Typography>{`Card Number: ${id}`}</Typography>
+        </CardContent>
+      </CardActionArea>
       <CardActions>
         {canEdit ? (
           <Fragment>
@@ -126,7 +136,7 @@ const CardComponent = ({
           ""
         ) : (
           <Button variant="text" onClick={handleLikeBtnClick}>
-            {isLiked ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+         <FavoriteBorderIcon />
           </Button>
         )}
 

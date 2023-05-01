@@ -6,7 +6,7 @@ import About from "../Pages/About";
 import ROUTES from "./ROUTES";
 import EditCard from "../Pages/EditCard";
 import CreateCard from "../Pages/CreateCard";
-import Profile from "../Pages/Profile";
+import Profile from "../Pages/profile";
 import FavCards from "../Pages/FavCards";
 import MyCards from "../Pages/MyCards";
 import ProtectedRoute from "../components/ProtectedRoute";
@@ -42,7 +42,7 @@ const Router = () => {
       <Route
         exact
         path={ROUTES.PROFILE}
-        element={<ProtectedRoute element={<Profile />} />}
+    element={<Profile />} 
       />
 
       <Route

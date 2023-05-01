@@ -54,7 +54,7 @@ const FAVCARDS = () => {
        toast.info("Card unliked successfully!");
       await axios.patch("/cards/card-like/" + id);
     } catch (err) {
-      console.log(err);
+
     }
   };
 

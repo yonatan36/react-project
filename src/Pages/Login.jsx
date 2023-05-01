@@ -59,7 +59,8 @@ const Login = () => {
         }! Good to see you`
       );
     } catch (err) {
-      toast.error(" Oops, try again");
+   
+      toast.error(err.response.data);
       console.log("error from axios", err.response.data);
     }
   };
