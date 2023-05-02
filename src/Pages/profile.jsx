@@ -14,6 +14,7 @@ import { useTheme } from "@mui/material/styles";
 import SyncIcon from "@mui/icons-material/Sync";
 import { toast } from "react-toastify";
 import axios from "axios";
+import CircularProgress from "@mui/material/CircularProgress";
 import useLoggedIn from "../hooks/useLoggedIn";
 
 const Profile = () => {
@@ -35,6 +36,7 @@ const Profile = () => {
         delete newInputState.biz;
         delete newInputState.isAdmin;
         delete newInputState._id;
+        delete newInputState.password;
         SetInputState(newInputState);
       } catch (err) {
         console.log("error from axios", err);
@@ -89,15 +91,21 @@ const Profile = () => {
         console.log("prifile", joiRespone);
         return;
       }
-      await axios.put("/users/userInfo/" + id, inputState);
-      loggedIn();
-      toast.success("The changes was successful");
-      navigate(ROUTES.HOME);
-    } catch (err) {
-      toast.error(err.response.data);
-      console.log("prifile", err.response.data);
-    }
+
+      // Set loading state to true
+      setIsLoading(true);
+
+      await axios.put("/users/userInfo/", inputState);
+
+      setTimeout(() => {
+        setIsLoading(false);
+        navigate(ROUTES.HOME);
+        toast.success("The changes were successful");
+      }, 3000);
+    } catch (error) {}
   };
+
+  const [isLoading, setIsLoading] = useState(false);
   return (
     <Container component="main" maxWidth="md">
       <Paper
@@ -120,14 +128,14 @@ const Profile = () => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign up
+            profile
           </Typography>
           <Box component="div" noValidate sx={{ mt: 2 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
+                  label="First Name"
                   name="firstName"
                   id="firstName"
                   value={inputState.firstName ? inputState.firstName : ""}
@@ -161,7 +169,6 @@ const Profile = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
                   label="Last Name"
                   name="lastName"
                   id="lastName"
@@ -179,7 +186,6 @@ const Profile = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
                   label="Phone"
                   name="phone"
                   id="phone"
@@ -197,7 +203,6 @@ const Profile = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
                   label="email"
                   name="email"
                   id="email"
@@ -212,7 +217,7 @@ const Profile = () => {
                   </Alert>
                 )}
               </Grid>
-              <Grid item xs={12} sm={6}>
+              {/* <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
                   label="password"
@@ -228,11 +233,10 @@ const Profile = () => {
                     ))}
                   </Alert>
                 )}
-              </Grid>
+              </Grid> */}
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
                   label="Image URL"
                   name="imageUrl"
                   id="imageUrl"
@@ -268,7 +272,6 @@ const Profile = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
                   label="State"
                   name="state"
                   id="state"
@@ -286,7 +289,6 @@ const Profile = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
                   label="Country"
                   name="country"
                   id="country"
@@ -304,7 +306,6 @@ const Profile = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
                   label="City"
                   name="city"
                   id="city"
@@ -322,7 +323,6 @@ const Profile = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
                   label="Street"
                   name="street"
                   id="street"
@@ -340,7 +340,6 @@ const Profile = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
                   label="House Number"
                   name="houseNumber"
                   id="houseNumber"
@@ -358,7 +357,6 @@ const Profile = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
                   label="zipCode"
                   name="zipCode"
                   id="zipCode"
@@ -397,8 +395,9 @@ const Profile = () => {
                   variant="contained"
                   color="primary"
                   onClick={handleSubmit}
+                  disabled={isLoading}
                 >
-                  Submit
+                  {isLoading ? <CircularProgress size={24} /> : "Submit"}
                 </Button>
               </Grid>
             </Grid>
@@ -406,9 +405,9 @@ const Profile = () => {
             <br />
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link to={ROUTES.LOGIN}>
+                <Link to={ROUTES.HOME}>
                   <Typography variant="body2" color="initial">
-                    Already have an account? Sign in
+                   back to home?
                   </Typography>
                 </Link>
               </Grid>

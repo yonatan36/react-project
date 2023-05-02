@@ -8,10 +8,20 @@ import { toast } from "react-toastify";
 import useQueryParams from "../hooks/useQueryParams";
 import { useSelector } from "react-redux";
 import Typography from "@mui/material/Typography";
+import jwt_decode from "jwt-decode";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@material-ui/core";
 
 const Home = () => {
   const [cardsArr, setCardArr] = useState(null);
   const [originalCardsArr, setOriginalCardsArr] = useState(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [cardToDelete, setCardToDelete] = useState(null);
   let qparams = useQueryParams();
   const navigate = useNavigate();
   const payload = useSelector((bigPie) => bigPie.authSlice.payload);
@@ -65,35 +75,39 @@ const Home = () => {
   useEffect(() => {
     filterFunc();
   }, [qparams.filter]);
+
+
+  //open the popup
   const handleDeleteFromInitialCardsArr = async (id) => {
+    setCardToDelete(id);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleDeleteCard = async () => {
     try {
       setCardArr((newCardsArr) =>
-        newCardsArr.filter((item) => item._id !== id)
+        newCardsArr.filter((item) => item._id !== cardToDelete)
       );
+      setIsDeleteDialogOpen(false);
       toast.success("Deletion was successful");
-      await axios.delete("/cards/" + id);
+      await axios.delete("/cards/" + cardToDelete);
     } catch (err) {
       console.log("error delate", err.response.data);
     }
   };
-
+  //likes function
+  const delete1 = (id) => {
+    setCardArr(cardsArr.filter((card) => card[1]._id !== id));
+  };
+//edit function
   const handleEditFromInitialCardsArr = (id) => {
     navigate(`edit/${id}`);
   };
+
   if (!cardsArr) {
     return <CircularProgress />;
   }
 
-  const handleLikeFromInitialCardsArr = async (id) => {
-    try {
-      const { data } = await axios.patch("/cards/card-like/" + id);
-      console.log(data);
-    } catch (err) {
-      
-      toast.info("Card unliked successfully!");
- 
-    }
-  };
   return (
     <Box>
       <Box textAlign="center" mt={4}>
@@ -106,7 +120,7 @@ const Home = () => {
       </Box>
       <Grid container spacing={2}>
         {cardsArr.map((item) => (
-          <Grid item xs={4} key={item._id + Date.now()}>
+          <Grid item xs={12} sm={6} md={4} lg={4} key={item._id + Date.now()}>
             <CardComponent
               id={item._id}
               title={item.title}
@@ -121,6 +135,7 @@ const Home = () => {
                 " " +
                 item.houseNumber
               }
+              likes={item.likes}
               img={item.image ? item.image.url : ""}
               description={item.description}
               email={item.email}
@@ -128,13 +143,30 @@ const Home = () => {
               onDelete={handleDeleteFromInitialCardsArr}
               onEdit={handleEditFromInitialCardsArr}
               canEdit={payload && (payload.biz || payload.isAdmin)}
-              onLike={handleLikeFromInitialCardsArr}
-              noLike={handleLikeFromInitialCardsArr}
               notConnected={!payload}
-      
+              onDeletefav={delete1}
+              isFav={
+                localStorage.token &&
+                item.likes.includes(jwt_decode(localStorage.token)._id)
+              }
             />
           </Grid>
         ))}
+      <Dialog
+        open={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+      >
+        <DialogTitle>Are you sure you want to delete this card?</DialogTitle>
+        <DialogContent>
+          Deleting a card is permanent and cannot be undone.
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsDeleteDialogOpen(false)}>Cancel</Button>
+          <Button onClick={handleDeleteCard} color="secondary">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
       </Grid>
     </Box>
   );

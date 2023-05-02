@@ -2,16 +2,17 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import CardComponent from "../components/cardcomponent";
-
 import { Box, Grid } from "@mui/material";
 import { toast } from "react-toastify";
+import jwt_decode from "jwt-decode";
+import ConfirmationDialog from "../components/ConfirmationDialog";
+
 const FAVCARDS = () => {
+  const [likedCards, setLikedCards] = useState(null);
+  const [cardsArr, setCardArr] = useState(null);
   const payload = useSelector(
     (bigPieBigState) => bigPieBigState.authSlice.payload
   );
-
-  const [likedCards, setLikedCards] = useState(null);
-  const [cardsArr, setCardArr] = useState(null);
 
   useEffect(() => {
     const fetchLikedCards = async () => {
@@ -43,19 +44,10 @@ const FAVCARDS = () => {
     }
   };
 
-  const handleCardLike = async (id) => {
-    try {
-      setLikedCards((prevLikedCards) =>
-        prevLikedCards.filter((cardId) => cardId !== id)
-      );
-      setCardArr((prevCardsArr) =>
-        prevCardsArr.filter((card) => card._id !== id)
-      );
-       toast.info("Card unliked successfully!");
-      await axios.patch("/cards/card-like/" + id);
-    } catch (err) {
-
-    }
+  const delete1 = (id) => {
+    setCardArr((prevCardsArr) =>
+      prevCardsArr.filter((card) => card._id !== id)
+    );
   };
 
   return (
@@ -63,7 +55,7 @@ const FAVCARDS = () => {
       <Grid container spacing={2}>
         {cardsArr &&
           cardsArr.map((item) => (
-            <Grid item xs={4} key={item._id + Date.now()}>
+            <Grid item xs={12} sm={6} md={4} lg={4} key={item._id + Date.now()}>
               <CardComponent
                 id={item._id}
                 title={item.title}
@@ -78,13 +70,19 @@ const FAVCARDS = () => {
                   " " +
                   item.houseNumber
                 }
+                email={item.email}
+                likes={item.likes}
+                createdAt={item.createdAt}
                 img={item.image ? item.image.url : ""}
                 description={item.description}
                 canEdit={payload && (payload.biz || payload.isAdmin)}
                 notConnected={!payload}
                 onDelete={handleDeleteFromInitialCardsArr}
-                noLike={handleCardLike} // Pass the cardId to the handleCardLike function
-                onLike={handleCardLike} // Pass the cardId to the handleCardLike function
+                onDeletefav={delete1}
+                isFav={
+                  localStorage.token &&
+                  item.likes.includes(jwt_decode(localStorage.token)._id)
+                }
               />
             </Grid>
           ))}

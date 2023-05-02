@@ -1,11 +1,11 @@
-import React, { useState, Fragment, useEffect } from "react";
+import React, { useState, Fragment } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PhoneIcon from "@mui/icons-material/Phone";
 import PropTypes from "prop-types";
-import { Favorite, FavoriteBorder } from "@mui/icons-material";
+
+import axios from "axios";
 import {
   Dialog,
   DialogTitle,
@@ -33,14 +33,14 @@ const CardComponent = ({
   description,
   email,
   createdAt,
+  likes,
   id,
   onDelete,
   onEdit,
-  onLike,
-  noLike,
+  onDeletefav,
   canEdit,
-  
   notConnected,
+  isFav,
 }) => {
   const handleDeleteBtnClick = () => {
     onDelete(id);
@@ -48,14 +48,17 @@ const CardComponent = ({
   const handleEditBtnClick = () => {
     onEdit(id);
   };
-
-  const [isLiked, setIsLiked] = useState(false);
-  const handleLikeBtnClick = () => {
-    const newIsLiked = !isLiked;
-    setIsLiked(newIsLiked);
-    onLike(id);
-    noLike(id);
+  const [favState, setfavState] = useState(isFav);
+  const handleLikeBtnClick = async () => {
+    try {
+      await axios.patch("/cards/card-like/" + id);
+      setfavState((prevState) => !prevState);
+      onDeletefav(id);
+    } catch (err) {
+      console.log(err);
+    }
   };
+
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -90,6 +93,9 @@ const CardComponent = ({
               <Typography variant="subtitle1">
                 <b style={{ color: "#2196f3" }}>Created At:</b> {createdAt}
               </Typography>
+              <Typography variant="subtitle1">
+                <b style={{ color: "#2196f3" }}>likes:</b> {likes.length}
+              </Typography>
             </DialogContent>
           </Card>
         </DialogContent>
@@ -116,6 +122,7 @@ const CardComponent = ({
         <CardContent>
           <Typography>{`phone: ${phone}`}</Typography>
           <Typography>{`Address: ${address}`}</Typography>
+          <Typography>{`Likes: ${likes.length}`}</Typography>
           <Typography>{`Card Number: ${id}`}</Typography>
         </CardContent>
       </CardActionArea>
@@ -123,10 +130,10 @@ const CardComponent = ({
         {canEdit ? (
           <Fragment>
             <Button variant="text" color="error" onClick={handleDeleteBtnClick}>
-              delete <DeleteIcon />
+              <DeleteIcon />
             </Button>
             <Button variant="text" color="warning" onClick={handleEditBtnClick}>
-              edit <EditIcon />
+              <EditIcon />
             </Button>
           </Fragment>
         ) : (
@@ -135,8 +142,11 @@ const CardComponent = ({
         {notConnected ? (
           ""
         ) : (
-          <Button variant="text" onClick={handleLikeBtnClick}>
-         <FavoriteBorderIcon />
+          <Button color="primary" onClick={handleLikeBtnClick}>
+            <FavoriteIcon
+              className="fav"
+              sx={favState ? { color: "red" } : { color: "primary" }}
+            />
           </Button>
         )}
 

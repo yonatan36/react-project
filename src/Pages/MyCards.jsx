@@ -107,7 +107,7 @@ const MyCards = () => {
       </Box>
       <Grid container spacing={2}>
         {cardsArr.map((item) => (
-          <Grid item xs={4} key={item._id + Date.now()}>
+          <Grid item xs={12} sm={6} md={4} lg={4} key={item._id + Date.now()}>                
             <Typography
               sx={{
                 backgroundColor: "green",
@@ -124,6 +124,7 @@ const MyCards = () => {
             <CardComponent
               id={item._id}
               title={item.title}
+              likes={item.likes}
               subTitle={item.subTitle}
               phone={item.phone}
               address={

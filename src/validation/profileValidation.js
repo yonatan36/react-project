@@ -9,10 +9,7 @@ const profileSchema = Joi.object({
   email: Joi.string()
     .email({ tlds: { allow: false } })
     .required(),
-  password: Joi.string()
-    .pattern(new RegExp("^(?=.*[A-Z])(?=.*[a-z]).{0,}$"))
-    .min(2)
-    .max(10),
+
   imageUrl: Joi.string(),
   imageAlt: Joi.string().min(2).max(100),
   state: Joi.string().min(2).max(100).required(),

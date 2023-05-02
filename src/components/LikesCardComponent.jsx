@@ -2,7 +2,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import PhoneIcon from "@mui/icons-material/Phone";
-
 import {
   Card,
   CardActionArea,
@@ -23,6 +22,7 @@ const LikesCardComponent = ({
   subTitle,
   phone,
   address,
+  likes,
   id,
   onDelete,
   onEdit,
@@ -61,6 +61,7 @@ const LikesCardComponent = ({
       <CardContent>
         <Typography>{`phone: ${phone}`}</Typography>
         <Typography>{`Address: ${address}`}</Typography>
+        <Typography>{`Likes: ${likes.length}`}</Typography>
         <Typography>{`Card Number: ${id}`}</Typography>
       </CardContent>
       <CardActions>

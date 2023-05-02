@@ -1,4 +1,6 @@
 import * as React from "react";
+import { useEffect, useState} from "react";
+import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -11,13 +13,19 @@ import Container from "@mui/material/Container";
 import PropTypes from "prop-types";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
-import { NavLink } from "react-router-dom";
+import { NavLink, Navigate } from "react-router-dom";
 import ROUTES from "../../routes/ROUTES";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import BedtimeIcon from "@mui/icons-material/Bedtime";
 import SearchPartial from "./SearchPartial";
 import NavLinkComponent from "./NavLinkComponent";
 import Avatar from "@mui/material/Avatar";
+import { useNavigate } from "react-router-dom";
+
+
+
+
+
 
 
 // access to all
@@ -75,15 +83,37 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
   );
   const { payload } = useSelector((bigPieBigState) => bigPieBigState.authSlice);
 
+const moveToProfile = () => {
+  navigate(ROUTES.PROFILE);
+};
+
+const handleCloseNavMenu = () => {
+  setAnchorElNav(null);
+};
+
+const handleOpenNavMenu = (event) => {
+  setAnchorElNav(event.currentTarget);
+};
+
+const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
+const [avatar, setAvatar] = useState({});
 
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
+useEffect(() => {
+  axios
+    .get("/users/userInfo/")
+    .then((userInfo) => {
+      setAvatar({
+        url: userInfo.data.imageUrl,
+        alt: userInfo.data.imageAlt,
+      });
+    })
+    .catch((err) => {});
+}, []);
 
-  const handleOpenNavMenu = (event) => {
-    setAnchorElNav(event.currentTarget);
-  };
+
+
+
 
   return (
     <AppBar position="static">
@@ -123,8 +153,8 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
 
           {isLoggedIn && (
             <Box>
-              <IconButton sx={{ ml: 2, p: 0 }}>
-                <Avatar alt="User Avatar" src={payload.imageUrl} />
+              <IconButton sx={{ ml: 2, p: 0 }} onClick={moveToProfile}>
+                <Avatar alt={avatar.alt} src={avatar.url} />
               </IconButton>
             </Box>
           )}

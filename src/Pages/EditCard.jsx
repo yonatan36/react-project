@@ -41,14 +41,48 @@ const EditCardPage = () => {
           ...data,
         };
 
-  
+        if (data.image && data.image.url) {
+          newInputState.url = data.image.url;
+        } else {
+          newInputState.url = "";
+        }
+        if (data.image && data.image.alt) {
+          newInputState.alt = data.image.alt;
+        } else {
+          newInputState.alt = "";
+        }
+        if (data.country && data.country) {
+          newInputState.country = data.country;
+        } else {
+          newInputState.country = "";
+        }
+        if (data.city && data.city) {
+          newInputState.city = data.city;
+        } else {
+          newInputState.city = "";
+        }
+        if (data.street && data.street) {
+          newInputState.street = data.street;
+        } else {
+          newInputState.street = "";
+        }
+        if (data.houseNumber && data.houseNumber) {
+          newInputState.houseNumber = data.houseNumber;
+        } else {
+          newInputState.houseNumber = "";
+        }
+        if (data.email && data.email) {
+          newInputState.email = data.email;
+        } else {
+          newInputState.email = "";
+        }
         delete newInputState.image;
         delete newInputState.likes;
         delete newInputState._id;
         delete newInputState.user_id;
         delete newInputState.bizNumber;
         delete newInputState.createdAt;
-        delete newInputState.__v
+        delete newInputState.__v;
         setInputState(newInputState);
       } catch (err) {
         console.log("error from axios", err);
@@ -62,8 +96,11 @@ const EditCardPage = () => {
       setErrorFromJoi(joiResponse);
       console.log(joiResponse);
       if (!joiResponse) {
+        //move to homepage
+
         await axios.put("/cards/" + id, inputState);
         navigate(ROUTES.HOME);
+
         toast.success("changes made successfully!");
       }
     } catch (err) {

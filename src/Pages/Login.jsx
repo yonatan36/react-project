@@ -15,6 +15,7 @@ import SyncIcon from "@mui/icons-material/Sync";
 import axios from "axios";
 import { toast } from "react-toastify";
 import useLoggedIn from "../hooks/useLoggedIn";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Login = () => {
   const theme = useTheme();
@@ -36,53 +37,59 @@ const Login = () => {
     setErrorFromJoi();
   };
 
-  const handleSubmit = async (event) => {
-    try {
-      const joiRespone = validetionLoginSchema(inputState);
-      setErrorFromJoi(joiRespone);
-      if (joiRespone) {
-        toast.error("try again");
-        return;
-      }
+  const [isLoading, setIsLoading] = useState(false);
+ const getUserInfo = async () => {
+   const { data } = await axios.get("/users/userInfo");
+   return data.firstName;
+ };
 
-      const { data } = await axios.post("/users/login", {
-        email: inputState.email,
-        password: inputState.password,
-      });
+ const handleSubmit = async (event) => {
+   try {
+     const joiRespone = validetionLoginSchema(inputState);
+     setErrorFromJoi(joiRespone);
+     if (joiRespone) {
+       toast.error("try again");
+       return;
+     }
+     setIsLoading(true);
+     const { data } = await axios.post("/users/login", {
+       email: inputState.email,
+       password: inputState.password,
+     });
+     localStorage.setItem("token", data.token);
+     setTimeout(async () => {
+       setIsLoading(false);
+       loggedIn();
+       navigate(ROUTES.HOME);
+       const firstName = await getUserInfo();
+       toast.success(`Welcome ${firstName}! Good to see you`);
+     }, 2500);
+   } catch (err) {
+     setIsLoading(false);
+     toast.error(err.response.data);
+     console.log("error from axios", err.response.data);
+   }
+ };
 
-      localStorage.setItem("token", data.token);
-      loggedIn();
-      navigate(ROUTES.HOME);
-      toast.success(
-        `Welcome ${
-          (await axios.get("/users/userInfo")).data.firstName
-        }! Good to see you`
-      );
-    } catch (err) {
-   
-      toast.error(err.response.data);
-      console.log("error from axios", err.response.data);
+
+  const handleInputChange = (event) => {
+    const { id, value } = event.target;
+    const newInputState = { ...inputState, [id]: value };
+    SetInputState(newInputState);
+
+    const joiResponse = validetionLoginSchema(newInputState);
+
+    if (joiResponse && joiResponse[id]) {
+      setErrorFromJoi({ ...errorFroemJoi, [id]: joiResponse[id] });
+    } else {
+      setErrorFromJoi({ ...errorFroemJoi, [id]: "" });
+    }
+    if (!joiResponse) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
     }
   };
-
-const handleInputChange = (event) => {
-  const { id, value } = event.target;
-  const newInputState = { ...inputState, [id]: value };
-  SetInputState(newInputState);
-
-  const joiResponse = validetionLoginSchema(newInputState);
-  
-  if (joiResponse && joiResponse[id]) {
-    setErrorFromJoi({ ...errorFroemJoi, [id]: joiResponse[id] });
-  } else {
-    setErrorFromJoi({ ...errorFroemJoi, [id]: "" });
-  }
-  if (!joiResponse) {
-    setDisabled(false);
-  } else {
-    setDisabled(true);
-  }
-};
 
   return (
     <Container component="main" maxWidth="sm">
@@ -173,9 +180,9 @@ const handleInputChange = (event) => {
                     variant="contained"
                     color="primary"
                     onClick={handleSubmit}
-                    disabled={disabled}
+                    disabled={ disabled ||isLoading}
                   >
-                    Login
+                    {isLoading ? <CircularProgress size={24} /> : "Login"}
                   </Button>
                 </Grid>
               </Grid>
