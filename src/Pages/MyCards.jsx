@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import useQueryParams from "../hooks/useQueryParams";
 import { useSelector } from "react-redux";
 import Typography from "@mui/material/Typography";
+import jwt_decode from "jwt-decode";
 
 const MyCards = () => {
   const [cardsArr, setCardArr] = useState(null);
@@ -67,6 +68,8 @@ const MyCards = () => {
   useEffect(() => {
     filterFunc();
   }, [qparams.filter]);
+
+  
   const handleDeleteFromInitialCardsArr = async (id) => {
     try {
       setCardArr((newCardsArr) =>
@@ -79,6 +82,10 @@ const MyCards = () => {
     }
   };
 
+   const delete1 = (id) => {
+     setCardArr(cardsArr.filter((card) => card[1]._id !== id));
+   };
+  
   const handleEditFromInitialCardsArr = (id) => {
     navigate(`edit/${id}`);
   };
@@ -86,15 +93,6 @@ const MyCards = () => {
     return <CircularProgress />;
   }
 
-  const handleLikeFromInitialCardsArr = async (id) => {
-    try {
-      const { data } = await axios.patch("/cards/card-like/" + id);
-      console.log(data);
-    } catch (err) {
-      toast.info("Card unliked successfully!");
-      console.log(err);
-    }
-  };
   return (
     <Box>
       <Box textAlign="center" mt={4}>
@@ -107,7 +105,7 @@ const MyCards = () => {
       </Box>
       <Grid container spacing={2}>
         {cardsArr.map((item) => (
-          <Grid item xs={12} sm={6} md={4} lg={4} key={item._id + Date.now()}>                
+          <Grid item xs={12} sm={6} md={4} lg={4} key={item._id + Date.now()}>
             <Typography
               sx={{
                 backgroundColor: "green",
@@ -141,9 +139,12 @@ const MyCards = () => {
               onDelete={handleDeleteFromInitialCardsArr}
               onEdit={handleEditFromInitialCardsArr}
               canEdit={payload && (payload.biz || payload.isAdmin)}
-              onLike={handleLikeFromInitialCardsArr}
-              noLike={handleLikeFromInitialCardsArr}
               notConnected={!payload}
+              onDeletefav={delete1}
+              isFav={
+                localStorage.token &&
+                item.likes.includes(jwt_decode(localStorage.token)._id)
+              }
             />
           </Grid>
         ))}

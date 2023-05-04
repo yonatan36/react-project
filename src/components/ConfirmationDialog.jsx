@@ -1,27 +1,41 @@
-import React from "react";
+import { useState } from "react";
 import {
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
 } from "@material-ui/core";
 
-const ConfirmationDialog = ({ open, onClose, onConfirm, message }) => {
+function CardDeleteDialog(props) {
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const { onConfirm } = props;
+
+
+
+  const handleDeleteCard = () => {
+    onConfirm();
+    setIsDeleteDialogOpen(false);
+  };
+
+  const handleClose = () => {
+    setIsDeleteDialogOpen(false);
+  };
+
   return (
-    <Dialog open={open} onClose={onClose}>
-      <DialogTitle>Confirmation</DialogTitle>
-      <DialogContent>{message}</DialogContent>
+    <Dialog open={isDeleteDialogOpen} onClose={handleClose}>
+      <DialogTitle>Are you sure you want to delete this card?</DialogTitle>
+      <DialogContent>
+        Deleting a card is permanent and cannot be undone.
+      </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={onConfirm} color="primary">
-          Ok
+        <Button onClick={handleClose}>Cancel</Button>
+        <Button onClick={handleDeleteCard} color="secondary">
+          Delete
         </Button>
       </DialogActions>
     </Dialog>
   );
-};
+}
 
-export default ConfirmationDialog;
+export default CardDeleteDialog;

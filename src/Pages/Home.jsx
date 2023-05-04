@@ -135,16 +135,16 @@ const Home = () => {
                 " " +
                 item.houseNumber
               }
-              likes={item.likes}
               img={item.image ? item.image.url : ""}
               description={item.description}
               email={item.email}
               createdAt={item.createdAt}
+              likes={item.likes}
               onDelete={handleDeleteFromInitialCardsArr}
               onEdit={handleEditFromInitialCardsArr}
+              onDeletefav={delete1}
               canEdit={payload && (payload.biz || payload.isAdmin)}
               notConnected={!payload}
-              onDeletefav={delete1}
               isFav={
                 localStorage.token &&
                 item.likes.includes(jwt_decode(localStorage.token)._id)
