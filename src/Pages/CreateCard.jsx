@@ -94,10 +94,8 @@ const CardCreationForm = () => {
           <Box
             component="img"
             sx={{
-              height: 233,
+              height: 200,
               width: 350,
-              maxHeight: { xs: 233, md: 167 },
-              maxWidth: { xs: 350, md: 250 },
               borderRadius: 4,
               boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
               marginBottom: 2,
@@ -107,7 +105,7 @@ const CardCreationForm = () => {
           />
           <Box component="div" noValidate sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
                   id="url"
@@ -123,7 +121,7 @@ const CardCreationForm = () => {
                   </Alert>
                 )}
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
@@ -142,7 +140,7 @@ const CardCreationForm = () => {
                   </Alert>
                 )}
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
@@ -162,7 +160,7 @@ const CardCreationForm = () => {
                   </Alert>
                 )}
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
@@ -181,7 +179,7 @@ const CardCreationForm = () => {
                   </Alert>
                 )}
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
@@ -200,7 +198,7 @@ const CardCreationForm = () => {
                   </Alert>
                 )}
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
@@ -219,7 +217,7 @@ const CardCreationForm = () => {
                   </Alert>
                 )}
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
@@ -239,7 +237,7 @@ const CardCreationForm = () => {
                   </Alert>
                 )}
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
@@ -258,7 +256,7 @@ const CardCreationForm = () => {
                   </Alert>
                 )}
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth
@@ -278,7 +276,7 @@ const CardCreationForm = () => {
                 )}
               </Grid>
 
-              <Grid item xs={12}>
+              <Grid item xs={12} sm={6}>
                 <TextField
                   required
                   fullWidth

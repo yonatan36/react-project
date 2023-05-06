@@ -5,7 +5,8 @@ import CardComponent from "../components/cardcomponent";
 import { Box, Grid } from "@mui/material";
 import { toast } from "react-toastify";
 import jwt_decode from "jwt-decode";
-import ConfirmationDialog from "../components/ConfirmationDialog";
+import { useNavigate } from "react-router-dom";
+
 
 const FAVCARDS = () => {
   const [likedCards, setLikedCards] = useState(null);
@@ -13,6 +14,7 @@ const FAVCARDS = () => {
   const payload = useSelector(
     (bigPieBigState) => bigPieBigState.authSlice.payload
   );
+    const navigate = useNavigate();
 
   useEffect(() => {
     const fetchLikedCards = async () => {
@@ -49,6 +51,9 @@ const FAVCARDS = () => {
       prevCardsArr.filter((card) => card._id !== id)
     );
   };
+   const handleEditFromInitialCardsArr = (id) => {
+     navigate(`edit/${id}`);
+   };
 
   return (
     <Box>
@@ -70,15 +75,21 @@ const FAVCARDS = () => {
                   " " +
                   item.houseNumber
                 }
-                email={item.email}
-                likes={item.likes}
-                createdAt={item.createdAt}
                 img={item.image ? item.image.url : ""}
                 description={item.description}
-                canEdit={payload && (payload.biz || payload.isAdmin)}
-                notConnected={!payload}
+                email={item.email}
+                createdAt={item.createdAt}
+                likes={item.likes}
+                bizNumber={item.bizNumber}
                 onDelete={handleDeleteFromInitialCardsArr}
+                onEdit={handleEditFromInitialCardsArr}
                 onDeletefav={delete1}
+                notConnected={!payload}
+                canDelete={
+                  (payload && payload.isAdmin) ||
+                  (payload && payload.biz && payload._id === item.user_id)
+                }
+                canEdit={payload && payload.biz && payload._id === item.user_id}
                 isFav={
                   localStorage.token &&
                   item.likes.includes(jwt_decode(localStorage.token)._id)

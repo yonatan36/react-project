@@ -1,7 +1,7 @@
 import * as React from "react";
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -12,8 +12,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import PropTypes from "prop-types";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
-import { NavLink, Navigate } from "react-router-dom";
+import SportsVolleyballIcon from "@mui/icons-material/SportsVolleyball";
+import { NavLink } from "react-router-dom";
 import ROUTES from "../../routes/ROUTES";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import BedtimeIcon from "@mui/icons-material/Bedtime";
@@ -21,12 +21,6 @@ import SearchPartial from "./SearchPartial";
 import NavLinkComponent from "./NavLinkComponent";
 import Avatar from "@mui/material/Avatar";
 import { useNavigate } from "react-router-dom";
-
-
-
-
-
-
 
 // access to all
 const pages = [
@@ -51,13 +45,7 @@ const notAuthPages = [
     url: ROUTES.REGISTER,
   },
 ];
-//admin/biz pages
-const adminBizPages = [
-  {
-    label: "Create",
-    url: ROUTES.REGISTER,
-  },
-];
+
 //logged in users
 const authedPages = [
   {
@@ -76,53 +64,53 @@ const BizPages = [
   },
 ];
 
-
 const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
   const { isLoggedIn } = useSelector(
     (bigPieBigState) => bigPieBigState.authSlice
   );
   const { payload } = useSelector((bigPieBigState) => bigPieBigState.authSlice);
 
-const moveToProfile = () => {
-  navigate(ROUTES.PROFILE);
-};
+  const moveToProfile = () => {
+    navigate(ROUTES.PROFILE);
+  };
+  const LogoCkick = () => {
+    navigate(ROUTES.HOME);
+  };
 
-const handleCloseNavMenu = () => {
-  setAnchorElNav(null);
-};
+  const handleCloseNavMenu = () => {
+    setAnchorElNav(null);
+  };
 
-const handleOpenNavMenu = (event) => {
-  setAnchorElNav(event.currentTarget);
-};
+  const handleOpenNavMenu = (event) => {
+    setAnchorElNav(event.currentTarget);
+  };
 
-const navigate = useNavigate();
+  const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-const [avatar, setAvatar] = useState({});
+  const [avatar, setAvatar] = useState({});
 
-useEffect(() => {
-  axios
-    .get("/users/userInfo/")
-    .then((userInfo) => {
-      setAvatar({
-        url: userInfo.data.imageUrl,
-        alt: userInfo.data.imageAlt,
-      });
-    })
-    .catch((err) => {});
-}, []);
-
-
-
-
+  useEffect(() => {
+    axios
+      .get("/users/userInfo/")
+      .then((userInfo) => {
+        setAvatar({
+          url: userInfo.data.imageUrl,
+          alt: userInfo.data.imageAlt,
+        });
+      })
+      .catch((err) => {});
+  }, [isLoggedIn]);
 
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar>
-          <AdbIcon />
-          <Typography variant="h6" noWrap>
-            LOGO
-          </Typography>
+          <IconButton onClick={LogoCkick}>
+            <SportsVolleyballIcon />
+            <Typography variant="h6" noWrap>
+              YOYO
+            </Typography>
+          </IconButton>
 
           {/* main navbar */}
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>

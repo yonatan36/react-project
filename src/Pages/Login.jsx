@@ -63,7 +63,7 @@ const Login = () => {
        navigate(ROUTES.HOME);
        const firstName = await getUserInfo();
        toast.success(`Welcome ${firstName}! Good to see you`);
-     }, 2500);
+     }, 2000);
    } catch (err) {
      setIsLoading(false);
      toast.error(err.response.data);

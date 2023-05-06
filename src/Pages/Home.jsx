@@ -140,11 +140,16 @@ const Home = () => {
               email={item.email}
               createdAt={item.createdAt}
               likes={item.likes}
+              bizNumber={item.bizNumber}
               onDelete={handleDeleteFromInitialCardsArr}
               onEdit={handleEditFromInitialCardsArr}
               onDeletefav={delete1}
-              canEdit={payload && (payload.biz || payload.isAdmin)}
               notConnected={!payload}
+              canDelete={
+                (payload && payload.isAdmin) ||
+                (payload && payload.biz && payload._id === item.user_id)
+              }
+              canEdit={payload && payload.biz && payload._id === item.user_id}
               isFav={
                 localStorage.token &&
                 item.likes.includes(jwt_decode(localStorage.token)._id)
@@ -152,21 +157,21 @@ const Home = () => {
             />
           </Grid>
         ))}
-      <Dialog
-        open={isDeleteDialogOpen}
-        onClose={() => setIsDeleteDialogOpen(false)}
-      >
-        <DialogTitle>Are you sure you want to delete this card?</DialogTitle>
-        <DialogContent>
-          Deleting a card is permanent and cannot be undone.
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setIsDeleteDialogOpen(false)}>Cancel</Button>
-          <Button onClick={handleDeleteCard} color="secondary">
-            Delete
-          </Button>
-        </DialogActions>
-      </Dialog>
+        <Dialog
+          open={isDeleteDialogOpen}
+          onClose={() => setIsDeleteDialogOpen(false)}
+        >
+          <DialogTitle>Are you sure you want to delete this card?</DialogTitle>
+          <DialogContent>
+            Deleting a card is permanent and cannot be undone.
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setIsDeleteDialogOpen(false)}>Cancel</Button>
+            <Button onClick={handleDeleteCard} color="secondary">
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Grid>
     </Box>
   );

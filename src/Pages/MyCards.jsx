@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import CardComponent from "../components/cardcomponent";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Button, IconButton } from "@mui/material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -8,6 +9,7 @@ import { toast } from "react-toastify";
 import useQueryParams from "../hooks/useQueryParams";
 import { useSelector } from "react-redux";
 import Typography from "@mui/material/Typography";
+import ROUTES from "../routes/ROUTES";
 import jwt_decode from "jwt-decode";
 
 const MyCards = () => {
@@ -69,7 +71,6 @@ const MyCards = () => {
     filterFunc();
   }, [qparams.filter]);
 
-  
   const handleDeleteFromInitialCardsArr = async (id) => {
     try {
       setCardArr((newCardsArr) =>
@@ -82,13 +83,16 @@ const MyCards = () => {
     }
   };
 
-   const delete1 = (id) => {
-     setCardArr(cardsArr.filter((card) => card[1]._id !== id));
-   };
-  
+  const delete1 = (id) => {
+    setCardArr(cardsArr.filter((card) => card[1]._id !== id));
+  };
+
   const handleEditFromInitialCardsArr = (id) => {
     navigate(`edit/${id}`);
   };
+  const handleBtnCliclToCreate = () =>{
+navigate("/create")
+  }
   if (!cardsArr) {
     return <CircularProgress />;
   }
@@ -103,6 +107,13 @@ const MyCards = () => {
           Find Your Perfect Nest on Our Home Page
         </Typography>
       </Box>
+      <IconButton
+        onClick={handleBtnCliclToCreate}
+        size="large"
+        color="secondary">
+        <AddCircleIcon fontSize="inherit" />
+      </IconButton>
+
       <Grid container spacing={2}>
         {cardsArr.map((item) => (
           <Grid item xs={12} sm={6} md={4} lg={4} key={item._id + Date.now()}>
@@ -122,7 +133,6 @@ const MyCards = () => {
             <CardComponent
               id={item._id}
               title={item.title}
-              likes={item.likes}
               subTitle={item.subTitle}
               phone={item.phone}
               address={
@@ -136,11 +146,19 @@ const MyCards = () => {
               }
               img={item.image ? item.image.url : ""}
               description={item.description}
+              email={item.email}
+              createdAt={item.createdAt}
+              likes={item.likes}
+              bizNumber={item.bizNumber}
               onDelete={handleDeleteFromInitialCardsArr}
               onEdit={handleEditFromInitialCardsArr}
-              canEdit={payload && (payload.biz || payload.isAdmin)}
-              notConnected={!payload}
               onDeletefav={delete1}
+              notConnected={!payload}
+              canDelete={
+                (payload && payload.isAdmin) ||
+                (payload && payload.biz && payload._id === item.user_id)
+              }
+              canEdit={payload && payload.biz && payload._id === item.user_id}
               isFav={
                 localStorage.token &&
                 item.likes.includes(jwt_decode(localStorage.token)._id)

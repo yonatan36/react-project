@@ -33,11 +33,14 @@ const CardComponent = ({
   email,
   createdAt,
   likes,
+  bizNumber,
   id,
   onDelete,
   onEdit,
   onDeletefav,
   canEdit,
+  isAdmin,
+  canDelete,
   notConnected,
   isFav,
 }) => {
@@ -55,6 +58,8 @@ const CardComponent = ({
     }
   };
 
+
+  
   const handleDeleteBtnClick = () => {
     onDelete(id);
   };
@@ -74,7 +79,7 @@ const CardComponent = ({
 
   const handleClick = () => {
     const cardNode = cardRef.current;
-    console.log(cardNode);
+
     // do something with cardNode
   };
 
@@ -99,23 +104,28 @@ const CardComponent = ({
         <CardContent>
           <Typography>{`phone: ${phone}`}</Typography>
           <Typography>{`Address: ${address}`}</Typography>
+          <Typography>{`Card Number: ${bizNumber}`}</Typography>
           <Typography>{`Likes: ${likes.length}`}</Typography>
-          <Typography>{`Card Number: ${id}`}</Typography>
         </CardContent>
       </CardActionArea>
       <CardActions>
-        {canEdit ? (
-          <Fragment>
+        {canDelete ? (
+          <>
             <Button variant="text" color="error" onClick={handleDeleteBtnClick}>
               <DeleteIcon />
             </Button>
-            <Button variant="text" color="warning" onClick={handleEditBtnClick}>
-              <EditIcon />
-            </Button>
-          </Fragment>
-        ) : (
-          ""
-        )}
+            {canEdit ? (
+              <Button
+                variant="text"
+                color="warning"
+                onClick={handleEditBtnClick}
+              >
+                <EditIcon />
+              </Button>
+            ) : ""}
+          </>
+        ) : ""}
+
         {notConnected ? (
           ""
         ) : (
