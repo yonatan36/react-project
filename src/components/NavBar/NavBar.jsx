@@ -102,7 +102,7 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
   }, [isLoggedIn]);
 
   return (
-    <AppBar position="static">
+    <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar>
           <IconButton onClick={LogoCkick}>

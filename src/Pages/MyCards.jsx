@@ -1,23 +1,31 @@
 import React, { useEffect, useState } from "react";
 import CardComponent from "../components/cardcomponent";
-import { Box, Grid, Button, IconButton } from "@mui/material";
+import { Box, Grid, IconButton } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "react-toastify";
-import useQueryParams from "../hooks/useQueryParams";
 import { useSelector } from "react-redux";
 import Typography from "@mui/material/Typography";
 import ROUTES from "../routes/ROUTES";
 import jwt_decode from "jwt-decode";
-
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@material-ui/core";
 const MyCards = () => {
   const [cardsArr, setCardArr] = useState(null);
-  const [originalCardsArr, setOriginalCardsArr] = useState(null);
-  let qparams = useQueryParams();
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+    const [cardToDelete, setCardToDelete] = useState(null);
+
   const navigate = useNavigate();
   const payload = useSelector((bigPie) => bigPie.authSlice.payload);
+
+
   useEffect(() => {
     axios
       .get("/cards/my-cards")
@@ -27,57 +35,22 @@ const MyCards = () => {
       .catch((err) => console.log(err));
   }, []);
 
-  useEffect(() => {
-    axios
-      .get("/cards/my-cards")
-      .then(({ data }) => {
-        // console.log("data", data);
-        // setCardsArr(data);
-        filterFunc(data);
-      })
-      .catch((err) => {
-        console.log("err from axios", err);
 
-        toast.error("Oops");
-      });
-  }, []);
-  const filterFunc = (data) => {
-    if (!originalCardsArr && !data) {
-      return;
-    }
-    let filter = "";
-    if (qparams.filter) {
-      filter = qparams.filter;
-    }
-    if (!originalCardsArr && data) {
-      /*
-        when component loaded and states not loaded
-      */
-      setOriginalCardsArr(data);
-      setCardArr(data.filter((card) => card.title.startsWith(filter)));
-      return;
-    }
-    if (originalCardsArr) {
-      /*
-        when all loaded and states loaded
-      */
-      let newOriginalCardsArr = JSON.parse(JSON.stringify(originalCardsArr));
-      setCardArr(
-        newOriginalCardsArr.filter((card) => card.title.startsWith(filter))
-      );
-    }
-  };
-  useEffect(() => {
-    filterFunc();
-  }, [qparams.filter]);
+
 
   const handleDeleteFromInitialCardsArr = async (id) => {
+    setCardToDelete(id);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleDeleteCard = async () => {
     try {
       setCardArr((newCardsArr) =>
-        newCardsArr.filter((item) => item._id !== id)
+        newCardsArr.filter((item) => item._id !== cardToDelete)
       );
+      setIsDeleteDialogOpen(false);
       toast.success("Deletion was successful");
-      await axios.delete("/cards/" + id);
+      await axios.delete("/cards/" + cardToDelete);
     } catch (err) {
       console.log("error delate", err.response.data);
     }
@@ -88,7 +61,7 @@ const MyCards = () => {
   };
 
   const handleEditFromInitialCardsArr = (id) => {
-    navigate(`edit/${id}`);
+    navigate(`/edit/${id}`);
   };
   const handleBtnCliclToCreate = () =>{
 navigate("/create")
@@ -110,7 +83,8 @@ navigate("/create")
       <IconButton
         onClick={handleBtnCliclToCreate}
         size="large"
-        color="secondary">
+        color="secondary"
+      >
         <AddCircleIcon fontSize="inherit" />
       </IconButton>
 
@@ -166,6 +140,21 @@ navigate("/create")
             />
           </Grid>
         ))}
+        <Dialog
+          open={isDeleteDialogOpen}
+          onClose={() => setIsDeleteDialogOpen(false)}
+        >
+          <DialogTitle>Are you sure you want to delete this card?</DialogTitle>
+          <DialogContent>
+            Deleting a card is permanent and cannot be undone.
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setIsDeleteDialogOpen(false)}>Cancel</Button>
+            <Button onClick={handleDeleteCard} color="secondary">
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Grid>
     </Box>
   );

@@ -70,3 +70,7 @@ const Home = () => {
 
 
 
+     <Container maxWidth="md">
+        <Typography variant="body2" align="center" fontWeight={600}>
+          © {new Date().getFullYear()} yonatan taub
+        </Typography>

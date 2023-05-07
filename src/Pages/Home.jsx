@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CardComponent from "../components/cardcomponent";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Container, CardMedia } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -22,9 +22,27 @@ const Home = () => {
   const [originalCardsArr, setOriginalCardsArr] = useState(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [cardToDelete, setCardToDelete] = useState(null);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setlastName] = useState("");
   let qparams = useQueryParams();
   const navigate = useNavigate();
   const payload = useSelector((bigPie) => bigPie.authSlice.payload);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/users/userInfo");
+        const { firstName } = response.data;
+        const { lastName } = response.data;
+        setFirstName(firstName);
+        setlastName(lastName);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, []);
+
   useEffect(() => {
     axios
       .get("/cards/cards")
@@ -110,14 +128,46 @@ const Home = () => {
 
   return (
     <Box>
-      <Box textAlign="center" mt={4}>
+      <Container maxWidth="md" sx={{ textAlign: "center", paddingTop: "70px" }}>
         <Typography variant="h3" gutterBottom>
-          Welcome to Our Store!
+          Welcome to our Second-Hand Sales!
         </Typography>
-        <Typography variant="h6" color="textSecondary">
-          Find Your Perfect Nest on Our Home Page
+        <Box
+      
+        >
+          <Typography variant="h5" component="h2" sx={{ mb: 2 }}>
+            User Information
+          </Typography>
+          <Typography variant="body1" sx={{ fontWeight: "bold", mb: 1 }}>
+            Name:
+          </Typography>
+          <Typography variant="h5" component="h2" sx={{ fontWeight: "bold", mb: 1 }}>
+            {firstName} {lastName}
+          </Typography>
+          <Button variant="contained" color="primary" size="small">
+            Edit Profile
+          </Button>
+        </Box>
+<br />
+        <CardMedia
+          component="img"
+          image="https://source.unsplash.com/random/800x600?second-hand+sales"
+          alt="Second-Hand Sales"
+          height="330"
+        />
+        <Typography variant="body1" gutterBottom sx={{ marginTop: "30px" }}>
+          Discover amazing deals on high-quality second-hand items at our online
+          marketplace. We offer a wide variety of products, including clothing,
+          electronics, furniture, and more. All of our items are carefully
+          curated and thoroughly inspected to ensure their quality and
+          authenticity, so you can shop with confidence knowing that you're
+          getting the best value for your money. Whether you're on the hunt for
+          a unique vintage find or a modern gadget at a fraction of the retail
+          price, we've got you covered. Shop now and join our community of savvy
+          shoppers today!
         </Typography>
-      </Box>
+      </Container>
+      <br />
       <Grid container spacing={2}>
         {cardsArr.map((item) => (
           <Grid item xs={12} sm={6} md={4} lg={4} key={item._id + Date.now()}>

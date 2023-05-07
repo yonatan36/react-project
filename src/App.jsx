@@ -50,12 +50,16 @@ function App() {
       />
       <Container>
         <header>
-          <ResponsiveAppBar onThemeChange={changeTheme} darkMode={darkMode} />
+          <ResponsiveAppBar
+            onThemeChange={changeTheme}
+            darkMode={darkMode}
+        
+          />
         </header>
         <main>
           <Router />
         </main>
-      <Footer />
+        <Footer />
       </Container>
     </ThemeProvider>
   );

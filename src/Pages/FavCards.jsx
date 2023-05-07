@@ -6,15 +6,24 @@ import { Box, Grid } from "@mui/material";
 import { toast } from "react-toastify";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
-
+import CircularProgress from "@mui/material/CircularProgress";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+} from "@material-ui/core";
 
 const FAVCARDS = () => {
-  const [likedCards, setLikedCards] = useState(null);
   const [cardsArr, setCardArr] = useState(null);
+  const [likedCards, setLikedCards] = useState(null);
+  const [cardToDelete, setCardToDelete] = useState(null);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const payload = useSelector(
     (bigPieBigState) => bigPieBigState.authSlice.payload
   );
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchLikedCards = async () => {
@@ -34,27 +43,40 @@ const FAVCARDS = () => {
     fetchLikedCards();
   }, []);
 
+
+
   const handleDeleteFromInitialCardsArr = async (id) => {
+    setCardToDelete(id);
+    setIsDeleteDialogOpen(true);
+  };
+
+  const handleDeleteCard = async () => {
     try {
       setCardArr((newCardsArr) =>
-        newCardsArr.filter((item) => item._id !== id)
+        newCardsArr.filter((item) => item._id !== cardToDelete)
       );
+      setIsDeleteDialogOpen(false);
       toast.success("Deletion was successful");
-      await axios.delete("/cards/" + id);
+      await axios.delete("/cards/" + cardToDelete);
     } catch (err) {
       console.log("error delate", err.response.data);
     }
   };
 
+  //fav cards
   const delete1 = (id) => {
     setCardArr((prevCardsArr) =>
       prevCardsArr.filter((card) => card._id !== id)
     );
   };
-   const handleEditFromInitialCardsArr = (id) => {
-     navigate(`edit/${id}`);
-   };
 
+  const handleEditFromInitialCardsArr = (id) => {
+    navigate(`/edit/${id}`);
+  };
+  
+  if (!cardsArr) {
+    return <CircularProgress />;
+  }
   return (
     <Box>
       <Grid container spacing={2}>
@@ -97,6 +119,21 @@ const FAVCARDS = () => {
               />
             </Grid>
           ))}
+        <Dialog
+          open={isDeleteDialogOpen}
+          onClose={() => setIsDeleteDialogOpen(false)}
+        >
+          <DialogTitle>Are you sure you want to delete this card?</DialogTitle>
+          <DialogContent>
+            Deleting a card is permanent and cannot be undone.
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setIsDeleteDialogOpen(false)}>Cancel</Button>
+            <Button onClick={handleDeleteCard} color="secondary">
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Grid>
     </Box>
   );

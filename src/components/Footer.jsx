@@ -7,6 +7,7 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
 const useStyles = makeStyles((theme) => ({
   footer: {
+    
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.secondary.contrastText,
     padding: theme.spacing(1),
