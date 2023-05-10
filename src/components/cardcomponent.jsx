@@ -5,6 +5,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import PhoneIcon from "@mui/icons-material/Phone";
 import PropTypes from "prop-types";
 import axios from "axios";
+
 import {
   Dialog,
   DialogTitle,
@@ -13,6 +14,7 @@ import {
 } from "@material-ui/core";
 import {
   Card,
+  Box,
   CardActionArea,
   CardMedia,
   CardHeader,
@@ -39,18 +41,21 @@ const CardComponent = ({
   onEdit,
   onDeletefav,
   canEdit,
-  isAdmin,
   canDelete,
   notConnected,
   isFav,
+  isMyCard,
 }) => {
   const [showphone, setShowPhone] = useState(false);
   const [open, setOpen] = useState(false);
   const [favState, setfavState] = useState(isFav);
+  const [like, setLikes] = useState(likes.length);
 
   const handleLikeBtnClick = async () => {
     try {
-      await axios.patch("/cards/card-like/" + id);
+      const response = await axios.patch("/cards/card-like/" + id);
+      const updatedLikes = response.data.likes.length;
+      setLikes(updatedLikes);
       setfavState((prevState) => !prevState);
       onDeletefav(id);
     } catch (err) {
@@ -58,8 +63,6 @@ const CardComponent = ({
     }
   };
 
-
-  
   const handleDeleteBtnClick = () => {
     onDelete(id);
   };
@@ -75,111 +78,146 @@ const CardComponent = ({
     const newPhone = !showphone;
     setShowPhone(newPhone);
   };
-  const cardRef = useRef(null);
 
-  const handleClick = () => {
-    const cardNode = cardRef.current;
 
-    // do something with cardNode
-  };
 
   return (
-    <Card square raised ref={cardRef} onClick={handleClick}>
-      <CardActionArea onClick={handleOpen}>
-        <CardMedia
-          component="img"
-          image={img}
-          sx={{
-            maxHeight: { xs: 233, md: 250 },
-            maxWidth: { xs: 350, md: 380 },
-            borderRadius: 4,
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
-            marginBottom: 2,
-            display: "cover",
-          }}
-        />
+    <Box>
+      <Card square raised >
+        <CardActionArea onClick={handleOpen}>
+          <CardMedia
+       
+            component="img"
+            image={
+              img ===
+              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                ? CardComponent.defaultProps.img
+                : img
+            }
+          
+          />
+          {isMyCard ? (
+            <Typography
+              sx={{
+                backgroundColor: "blue",
+                color: "white",
+                padding: "2px 6px",
+                borderRadius: "5px",
+                marginTop: "5px",
+                width: "max-content",
+                marginX: "auto",
+                transition: "all 0.2s ease-in-out",
+                "&:hover": {
+                  transform: "scale(1.1)",
+                  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.25)",
+                },
+              }}
+            >
+              Your card!
+            </Typography>
+          ) : (
+            <></>
+          )}
 
-        <CardHeader title={title} subheader={subTitle}></CardHeader>
-        <Divider />
-        <CardContent>
-          <Typography>{`phone: ${phone}`}</Typography>
-          <Typography>{`Address: ${address}`}</Typography>
-          <Typography>{`Card Number: ${bizNumber}`}</Typography>
-          <Typography>{`Likes: ${likes.length}`}</Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        {canDelete ? (
-          <>
-            <Button variant="text" color="error" onClick={handleDeleteBtnClick}>
-              <DeleteIcon />
-            </Button>
-            {canEdit ? (
+          <CardHeader title={title} subheader={subTitle}></CardHeader>
+          <Divider />
+          <CardContent>
+            <Typography>{`phone: ${phone}`}</Typography>
+            <Typography>{`Address: ${address}`}</Typography>
+            <Typography>{`Card Number: ${bizNumber}`}</Typography>
+            <Typography>{`Likes: ${like}`}</Typography>
+          </CardContent>
+        </CardActionArea>
+        <CardActions>
+          {canDelete ? (
+            <>
               <Button
                 variant="text"
-                color="warning"
-                onClick={handleEditBtnClick}
+                color="error"
+                onClick={handleDeleteBtnClick}
               >
-                <EditIcon />
+                <DeleteIcon />
               </Button>
-            ) : ""}
-          </>
-        ) : ""}
+              {canEdit ? (
+                <Button
+                  variant="text"
+                  color="warning"
+                  onClick={handleEditBtnClick}
+                >
+                  <EditIcon />
+                </Button>
+              ) : (
+                ""
+              )}
+            </>
+          ) : (
+            ""
+          )}
 
-        {notConnected ? (
-          ""
-        ) : (
-          <Button color="primary" onClick={handleLikeBtnClick}>
-            <FavoriteIcon
-              className="fav"
-              sx={favState ? { color: "red" } : { color: "primary" }}
-            />
+          {notConnected ? (
+            ""
+          ) : (
+            <Button color="primary" onClick={handleLikeBtnClick}>
+              <FavoriteIcon
+                className="fav"
+                sx={favState ? { color: "red" } : { color: "primary" }}
+              />
+            </Button>
+          )}
+
+          <Button variant="text" color="success" onClick={handlephoneBtnopen}>
+            <PhoneIcon />
+            {showphone && phone}
           </Button>
-        )}
-
-        <Button variant="text" color="success" onClick={handlephoneBtnopen}>
-          <PhoneIcon />
-          {showphone && phone}
-        </Button>
-      </CardActions>
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogContent>
-          <Card square raised>
-            <DialogTitle>{title}</DialogTitle>
-            <CardMedia component="img" image={img} />
-            <Divider />
-            <DialogTitle>{subTitle}</DialogTitle>
-            <DialogContent>{description}</DialogContent>
-            <Divider />
-            <DialogContent>
-              <Typography variant="subtitle1" style={{ marginBottom: "8px" }}>
-                <b style={{ color: "#2196f3" }}>Address:</b> {address}
-              </Typography>
-              <Typography variant="subtitle1" style={{ marginBottom: "8px" }}>
-                <b style={{ color: "#2196f3" }}>Phone:</b> {phone}
-              </Typography>
-              <Typography variant="subtitle1" style={{ marginBottom: "8px" }}>
-                <b style={{ color: "#2196f3" }}>Email:</b> {email}
-              </Typography>
-              <Typography variant="subtitle1">
-                <b style={{ color: "#2196f3" }}>Created At:</b> {createdAt}
-              </Typography>
-              <Typography variant="subtitle1">
-                <b style={{ color: "#2196f3" }}>likes:</b> {likes.length}
-              </Typography>
-            </DialogContent>
-          </Card>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpen(false)}>Close</Button>
-        </DialogActions>
-      </Dialog>
-    </Card>
+        </CardActions>
+        <Dialog open={open} onClose={() => setOpen(false)}>
+          <DialogContent>
+            <Card square raised>
+              <DialogTitle>{title}</DialogTitle>
+              <CardMedia
+                component="img"
+                image={
+                  img ===
+                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                    ? CardComponent.defaultProps.img
+                    : img
+                }
+              />
+              <Divider />
+              <DialogTitle>{subTitle}</DialogTitle>
+              <DialogContent>{description}</DialogContent>
+              <Divider />
+              <DialogContent>
+                <Typography variant="subtitle1" style={{ marginBottom: "8px" }}>
+                  <b style={{ color: "#2196f3" }}>Address:</b> {address}
+                </Typography>
+                <Typography variant="subtitle1" style={{ marginBottom: "8px" }}>
+                  <b style={{ color: "#2196f3" }}>Phone:</b> {phone}
+                </Typography>
+                <Typography variant="subtitle1" style={{ marginBottom: "8px" }}>
+                  <b style={{ color: "#2196f3" }}>Email:</b> {email}
+                </Typography>
+                <Typography variant="subtitle1">
+                  <b style={{ color: "#2196f3" }}>Created At:</b> {createdAt}
+                </Typography>
+                <Typography variant="subtitle1">
+                  <b style={{ color: "#2196f3" }}>likes:</b> {like}
+                </Typography>
+              </DialogContent>
+            </Card>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpen(false)}>Close</Button>
+          </DialogActions>
+        </Dialog>
+      </Card>
+    </Box>
   );
 };
 
 CardComponent.propTypes = {
   id: PropTypes.string,
+  img: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   email: PropTypes.string,

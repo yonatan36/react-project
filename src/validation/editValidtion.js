@@ -4,7 +4,6 @@ import validation from "./validation";
 
 const editCardSchema = Joi.object({
   title: Joi.string().min(2).max(256).required(),
-  subTitle: Joi.string().min(2).max(256).required(),
   description: Joi.string().min(2).max(1024).required(),
   country: Joi.string().min(2).max(1024).required(),
   city: Joi.string().min(2).max(1024).required(),

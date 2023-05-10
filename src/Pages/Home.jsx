@@ -22,25 +22,27 @@ const Home = () => {
   const [originalCardsArr, setOriginalCardsArr] = useState(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [cardToDelete, setCardToDelete] = useState(null);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setlastName] = useState("");
+  const [email, setEmail] = useState("No user logged in");
+  const [firstName, setFirstName] = useState([]);
+  const [lastName, setLastName] = useState([]);
+  const [biz, setBiz] = useState([]);
+  const [isAdmin, setIsAdmin] = useState([]);
+  const [myCardIds, setMyCardIds] = useState([]);
   let qparams = useQueryParams();
   const navigate = useNavigate();
   const payload = useSelector((bigPie) => bigPie.authSlice.payload);
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/users/userInfo");
-        const { firstName } = response.data;
-        const { lastName } = response.data;
-        setFirstName(firstName);
-        setlastName(lastName);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
+    axios
+      .get("/users/userInfo")
+      .then(({ data }) => {
+        setFirstName(data.firstName);
+        setLastName(data.lastName);
+        setBiz(data.biz);
+        setIsAdmin(data.isAdmin);
+        setEmail(data.email);
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   useEffect(() => {
@@ -48,6 +50,15 @@ const Home = () => {
       .get("/cards/cards")
       .then(({ data }) => {
         setCardArr(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get("/cards/my-cards")
+      .then(({ data }) => {
+        setMyCardIds(data.map((item) => item._id));
       })
       .catch((err) => console.log(err));
   }, []);
@@ -94,7 +105,6 @@ const Home = () => {
     filterFunc();
   }, [qparams.filter]);
 
-
   //open the popup
   const handleDeleteFromInitialCardsArr = async (id) => {
     setCardToDelete(id);
@@ -117,7 +127,7 @@ const Home = () => {
   const delete1 = (id) => {
     setCardArr(cardsArr.filter((card) => card[1]._id !== id));
   };
-//edit function
+  //edit function
   const handleEditFromInitialCardsArr = (id) => {
     navigate(`edit/${id}`);
   };
@@ -132,28 +142,31 @@ const Home = () => {
         <Typography variant="h3" gutterBottom>
           Welcome to our Second-Hand Sales!
         </Typography>
-        <Box
-      
-        >
+        <Box>
           <Typography variant="h5" component="h2" sx={{ mb: 2 }}>
             User Information
           </Typography>
           <Typography variant="body1" sx={{ fontWeight: "bold", mb: 1 }}>
-            Name:
+            Email: {email}
           </Typography>
-          <Typography variant="h5" component="h2" sx={{ fontWeight: "bold", mb: 1 }}>
-            {firstName} {lastName}
+          <Typography variant="body1" sx={{ fontWeight: "bold", mb: 1 }}>
+            Name: {firstName} {lastName}
           </Typography>
-          <Button variant="contained" color="primary" size="small">
-            Edit Profile
-          </Button>
+          <Typography variant="body1" sx={{ fontWeight: "bold", mb: 1 }}>
+            Biz: {biz ? "true" : "false"}
+          </Typography>
+          <Typography variant="body1" sx={{ fontWeight: "bold", mb: 1 }}>
+            Admin: {isAdmin ? "true" : "false"}
+          </Typography>
+
         </Box>
-<br />
+        <br />
         <CardMedia
           component="img"
           image="https://source.unsplash.com/random/800x600?second-hand+sales"
           alt="Second-Hand Sales"
           height="330"
+  
         />
         <Typography variant="body1" gutterBottom sx={{ marginTop: "30px" }}>
           Discover amazing deals on high-quality second-hand items at our online
@@ -168,61 +181,70 @@ const Home = () => {
         </Typography>
       </Container>
       <br />
-      <Grid container spacing={2}>
-        {cardsArr.map((item) => (
-          <Grid item xs={12} sm={6} md={4} lg={4} key={item._id + Date.now()}>
-            <CardComponent
-              id={item._id}
-              title={item.title}
-              subTitle={item.subTitle}
-              phone={item.phone}
-              address={
-                item.country +
-                ", " +
-                item.city +
-                ", " +
-                item.street +
-                " " +
-                item.houseNumber
-              }
-              img={item.image ? item.image.url : ""}
-              description={item.description}
-              email={item.email}
-              createdAt={item.createdAt}
-              likes={item.likes}
-              bizNumber={item.bizNumber}
-              onDelete={handleDeleteFromInitialCardsArr}
-              onEdit={handleEditFromInitialCardsArr}
-              onDeletefav={delete1}
-              notConnected={!payload}
-              canDelete={
-                (payload && payload.isAdmin) ||
-                (payload && payload.biz && payload._id === item.user_id)
-              }
-              canEdit={payload && payload.biz && payload._id === item.user_id}
-              isFav={
-                localStorage.token &&
-                item.likes.includes(jwt_decode(localStorage.token)._id)
-              }
-            />
-          </Grid>
-        ))}
-        <Dialog
-          open={isDeleteDialogOpen}
-          onClose={() => setIsDeleteDialogOpen(false)}
+      <Container maxWidth="md" sx={{ my: 2, display: "flex" }}>
+        <Grid
+          container
+          spacing={2}
+          justifyContent={"flex-start"}
+          alignItems={"center"}
         >
-          <DialogTitle>Are you sure you want to delete this card?</DialogTitle>
-          <DialogContent>
-            Deleting a card is permanent and cannot be undone.
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setIsDeleteDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleDeleteCard} color="secondary">
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Grid>
+          {cardsArr.map((item) => (
+            <Grid item xs={12} sm={6} md={4} lg={4} key={item._id + Date.now()}>
+              <CardComponent
+                id={item._id}
+                title={item.title}
+                subTitle={item.subTitle}
+                phone={item.phone}
+                address={
+                  item.country +
+                  ", " +
+                  item.city +
+                  ", " +
+                  item.street +
+                  " " +
+                  item.houseNumber
+                }
+                img={item.image ? item.image.url : ""}
+                description={item.description}
+                email={item.email}
+                createdAt={item.createdAt}
+                likes={item.likes}
+                bizNumber={item.bizNumber}
+                onDelete={handleDeleteFromInitialCardsArr}
+                onEdit={handleEditFromInitialCardsArr}
+                onDeletefav={delete1}
+                notConnected={!payload}
+                isMyCard={myCardIds.includes(item._id)}
+                canDelete={
+                  (payload && payload.isAdmin) ||
+                  (payload && payload.biz && payload._id === item.user_id)
+                }
+                canEdit={payload && payload.biz && payload._id === item.user_id}
+                isFav={
+                  localStorage.token &&
+                  item.likes.includes(jwt_decode(localStorage.token)._id)
+                }
+              />
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
+
+      <Dialog
+        open={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+      >
+        <DialogTitle>Are you sure you want to delete this card?</DialogTitle>
+        <DialogContent>
+          Deleting a card is permanent and cannot be undone.
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsDeleteDialogOpen(false)}>Cancel</Button>
+          <Button onClick={handleDeleteCard} color="secondary">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

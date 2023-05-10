@@ -22,6 +22,7 @@ import NavLinkComponent from "./NavLinkComponent";
 import Avatar from "@mui/material/Avatar";
 import { useNavigate } from "react-router-dom";
 
+
 // access to all
 const pages = [
   {

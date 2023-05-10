@@ -11,6 +11,8 @@ import FavCards from "../Pages/FavCards";
 import MyCards from "../Pages/MyCards";
 import ProtectedRoute from "../components/ProtectedRoute";
 import SuperProtectedRoute from "../components/SuperProtectedRoute";
+import RP1 from "../Pages/RP1";
+import RP2 from "../Pages/RP2";
 import LogOut from "../components/NavBar/LogOut";
 
 const Router = () => {
@@ -39,11 +41,7 @@ const Router = () => {
           />
         }
       />
-      <Route
-        exact
-        path={ROUTES.PROFILE}
-    element={<Profile />} 
-      />
+      <Route exact path={ROUTES.PROFILE} element={<Profile />} />
 
       <Route
         exact
@@ -67,7 +65,8 @@ const Router = () => {
           />
         }
       />
-
+      <Route path="/rp1" element={<RP1 />} />
+      <Route path="/rp2" element={<RP2 />} />
       <Route
         path="*"
         element={

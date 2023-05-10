@@ -40,42 +40,6 @@ const EditCardPage = () => {
         let newInputState = {
           ...data,
         };
-
-        if (data.image && data.image.url) {
-          newInputState.url = data.image.url;
-        } else {
-          newInputState.url = "";
-        }
-        if (data.image && data.image.alt) {
-          newInputState.alt = data.image.alt;
-        } else {
-          newInputState.alt = "";
-        }
-        if (data.country && data.country) {
-          newInputState.country = data.country;
-        } else {
-          newInputState.country = "";
-        }
-        if (data.city && data.city) {
-          newInputState.city = data.city;
-        } else {
-          newInputState.city = "";
-        }
-        if (data.street && data.street) {
-          newInputState.street = data.street;
-        } else {
-          newInputState.street = "";
-        }
-        if (data.houseNumber && data.houseNumber) {
-          newInputState.houseNumber = data.houseNumber;
-        } else {
-          newInputState.houseNumber = "";
-        }
-        if (data.email && data.email) {
-          newInputState.email = data.email;
-        } else {
-          newInputState.email = "";
-        }
         delete newInputState.image;
         delete newInputState.likes;
         delete newInputState._id;
@@ -113,9 +77,18 @@ const EditCardPage = () => {
   };
 
   const handleInputChange = (event) => {
-    let newInputState = JSON.parse(JSON.stringify(inputState));
-    newInputState[event.target.id] = event.target.value;
+    const { id, value } = event.target;
+    const newInputState = { ...inputState, [id]: value };
     setInputState(newInputState);
+
+    const joiResponse = validateEditSchema(newInputState);
+
+    if (joiResponse && joiResponse[id]) {
+      setErrorFromJoi({ ...errorFroemJoi, [id]: joiResponse[id] });
+    } else {
+      setErrorFromJoi({ ...errorFroemJoi, [id]: "" });
+    }
+  
   };
 
   if (!inputState) {
@@ -197,7 +170,7 @@ const EditCardPage = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required
+             
                   fullWidth
                   name="subTitle"
                   label="subTitle"

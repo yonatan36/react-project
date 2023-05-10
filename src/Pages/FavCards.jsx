@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import CardComponent from "../components/cardcomponent";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Container } from "@mui/material";
 import { toast } from "react-toastify";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
@@ -20,10 +20,20 @@ const FAVCARDS = () => {
   const [likedCards, setLikedCards] = useState(null);
   const [cardToDelete, setCardToDelete] = useState(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [myCardIds, setMyCardIds] = useState([]);
   const payload = useSelector(
     (bigPieBigState) => bigPieBigState.authSlice.payload
   );
   const navigate = useNavigate();
+
+  useEffect(() => {
+    axios
+      .get("/cards/my-cards")
+      .then(({ data }) => {
+        setMyCardIds(data.map((item) => item._id));
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   useEffect(() => {
     const fetchLikedCards = async () => {
@@ -42,8 +52,6 @@ const FAVCARDS = () => {
 
     fetchLikedCards();
   }, []);
-
-
 
   const handleDeleteFromInitialCardsArr = async (id) => {
     setCardToDelete(id);
@@ -73,15 +81,20 @@ const FAVCARDS = () => {
   const handleEditFromInitialCardsArr = (id) => {
     navigate(`/edit/${id}`);
   };
-  
+
   if (!cardsArr) {
     return <CircularProgress />;
   }
   return (
     <Box>
-      <Grid container spacing={2}>
-        {cardsArr &&
-          cardsArr.map((item) => (
+        <Container maxWidth="md" sx={{ my: 2, display: "flex" }}>
+        <Grid
+          container
+          spacing={2}
+          justifyContent={"flex-start"}
+          alignItems={"center"}
+        >
+          {cardsArr.map((item) => (
             <Grid item xs={12} sm={6} md={4} lg={4} key={item._id + Date.now()}>
               <CardComponent
                 id={item._id}
@@ -107,6 +120,7 @@ const FAVCARDS = () => {
                 onEdit={handleEditFromInitialCardsArr}
                 onDeletefav={delete1}
                 notConnected={!payload}
+                isMyCard={myCardIds.includes(item._id)}
                 canDelete={
                   (payload && payload.isAdmin) ||
                   (payload && payload.biz && payload._id === item.user_id)
@@ -119,6 +133,8 @@ const FAVCARDS = () => {
               />
             </Grid>
           ))}
+        </Grid>
+      </Container>
         <Dialog
           open={isDeleteDialogOpen}
           onClose={() => setIsDeleteDialogOpen(false)}
@@ -134,7 +150,7 @@ const FAVCARDS = () => {
             </Button>
           </DialogActions>
         </Dialog>
-      </Grid>
+ 
     </Box>
   );
 };

@@ -107,7 +107,7 @@ const Profile = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   return (
-    <Container component="main" maxWidth="md">
+    <Container maxWidth="sm" sx={{ my: 2, display: "flex" }}>
       <Paper
         sx={{
           p: 4,
@@ -407,7 +407,7 @@ const Profile = () => {
               <Grid item>
                 <Link to={ROUTES.HOME}>
                   <Typography variant="body2" color="initial">
-                   back to home?
+                    back to home?
                   </Typography>
                 </Link>
               </Grid>

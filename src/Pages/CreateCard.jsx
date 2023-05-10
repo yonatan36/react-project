@@ -15,7 +15,6 @@ import axios from "axios";
 import atom from "../logo.svg";
 import { toast } from "react-toastify";
 import Avatar from "@mui/material/Avatar";
-import { Theme } from "@mui/material";
 import validateCreateSchema, {
   validateCreateCardParamsSchema,
 } from "../validation/createValidation";
@@ -63,9 +62,17 @@ const CardCreationForm = () => {
     navigate(ROUTES.HOME);
   };
   const handleInputChange = (event) => {
-    let newInputState = JSON.parse(JSON.stringify(inputState));
-    newInputState[event.target.id] = event.target.value;
+    const { id, value } = event.target;
+    const newInputState = { ...inputState, [id]: value };
     setInputState(newInputState);
+
+    const joiResponse = validateCreateSchema(newInputState);
+
+    if (joiResponse && joiResponse[id]) {
+      setErrorFromJoi({ ...errorFroemJoi, [id]: joiResponse[id] });
+    } else {
+      setErrorFromJoi({ ...errorFroemJoi, [id]: "" });
+    }
   };
   return (
     <Container component="main" maxWidth="xs">
