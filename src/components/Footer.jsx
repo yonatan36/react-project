@@ -30,7 +30,7 @@ const Footer = () => {
         <Typography variant="body2" align="center">
           <IconButton
             className={classes.iconButton}
-            href="https://www.linkedin.com/in/avraham-gol-5558b3246"
+            href="https://www.linkedin.com/"
           >
             <LinkedInIcon />
           </IconButton>
@@ -42,7 +42,7 @@ const Footer = () => {
           </IconButton>
           <IconButton
             className={classes.iconButton}
-            href="https://wa.me/972523244426"
+            href="https://wa.me/972585668625"
           >
             <WhatsAppIcon />
           </IconButton>
