@@ -38,39 +38,38 @@ const Login = () => {
   };
 
   const [isLoading, setIsLoading] = useState(false);
- const getUserInfo = async () => {
-   const { data } = await axios.get("/users/userInfo");
-   return data.firstName;
- };
+  const getUserInfo = async () => {
+    const { data } = await axios.get("/users/userInfo");
+    return data.firstName;
+  };
 
- const handleSubmit = async (event) => {
-   try {
-     const joiRespone = validetionLoginSchema(inputState);
-     setErrorFromJoi(joiRespone);
-     if (joiRespone) {
-       toast.error("try again");
-       return;
-     }
-     setIsLoading(true);
-     const { data } = await axios.post("/users/login", {
-       email: inputState.email,
-       password: inputState.password,
-     });
-     localStorage.setItem("token", data.token);
-     setTimeout(async () => {
-       setIsLoading(false);
-       loggedIn();
-       navigate(ROUTES.HOME);
-       const firstName = await getUserInfo();
-       toast.success(`Welcome ${firstName}! Good to see you`);
-     }, 2000);
-   } catch (err) {
-     setIsLoading(false);
-     toast.error(err.response.data);
-     console.log("error from axios", err.response.data);
-   }
- };
-
+  const handleSubmit = async (event) => {
+    try {
+      const joiRespone = validetionLoginSchema(inputState);
+      setErrorFromJoi(joiRespone);
+      if (joiRespone) {
+        toast.error("try again");
+        return;
+      }
+      setIsLoading(true);
+      const { data } = await axios.post("/users/login", {
+        email: inputState.email,
+        password: inputState.password,
+      });
+      localStorage.setItem("token", data.token);
+      setTimeout(async () => {
+        setIsLoading(false);
+        loggedIn();
+        navigate(ROUTES.HOME);
+        const firstName = await getUserInfo();
+        toast.success(`Welcome ${firstName}! Good to see you`);
+      }, 2000);
+    } catch (err) {
+      setIsLoading(false);
+      toast.error(err.response.data);
+      console.log("error from axios", err.response.data);
+    }
+  };
 
   const handleInputChange = (event) => {
     const { id, value } = event.target;
@@ -124,7 +123,6 @@ const Login = () => {
                       theme.palette.mode === "dark" ? "#424242" : "white",
                   }}
                   fullWidth
-                  required
                   label="email"
                   name="email"
                   id="email"
@@ -142,10 +140,10 @@ const Login = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
                   label="password"
                   name="password"
                   id="password"
+                  type="password"
                   value={inputState.password}
                   onChange={handleInputChange}
                 />
@@ -180,7 +178,7 @@ const Login = () => {
                     variant="contained"
                     color="primary"
                     onClick={handleSubmit}
-                    disabled={ disabled ||isLoading}
+                    disabled={disabled || isLoading}
                   >
                     {isLoading ? <CircularProgress size={24} /> : "Login"}
                   </Button>

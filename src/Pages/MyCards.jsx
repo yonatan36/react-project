@@ -54,6 +54,7 @@ const MyCards = () => {
 
   const delete1 = (id) => {
     setCardArr(cardsArr.filter((card) => card[1]._id !== id));
+    toast.success("removed!");
   };
 
   const handleEditFromInitialCardsArr = (id) => {
@@ -70,10 +71,7 @@ const MyCards = () => {
     <Box>
       <Box textAlign="center" mt={4}>
         <Typography variant="h3" gutterBottom>
-          my cards
-        </Typography>
-        <Typography variant="h6" color="textSecondary">
-          Find Your Perfect Nest on Our Home Page
+          your cards!
         </Typography>
       </Box>
       <IconButton
@@ -81,6 +79,7 @@ const MyCards = () => {
         size="large"
         color="secondary"
       >
+        create new card
         <AddCircleIcon fontSize="inherit" />
       </IconButton>
 

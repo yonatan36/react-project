@@ -7,6 +7,7 @@ const ROUTES ={
     FAV:"/favorit",
     MYCARDS:"/mycards",
     LOGOUT:"/logout",
+    SANDBOX:"/sandbox",
 
 
 }

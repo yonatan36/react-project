@@ -22,7 +22,6 @@ import NavLinkComponent from "./NavLinkComponent";
 import Avatar from "@mui/material/Avatar";
 import { useNavigate } from "react-router-dom";
 
-
 // access to all
 const pages = [
   {
@@ -64,6 +63,14 @@ const BizPages = [
     url: ROUTES.MYCARDS,
   },
 ];
+
+const AdminPage = [
+  {
+    label: "sand-box",
+    url: ROUTES.SANDBOX,
+  },
+  
+]
 
 const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
   const { isLoggedIn } = useSelector(
@@ -120,6 +127,11 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
             ))}
             {isLoggedIn && payload.biz // Add an if statement to conditionally render BizPages
               ? BizPages.map((page) => (
+                  <NavLinkComponent key={page.url} {...page} />
+                ))
+              : ""}
+            {isLoggedIn && payload.isAdmin // Add an if statement to conditionally render BizPages
+              ? AdminPage.map((page) => (
                   <NavLinkComponent key={page.url} {...page} />
                 ))
               : ""}
@@ -212,6 +224,11 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
               ))}
               {isLoggedIn && payload.biz // Add an if statement to conditionally render BizPages
                 ? BizPages.map((page) => (
+                    <NavLinkComponent key={page.url} {...page} />
+                  ))
+                : ""}
+              {isLoggedIn && payload.isAdmin 
+                ? AdminPage.map((page) => (
                     <NavLinkComponent key={page.url} {...page} />
                   ))
                 : ""}

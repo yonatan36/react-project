@@ -1,11 +1,10 @@
-import { Fragment, useState } from "react";
+import {  useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { Button } from "@material-ui/core";
-import { counterActions } from "../store/counter";
-import Container from "@mui/material/Container";
+
+import { counterActions } from "../../store/counter";
 import TextField from "@mui/material/TextField";
-import Grid from "@material-ui/core/Grid";
+import { Typography, Box, Button } from "@mui/material";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import RemoveCircleIcon from "@mui/icons-material/RemoveCircle";
 const RP1 = () => {
@@ -28,44 +27,52 @@ const RP1 = () => {
   };
 
   return (
-    <Container
-      maxWidth="md"
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        textAlign: "center",
-      }}
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      justifyContent="start"
+      gap={5}
+      marginTop={2}
     >
-      <h1 sx={{ fontSize: "3rem", fontWeight: "bold", mb: 4 }}>Welcome!</h1>
-      <Fragment
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-        }}
-      >
-        <Button variant="contained" color="secondary" onClick={handleAdd1}>
+      <Box display="flex" justifyContent="center" gap={2}>
+        <Button
+          onClick={handleAdd1}
+          variant="contained"
+          size="large"
+          color="secondary"
+        >
           <AddCircleIcon />
         </Button>
-        <Button variant="contained" color="secondary" onClick={handleSub1}>
+
+        <Button
+          onClick={handleSub1}
+          variant="contained"
+          size="large"
+          color="secondary"
+        >
           <RemoveCircleIcon />
         </Button>
-      </Fragment>
 
-      <Fragment>
         <TextField type="text" value={txt} onChange={handleInputChange} />
-        <Button color="primary" variant="contained" onClick={handleAddClick}>
+
+        <Button
+          onClick={handleAddClick}
+          variant="contained"
+          size="large"
+          color="secondary"
+        >
           Add
         </Button>
+      
         <Link
           to="/rp2"
           sx={{ textDecoration: "none", color: "#FFF", fontWeight: "bold" }}
         >
           Click here to go to RP2
         </Link>
-      </Fragment>
-    </Container>
+      </Box>
+    </Box>
   );
 };
 

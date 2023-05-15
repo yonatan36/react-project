@@ -6,24 +6,18 @@ import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Alert from "@mui/material/Alert";
 import EditIcon from "@mui/icons-material/Edit";
-import { useTheme } from "@mui/material/styles";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ROUTES from "../routes/ROUTES";
 import { Button } from "@mui/material";
 import axios from "axios";
 import atom from "../logo.svg";
 import { toast } from "react-toastify";
 import Avatar from "@mui/material/Avatar";
-import validateCreateSchema, {
-  validateCreateCardParamsSchema,
-} from "../validation/createValidation";
+import validateCreateSchema from "../validation/createValidation";
 
 const CardCreationForm = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
-  const theme = useTheme();
-  // State variables to capture form data
   const [errorFroemJoi, setErrorFromJoi] = useState();
   const [inputState, setInputState] = useState({
     url: "",

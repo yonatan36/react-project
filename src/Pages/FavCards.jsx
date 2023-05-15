@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import CardComponent from "../components/cardcomponent";
-import { Box, Grid, Container } from "@mui/material";
+import { Box, Grid, Container,Typography } from "@mui/material";
 import { toast } from "react-toastify";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
@@ -75,7 +75,8 @@ const FAVCARDS = () => {
   const delete1 = (id) => {
     setCardArr((prevCardsArr) =>
       prevCardsArr.filter((card) => card._id !== id)
-    );
+      );
+      toast.success("removed!")
   };
 
   const handleEditFromInitialCardsArr = (id) => {
@@ -87,7 +88,12 @@ const FAVCARDS = () => {
   }
   return (
     <Box>
-        <Container maxWidth="md" sx={{ my: 2, display: "flex" }}>
+        <Box textAlign="center" mt={4}>
+          <Typography variant="h3" gutterBottom>
+            your favorites cards!❤️
+          </Typography>
+        </Box>
+      <Container maxWidth="md" sx={{ my: 2, display: "flex" }}>
         <Grid
           container
           spacing={2}
@@ -135,22 +141,21 @@ const FAVCARDS = () => {
           ))}
         </Grid>
       </Container>
-        <Dialog
-          open={isDeleteDialogOpen}
-          onClose={() => setIsDeleteDialogOpen(false)}
-        >
-          <DialogTitle>Are you sure you want to delete this card?</DialogTitle>
-          <DialogContent>
-            Deleting a card is permanent and cannot be undone.
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setIsDeleteDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleDeleteCard} color="secondary">
-              Delete
-            </Button>
-          </DialogActions>
-        </Dialog>
- 
+      <Dialog
+        open={isDeleteDialogOpen}
+        onClose={() => setIsDeleteDialogOpen(false)}
+      >
+        <DialogTitle>Are you sure you want to delete this card?</DialogTitle>
+        <DialogContent>
+          Deleting a card is permanent and cannot be undone.
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setIsDeleteDialogOpen(false)}>Cancel</Button>
+          <Button onClick={handleDeleteCard} color="secondary">
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

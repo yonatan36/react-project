@@ -140,7 +140,7 @@ const RegistrationForm = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
+               
                   label="First Name"
                   name="firstName"
                   id="firstName"
@@ -175,7 +175,7 @@ const RegistrationForm = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
+           
                   label="Last Name"
                   name="lastName"
                   id="lastName"
@@ -193,7 +193,7 @@ const RegistrationForm = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
+                  
                   label="Phone"
                   name="phone"
                   id="phone"
@@ -211,7 +211,7 @@ const RegistrationForm = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
+            
                   label="email"
                   name="email"
                   id="email"
@@ -229,7 +229,7 @@ const RegistrationForm = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
+            
                   label="password"
                   name="password"
                   id="password"
@@ -247,7 +247,7 @@ const RegistrationForm = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
+               
                   label="Image URL"
                   name="imgUrl"
                   id="imgUrl"
@@ -265,7 +265,7 @@ const RegistrationForm = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
+            
                   label="Image Alt"
                   name="imgAlt"
                   id="imgAlt"
@@ -283,7 +283,7 @@ const RegistrationForm = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
+               
                   label="State"
                   name="state"
                   id="state"
@@ -301,7 +301,7 @@ const RegistrationForm = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
+           
                   label="Country"
                   name="country"
                   id="country"
@@ -319,7 +319,7 @@ const RegistrationForm = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
+            
                   label="City"
                   name="city"
                   id="city"
@@ -337,7 +337,7 @@ const RegistrationForm = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
+       
                   label="Street"
                   name="street"
                   id="street"
@@ -355,7 +355,7 @@ const RegistrationForm = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
+       
                   label="House Number"
                   name="houseNumber"
                   id="houseNumber"
@@ -373,7 +373,7 @@ const RegistrationForm = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  required
+            
                   label="zipCode"
                   name="zipCode"
                   id="zipCode"

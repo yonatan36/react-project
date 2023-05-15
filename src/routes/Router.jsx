@@ -9,11 +9,16 @@ import CreateCard from "../Pages/CreateCard";
 import Profile from "../Pages/profile";
 import FavCards from "../Pages/FavCards";
 import MyCards from "../Pages/MyCards";
+import SandBox from "../Pages/sandbox/SandBox";
 import ProtectedRoute from "../components/ProtectedRoute";
 import SuperProtectedRoute from "../components/SuperProtectedRoute";
-import RP1 from "../Pages/RP1";
-import RP2 from "../Pages/RP2";
 import LogOut from "../components/NavBar/LogOut";
+import NestedRoutePage from "../Pages/sandbox/NestedRoutePage/NestedRoutePage";
+import NestedPage1 from "../Pages/sandbox/NestedRoutePage/NestedPage1";
+import NestedPage2 from "../Pages/sandbox/NestedRoutePage/NestedPage2";
+import RP1 from "../Pages/sandbox/RP1";
+import RP2 from "../Pages/sandbox/RP2";
+import ReRenderPage from "../Pages/sandbox/ReRenderPage/ReRenderPage";
 
 const Router = () => {
   return (
@@ -41,6 +46,17 @@ const Router = () => {
           />
         }
       />
+      <Route
+        exact
+        path={ROUTES.SANDBOX}
+        element={
+          <SuperProtectedRoute
+            isAdmin={true}
+            isBiz={false}
+            element={<SandBox />}
+          />
+        }
+      />
       <Route exact path={ROUTES.PROFILE} element={<Profile />} />
 
       <Route
@@ -65,8 +81,15 @@ const Router = () => {
           />
         }
       />
+
       <Route path="/rp1" element={<RP1 />} />
       <Route path="/rp2" element={<RP2 />} />
+      <Route path="/nr" element={<NestedRoutePage />}>
+        <Route path="nestedpage1" element={<NestedPage1 />} />
+        <Route path="nestedpage2" element={<NestedPage2 />} />
+      </Route>
+
+      <Route path="/ReRenderPage" element={<ReRenderPage />} />
       <Route
         path="*"
         element={
