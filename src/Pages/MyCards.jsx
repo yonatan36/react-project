@@ -74,15 +74,19 @@ const MyCards = () => {
           your cards!
         </Typography>
       </Box>
-      <IconButton
-        onClick={handleBtnCliclToCreate}
-        size="large"
-        color="secondary"
+      <Container
+        maxWidth="md"
+        sx={{ my: 2, display: "flex", justifyContent: "flex-end" }}
       >
-        create new card
-        <AddCircleIcon fontSize="inherit" />
-      </IconButton>
-
+        <IconButton
+          onClick={handleBtnCliclToCreate}
+          size="large"
+          color="success"
+        >
+          create new card
+          <AddCircleIcon fontSize="inherit" />
+        </IconButton>
+      </Container>
       <Container maxWidth="md" sx={{ my: 2, display: "flex" }}>
         <Grid
           container

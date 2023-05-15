@@ -22,7 +22,7 @@ const Home = () => {
   const [originalCardsArr, setOriginalCardsArr] = useState(null);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [cardToDelete, setCardToDelete] = useState(null);
-  const [email, setEmail] = useState("No user logged in");
+  const [email, setEmail] = useState([]);
   const [firstName, setFirstName] = useState([]);
   const [lastName, setLastName] = useState([]);
   const [biz, setBiz] = useState([]);
@@ -31,6 +31,9 @@ const Home = () => {
   let qparams = useQueryParams();
   const navigate = useNavigate();
   const payload = useSelector((bigPie) => bigPie.authSlice.payload);
+    const { isLoggedIn } = useSelector(
+      (bigPieBigState) => bigPieBigState.authSlice
+    );
 
   useEffect(() => {
     axios
@@ -126,6 +129,7 @@ const Home = () => {
   //likes function
   const delete1 = (id) => {
     setCardArr(cardsArr.filter((card) => card[1]._id !== id));
+
   };
   //edit function
   const handleEditFromInitialCardsArr = (id) => {
@@ -142,31 +146,31 @@ const Home = () => {
         <Typography variant="h3" gutterBottom>
           Welcome to our Second-Hand Sales!
         </Typography>
-        <Box>
-          <Typography variant="h5" component="h2" sx={{ mb: 2 }}>
-            User Information
-          </Typography>
-          <Typography variant="body1" sx={{ fontWeight: "bold", mb: 1 }}>
-            Email: {email}
-          </Typography>
-          <Typography variant="body1" sx={{ fontWeight: "bold", mb: 1 }}>
-            Name: {firstName} {lastName}
-          </Typography>
-          <Typography variant="body1" sx={{ fontWeight: "bold", mb: 1 }}>
-            Biz: {biz ? "true" : "false"}
-          </Typography>
-          <Typography variant="body1" sx={{ fontWeight: "bold", mb: 1 }}>
-            Admin: {isAdmin ? "true" : "false"}
-          </Typography>
-
-        </Box>
+        {isLoggedIn && (
+          <>
+            <Typography variant="h5" component="h2" sx={{ mb: 2 }}>
+              User Information
+            </Typography>
+            <Typography variant="body1" sx={{ fontWeight: "bold", mb: 1 }}>
+              Email: {email}
+            </Typography>
+            <Typography variant="body1" sx={{ fontWeight: "bold", mb: 1 }}>
+              Name: {firstName} {lastName}
+            </Typography>
+            <Typography variant="body1" sx={{ fontWeight: "bold", mb: 1 }}>
+              Biz: {biz ? "true" : "false"}
+            </Typography>
+            <Typography variant="body1" sx={{ fontWeight: "bold", mb: 1 }}>
+              Admin: {isAdmin ? "true" : "false"}
+            </Typography>
+          </>
+        )}
         <br />
         <CardMedia
           component="img"
           image="https://source.unsplash.com/random/800x600?second-hand+sales"
           alt="Second-Hand Sales"
           height="330"
-  
         />
         <Typography variant="body1" gutterBottom sx={{ marginTop: "30px" }}>
           Discover amazing deals on high-quality second-hand items at our online

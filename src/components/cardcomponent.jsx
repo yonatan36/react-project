@@ -1,4 +1,4 @@
-import React, { useState, Fragment, useRef } from "react";
+import React, { useState } from "react";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -46,7 +46,7 @@ const CardComponent = ({
   isFav,
   isMyCard,
 }) => {
-  const [showphone, setShowPhone] = useState(false);
+  const [showDialog, setShowDialog] = useState(false);
   const [open, setOpen] = useState(false);
   const [favState, setfavState] = useState(isFav);
   const [like, setLikes] = useState(likes.length);
@@ -74,19 +74,20 @@ const CardComponent = ({
   const handleOpen = () => {
     setOpen(true);
   };
+
   const handlephoneBtnopen = () => {
-    const newPhone = !showphone;
-    setShowPhone(newPhone);
+    setShowDialog(true);
   };
 
-
+  const handleCloseDialog = () => {
+    setShowDialog(false);
+  };
 
   return (
     <Box>
-      <Card square raised >
+      <Card square raised>
         <CardActionArea onClick={handleOpen}>
           <CardMedia
-       
             component="img"
             image={
               img ===
@@ -94,7 +95,6 @@ const CardComponent = ({
                 ? CardComponent.defaultProps.img
                 : img
             }
-          
           />
           {isMyCard ? (
             <Typography
@@ -122,7 +122,6 @@ const CardComponent = ({
           <CardHeader title={title} subheader={subTitle}></CardHeader>
           <Divider />
           <CardContent>
-            <Typography>{`phone: ${phone}`}</Typography>
             <Typography>{`Address: ${address}`}</Typography>
             <Typography>{`Card Number: ${bizNumber}`}</Typography>
             <Typography>{`Likes: ${like}`}</Typography>
@@ -167,8 +166,14 @@ const CardComponent = ({
 
           <Button variant="text" color="success" onClick={handlephoneBtnopen}>
             <PhoneIcon />
-            {showphone && phone}
           </Button>
+
+          <Dialog open={showDialog} onClose={handleCloseDialog}>
+            <DialogTitle>
+              <PhoneIcon /> Call me
+            </DialogTitle>
+            <DialogContent>{phone}</DialogContent>
+          </Dialog>
         </CardActions>
         <Dialog open={open} onClose={() => setOpen(false)}>
           <DialogContent>
@@ -210,6 +215,7 @@ const CardComponent = ({
             <Button onClick={() => setOpen(false)}>Close</Button>
           </DialogActions>
         </Dialog>
+        
       </Card>
     </Box>
   );

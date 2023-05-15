@@ -76,7 +76,7 @@ const FAVCARDS = () => {
     setCardArr((prevCardsArr) =>
       prevCardsArr.filter((card) => card._id !== id)
       );
-      toast.success("removed!")
+      toast.info("removed!")
   };
 
   const handleEditFromInitialCardsArr = (id) => {

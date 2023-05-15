@@ -125,13 +125,14 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
             {pages.map((page) => (
               <NavLinkComponent key={page.url} {...page} />
             ))}
-            {isLoggedIn && payload.biz // Add an if statement to conditionally render BizPages
-              ? BizPages.map((page) => (
+
+            {isLoggedIn && payload.isAdmin
+              ? AdminPage.map((page) => (
                   <NavLinkComponent key={page.url} {...page} />
                 ))
               : ""}
-            {isLoggedIn && payload.isAdmin // Add an if statement to conditionally render BizPages
-              ? AdminPage.map((page) => (
+            {isLoggedIn && payload.biz
+              ? BizPages.map((page) => (
                   <NavLinkComponent key={page.url} {...page} />
                 ))
               : ""}
@@ -227,7 +228,7 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
                     <NavLinkComponent key={page.url} {...page} />
                   ))
                 : ""}
-              {isLoggedIn && payload.isAdmin 
+              {isLoggedIn && payload.isAdmin
                 ? AdminPage.map((page) => (
                     <NavLinkComponent key={page.url} {...page} />
                   ))

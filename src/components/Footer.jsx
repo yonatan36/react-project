@@ -7,10 +7,10 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 
 const useStyles = makeStyles((theme) => ({
   footer: {
-    
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.secondary.contrastText,
     padding: theme.spacing(1),
+    marginTop: "auto",
   },
   iconButton: {
     color: theme.palette.secondary.contrastText,
@@ -36,7 +36,7 @@ const Footer = () => {
           </IconButton>
           <IconButton
             className={classes.iconButton}
-            href="https://github.com/https://github.com/avragol"
+            href="https://github.com/yonatan36"
           >
             <GitHubIcon />
           </IconButton>

@@ -1,5 +1,6 @@
+import React from "react";
 import { useEffect } from "react";
-
+import { Typography } from "@material-ui/core";
 let intervalId;
 
 const NestedPage1 = () => {
@@ -13,6 +14,6 @@ const NestedPage1 = () => {
       console.log("component terminated");
     };
   }, []);
-  return <h2>Nested page 1</h2>;
+  return <Typography variant="h6">Nested page 1</Typography>;
 };
 export default NestedPage1;

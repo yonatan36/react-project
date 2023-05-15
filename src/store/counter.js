@@ -21,6 +21,9 @@ const counterSlice = createSlice({
     sub1(state) {
       state.counter = state.counter - 1;
     },
+    clear(state) {
+      state.counter = state.counter = 0;
+    },
     addNumber(state, action) {
       /*
        * action.payload = txt

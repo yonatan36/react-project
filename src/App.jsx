@@ -48,13 +48,15 @@ function App() {
         pauseOnHover
         theme="colored"
       />
-      <Container>
+      <Container
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+        }}
+      >
         <header>
-          <ResponsiveAppBar
-            onThemeChange={changeTheme}
-            darkMode={darkMode}
-        
-          />
+          <ResponsiveAppBar onThemeChange={changeTheme} darkMode={darkMode} />
         </header>
         <main>
           <Router />

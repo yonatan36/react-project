@@ -15,6 +15,8 @@ function SandBox() {
   const ReRenderPage = () => {
     navigate("/ReRenderPage");
   };
+
+
   return (
     <Box
       display="flex"
@@ -24,6 +26,9 @@ function SandBox() {
       gap={5}
       marginTop={2}
     >
+      <Typography variant="h4" component="h1" gutterBottom>
+        Welcome to the Sandbox Page!
+      </Typography>
       <Box display="flex" justifyContent="center" gap={2}>
         <Button
           onClick={NestedRoutePage}
@@ -50,11 +55,7 @@ function SandBox() {
           Re Render Page
         </Button>
       </Box>
-      {
-        <Typography variant="h4" component="h1" gutterBottom>
-          Welcome to the Sandbox Page!
-        </Typography>
-      }
+      
       <Outlet />
     </Box>
   );

@@ -101,7 +101,7 @@ const Profile = () => {
         setIsLoading(false);
         navigate(ROUTES.HOME);
         toast.success("The changes were successful");
-      }, 3000);
+      }, 1400);
     } catch (error) {}
   };
 
@@ -397,7 +397,7 @@ const Profile = () => {
                   onClick={handleSubmit}
                   disabled={isLoading}
                 >
-                  {isLoading ? <CircularProgress size={24} /> : "Submit"}
+                  {isLoading ? <CircularProgress size={24} /> : "Save changes"}
                 </Button>
               </Grid>
             </Grid>

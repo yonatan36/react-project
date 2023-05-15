@@ -88,7 +88,6 @@ const Router = () => {
         <Route path="nestedpage1" element={<NestedPage1 />} />
         <Route path="nestedpage2" element={<NestedPage2 />} />
       </Route>
-
       <Route path="/ReRenderPage" element={<ReRenderPage />} />
       <Route
         path="*"
