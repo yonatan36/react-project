@@ -12,6 +12,8 @@ This project is a sales site that displays business cards of users for purchase.
 - MongoDB
 - joi
 - axios
+- jwt-decode
+- react-router-dom
 - Express Server
 
 
