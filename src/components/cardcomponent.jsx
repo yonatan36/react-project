@@ -59,7 +59,7 @@ const CardComponent = ({
       setfavState((prevState) => !prevState);
       onDeletefav(id);
     } catch (err) {
-      console.log(err);
+
     }
   };
 

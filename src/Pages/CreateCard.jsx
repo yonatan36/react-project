@@ -19,6 +19,7 @@ import validateCreateSchema from "../validation/createValidation";
 const CardCreationForm = () => {
   const navigate = useNavigate();
   const [errorFroemJoi, setErrorFromJoi] = useState();
+  const [disabled, setDisabled] = useState(true);
   const [inputState, setInputState] = useState({
     url: "",
     title: "",
@@ -66,6 +67,11 @@ const CardCreationForm = () => {
       setErrorFromJoi({ ...errorFroemJoi, [id]: joiResponse[id] });
     } else {
       setErrorFromJoi({ ...errorFroemJoi, [id]: "" });
+    }
+    if (!joiResponse) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
     }
   };
   return (
@@ -124,7 +130,6 @@ const CardCreationForm = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required
                   fullWidth
                   id="title"
                   label="Title"
@@ -143,7 +148,6 @@ const CardCreationForm = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required
                   fullWidth
                   name="subTitle"
                   label="subTitle"
@@ -153,9 +157,9 @@ const CardCreationForm = () => {
                   onChange={handleInputChange}
                   value={inputState.subTitle}
                 />
-                {errorFroemJoi && errorFroemJoi.price && (
+                {errorFroemJoi && errorFroemJoi.subTitle && (
                   <Alert severity="warning">
-                    {errorFroemJoi.price.map((item) => (
+                    {errorFroemJoi.subTitle.map((item) => (
                       <div key={"price-errors" + item}>{item}</div>
                     ))}
                   </Alert>
@@ -164,7 +168,6 @@ const CardCreationForm = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   required
-                  fullWidth
                   name="description"
                   label="Description"
                   id="description"
@@ -182,7 +185,6 @@ const CardCreationForm = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required
                   fullWidth
                   name="country"
                   label="country"
@@ -201,7 +203,6 @@ const CardCreationForm = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required
                   fullWidth
                   name="city"
                   label="city"
@@ -220,7 +221,6 @@ const CardCreationForm = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required
                   fullWidth
                   name="street"
                   label="street"
@@ -240,7 +240,6 @@ const CardCreationForm = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required
                   fullWidth
                   name="houseNumber"
                   label="houseNumber"
@@ -259,7 +258,6 @@ const CardCreationForm = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required
                   fullWidth
                   name="email"
                   label="email"
@@ -279,7 +277,6 @@ const CardCreationForm = () => {
 
               <Grid item xs={12} sm={6}>
                 <TextField
-                  required
                   fullWidth
                   name="phone"
                   label="Phone"
@@ -301,6 +298,7 @@ const CardCreationForm = () => {
                   fullWidth
                   variant="contained"
                   onClick={handleSaveBtnClick}
+                  disabled={disabled}
                   sx={{ mt: 3, mb: 2 }}
                 >
                   Save

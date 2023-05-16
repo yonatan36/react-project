@@ -15,15 +15,15 @@ import SyncIcon from "@mui/icons-material/Sync";
 import { toast } from "react-toastify";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
-import useLoggedIn from "../hooks/useLoggedIn";
+
 
 const Profile = () => {
   const theme = useTheme();
   const { id } = useParams();
-  const loggedIn = useLoggedIn();
   const navigate = useNavigate();
-  const [disabled, setDisabled] = useState(true);
-  const [errorFroemJoi, setErrorFromJoi] = useState();
+  const [disabled, setDisabled] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorFroemJoi, setErrorFromJoi] = useState([]);
   const [inputState, SetInputState] = useState({});
 
   useEffect(() => {
@@ -91,12 +91,9 @@ const Profile = () => {
         console.log("prifile", joiRespone);
         return;
       }
-
       // Set loading state to true
       setIsLoading(true);
-
       await axios.put("/users/userInfo/", inputState);
-
       setTimeout(() => {
         setIsLoading(false);
         navigate(ROUTES.HOME);
@@ -105,7 +102,7 @@ const Profile = () => {
     } catch (error) {}
   };
 
-  const [isLoading, setIsLoading] = useState(false);
+
   return (
     <Container maxWidth="sm" sx={{ my: 2, display: "flex" }}>
       <Paper
@@ -395,7 +392,7 @@ const Profile = () => {
                   variant="contained"
                   color="primary"
                   onClick={handleSubmit}
-                  disabled={isLoading}
+                  disabled={isLoading||disabled}
                 >
                   {isLoading ? <CircularProgress size={24} /> : "Save changes"}
                 </Button>

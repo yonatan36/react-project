@@ -36,6 +36,10 @@ const Login = () => {
     });
     setErrorFromJoi();
   };
+  
+const handleReturn = () =>{
+navigate("/")
+}
 
   const [isLoading, setIsLoading] = useState(false);
   const getUserInfo = async () => {
@@ -168,7 +172,7 @@ const Login = () => {
                   </Button>
                 </Grid>
                 <Grid item xs={6}>
-                  <Button fullWidth color="primary" variant="outlined">
+                  <Button fullWidth color="primary" variant="outlined" onClick={handleReturn}>
                     <SyncIcon />
                   </Button>
                 </Grid>

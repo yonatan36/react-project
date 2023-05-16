@@ -56,7 +56,10 @@ const RegistrationForm = () => {
     });
     setErrorFromJoi({});
   };
-
+  
+const handleReturn = () => {
+  navigate("/");
+};
   const handleSubmit = async (event) => {
     try {
       const joiRespone = validetionRegisterSchema(inputState);
@@ -402,7 +405,7 @@ const RegistrationForm = () => {
                 </Button>
               </Grid>
               <Grid item xs={6}>
-                <Button fullWidth color="primary" variant="outlined">
+                <Button fullWidth color="primary" variant="outlined" onClick={handleReturn}>
                   <SyncIcon />
                 </Button>
               </Grid>

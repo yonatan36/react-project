@@ -95,7 +95,7 @@ const ResponsiveAppBar = ({ darkMode, onThemeChange }) => {
 
   const navigate = useNavigate();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [avatar, setAvatar] = useState({});
+  const [avatar, setAvatar] = useState([]);
 
   useEffect(() => {
     axios

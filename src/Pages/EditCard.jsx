@@ -25,6 +25,7 @@ const EditCardPage = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [inputState, setInputState] = useState();
+  const [disabled, setDisabled] = useState(false);
   const [errorFroemJoi, setErrorFromJoi] = useState({});
 
   useEffect(() => {
@@ -88,7 +89,11 @@ const EditCardPage = () => {
     } else {
       setErrorFromJoi({ ...errorFroemJoi, [id]: "" });
     }
-  
+    if (!joiResponse) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
   };
 
   if (!inputState) {
@@ -170,7 +175,6 @@ const EditCardPage = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-             
                   fullWidth
                   name="subTitle"
                   label="subTitle"
@@ -180,10 +184,10 @@ const EditCardPage = () => {
                   onChange={handleInputChange}
                   value={inputState.subTitle}
                 />
-                {errorFroemJoi && errorFroemJoi.price && (
+                {errorFroemJoi && errorFroemJoi.subTitle && (
                   <Alert severity="warning">
-                    {errorFroemJoi.price.map((item) => (
-                      <div key={"price-errors" + item}>{item}</div>
+                    {errorFroemJoi.subTitle.map((item) => (
+                      <div key={"subTitle-errors" + item}>{item}</div>
                     ))}
                   </Alert>
                 )}
@@ -328,6 +332,7 @@ const EditCardPage = () => {
                   fullWidth
                   variant="contained"
                   onClick={handleSaveBtnClick}
+                  disabled={disabled}
                   sx={{ mt: 3, mb: 2 }}
                 >
                   Save

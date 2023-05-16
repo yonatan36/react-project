@@ -16,11 +16,11 @@ import {
 } from "@material-ui/core";
 
 const FAVCARDS = () => {
-  const [cardsArr, setCardArr] = useState(null);
-  const [likedCards, setLikedCards] = useState(null);
-  const [cardToDelete, setCardToDelete] = useState(null);
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [cardsArr, setCardArr] = useState([]);
+  const [likedCards, setLikedCards] = useState([]);
+  const [cardToDelete, setCardToDelete] = useState([]);
   const [myCardIds, setMyCardIds] = useState([]);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const payload = useSelector(
     (bigPieBigState) => bigPieBigState.authSlice.payload
   );

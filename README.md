@@ -10,6 +10,8 @@ This project is a sales site that displays business cards of users for purchase.
 - React
 - Material UI
 - MongoDB
+- joi
+- axios
 - Express Server
 
 
@@ -45,4 +47,4 @@ The permissions for different user types are as follows:
 1. A user who is not logged in can only click on the phone icon.
 2. A logged-in user who is not a business or admin can see and mark a card as preferred for business visits.
 3. A logged-in business type user can see the "Edit" and "Delete" icons only for the cards they have created. They can edit and delete their own cards.
-4. An admin type user can delete any business card but can only edit the cards they created in the sandbox.
+4. An admin type user can delete any business card but can only edit the cards they created.

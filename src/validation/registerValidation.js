@@ -3,7 +3,7 @@ import validation from "./validation";
 
 const rgisterSchema = Joi.object({
   firstName: Joi.string().min(2).max(100).required(),
-  middleName: Joi.string().min(2).max(100),
+  middleName: Joi.string().min(0).max(100),
   lastName: Joi.string().min(2).max(100).required(),
   phone: Joi.string().pattern(new RegExp("^[0-9]{8,20}$")).required(),
   email: Joi.string()
@@ -14,16 +14,14 @@ const rgisterSchema = Joi.object({
     .min(2)
     .max(10)
     .required(),
-  imgUrl: Joi.string(),
-  imgAlt: Joi.string().min(2).max(100),
+  imgUrl: Joi.string().min(0),
+  imgAlt: Joi.string().min(0).max(100),
   state: Joi.string().min(2).max(100).required(),
   country: Joi.string().min(2).max(100).required(),
   city: Joi.string().min(2).max(100).required(),
   street: Joi.string().min(2).max(100).required(),
   houseNumber: Joi.number().min(2).max(100).required(),
-  zipCode:
-    Joi.number()
-    .required(),
+  zipCode: Joi.number().required(),
 });
 const validetionRegisterSchema = (userInput) =>
   validation(rgisterSchema, userInput);

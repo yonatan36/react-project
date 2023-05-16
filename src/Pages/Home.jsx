@@ -31,37 +31,42 @@ const Home = () => {
   let qparams = useQueryParams();
   const navigate = useNavigate();
   const payload = useSelector((bigPie) => bigPie.authSlice.payload);
-    const { isLoggedIn } = useSelector(
-      (bigPieBigState) => bigPieBigState.authSlice
-    );
+  const { isLoggedIn } = useSelector(
+    (bigPieBigState) => bigPieBigState.authSlice
+  );
 
   useEffect(() => {
-    axios
-      .get("/users/userInfo")
-      .then(({ data }) => {
-        setFirstName(data.firstName);
-        setLastName(data.lastName);
-        setBiz(data.biz);
-        setIsAdmin(data.isAdmin);
-        setEmail(data.email);
-      })
-      .catch((err) => console.log(err));
-  }, []);
+    if (isLoggedIn) {
+      axios
+        .get("/users/userInfo")
+        .then(({ data }) => {
+          setFirstName(data.firstName);
+          setLastName(data.lastName);
+          setBiz(data.biz);
+          setIsAdmin(data.isAdmin);
+          setEmail(data.email);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [isLoggedIn]);
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      axios
+        .get("/cards/my-cards")
+        .then(({ data }) => {
+          setMyCardIds(data.map((item) => item._id));
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [isLoggedIn]);
+
+  
   useEffect(() => {
     axios
       .get("/cards/cards")
       .then(({ data }) => {
         setCardArr(data);
-      })
-      .catch((err) => console.log(err));
-  }, []);
-
-  useEffect(() => {
-    axios
-      .get("/cards/my-cards")
-      .then(({ data }) => {
-        setMyCardIds(data.map((item) => item._id));
       })
       .catch((err) => console.log(err));
   }, []);
@@ -129,7 +134,6 @@ const Home = () => {
   //likes function
   const delete1 = (id) => {
     setCardArr(cardsArr.filter((card) => card[1]._id !== id));
-
   };
   //edit function
   const handleEditFromInitialCardsArr = (id) => {
