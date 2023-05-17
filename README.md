@@ -47,6 +47,6 @@ The permissions for different user types are as follows:
 4. An admin-type user can delete any business card but can only edit the cards they created.
   
   
-  ##Contact
+ ## Contact
 
 If you have a question about the project - I'd love to be in touch! my email: yonatantaub36@gmail.com
