@@ -45,3 +45,8 @@ The permissions for different user types are as follows:
 2. A logged-in user that is not a business-type or admin can see and mark a card as preferred.
 3. A logged-in user that is a business type can see the "Edit" and "Delete"  icons only for the cards he has created. He can edit and delete only his own cards.
 4. An admin-type user can delete any business card but can only edit the cards they created.
+  
+  
+  ##Contact
+
+If you have a question about the project - I'd love to be in touch! my email: yonatantaub36@gmail.com
