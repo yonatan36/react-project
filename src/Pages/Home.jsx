@@ -61,7 +61,6 @@ const Home = () => {
     }
   }, [isLoggedIn]);
 
-  
   useEffect(() => {
     axios
       .get("/cards/cards")

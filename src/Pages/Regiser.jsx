@@ -143,7 +143,6 @@ const handleReturn = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-               
                   label="First Name"
                   name="firstName"
                   id="firstName"
@@ -164,7 +163,7 @@ const handleReturn = () => {
                   label="Middle Name"
                   name="middleName"
                   id="middleName"
-                  value={inputState.middleName}
+                  value={inputState.middleName ? inputState.middleName : ""}
                   onChange={handleInputChange}
                 />
                 {errorFroemJoi && errorFroemJoi.middleName && (
@@ -178,7 +177,6 @@ const handleReturn = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-           
                   label="Last Name"
                   name="lastName"
                   id="lastName"
@@ -196,7 +194,6 @@ const handleReturn = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  
                   label="Phone"
                   name="phone"
                   id="phone"
@@ -214,7 +211,6 @@ const handleReturn = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-            
                   label="email"
                   name="email"
                   id="email"
@@ -232,7 +228,6 @@ const handleReturn = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-            
                   label="password"
                   name="password"
                   id="password"
@@ -250,11 +245,10 @@ const handleReturn = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-               
                   label="Image URL"
                   name="imgUrl"
                   id="imgUrl"
-                  value={inputState.imgUrl}
+                  value={inputState.imgUrl ? inputState.imgUrl : ""}
                   onChange={handleInputChange}
                 />
                 {errorFroemJoi && errorFroemJoi.imgUrl && (
@@ -268,11 +262,10 @@ const handleReturn = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-            
                   label="Image Alt"
                   name="imgAlt"
                   id="imgAlt"
-                  value={inputState.imgAlt}
+                  value={inputState.imgAlt ? inputState.imgAlt : ""}
                   onChange={handleInputChange}
                 />
                 {errorFroemJoi && errorFroemJoi.imgAlt && (
@@ -286,7 +279,6 @@ const handleReturn = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-               
                   label="State"
                   name="state"
                   id="state"
@@ -304,7 +296,6 @@ const handleReturn = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-           
                   label="Country"
                   name="country"
                   id="country"
@@ -322,7 +313,6 @@ const handleReturn = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-            
                   label="City"
                   name="city"
                   id="city"
@@ -340,7 +330,6 @@ const handleReturn = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-       
                   label="Street"
                   name="street"
                   id="street"
@@ -358,7 +347,6 @@ const handleReturn = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-       
                   label="House Number"
                   name="houseNumber"
                   id="houseNumber"
@@ -376,7 +364,6 @@ const handleReturn = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-            
                   label="zipCode"
                   name="zipCode"
                   id="zipCode"
@@ -405,7 +392,12 @@ const handleReturn = () => {
                 </Button>
               </Grid>
               <Grid item xs={6}>
-                <Button fullWidth color="primary" variant="outlined" onClick={handleReturn}>
+                <Button
+                  fullWidth
+                  color="primary"
+                  variant="outlined"
+                  onClick={handleReturn}
+                >
                   <SyncIcon />
                 </Button>
               </Grid>
