@@ -32,7 +32,7 @@ const FAVCARDS = () => {
       .then(({ data }) => {
         setMyCardIds(data.map((item) => item._id));
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {});
   }, []);
 
   useEffect(() => {
@@ -67,7 +67,7 @@ const FAVCARDS = () => {
       toast.success("Deletion was successful");
       await axios.delete("/cards/" + cardToDelete);
     } catch (err) {
-      console.log("error delate", err.response.data);
+  
     }
   };
 

@@ -85,7 +85,7 @@ const Profile = () => {
       setErrorFromJoi(joiRespone);
       if (joiRespone) {
         toast.error(joiRespone);
-        console.log("prifile", joiRespone);
+       
         return;
       }
       // Set loading state to true

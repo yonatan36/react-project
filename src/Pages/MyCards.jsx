@@ -31,7 +31,7 @@ const MyCards = () => {
       .then(({ data }) => {
         setCardArr(data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) =>{});
   }, []);
 
   const handleDeleteFromInitialCardsArr = async (id) => {
@@ -48,7 +48,7 @@ const MyCards = () => {
       toast.success("Deletion was successful");
       await axios.delete("/cards/" + cardToDelete);
     } catch (err) {
-      console.log("error delate", err.response.data);
+   
     }
   };
 

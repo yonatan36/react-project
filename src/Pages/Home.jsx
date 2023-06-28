@@ -46,7 +46,7 @@ const Home = () => {
           setIsAdmin(data.isAdmin);
           setEmail(data.email);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {});
     }
   }, [isLoggedIn]);
 
@@ -57,7 +57,7 @@ const Home = () => {
         .then(({ data }) => {
           setMyCardIds(data.map((item) => item._id));
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {});
     }
   }, [isLoggedIn]);
 
@@ -67,7 +67,7 @@ const Home = () => {
       .then(({ data }) => {
         setCardArr(data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {});
   }, []);
 
   useEffect(() => {
@@ -77,7 +77,7 @@ const Home = () => {
         filterFunc(data);
       })
       .catch((err) => {
-        console.log("err from axios", err);
+        {};
 
         toast.error("Oops");
       });
