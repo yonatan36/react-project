@@ -41,16 +41,16 @@ const EditCardPage = () => {
         let newInputState = {
           ...data,
         };
+        delete newInputState._id;
         delete newInputState.image;
         delete newInputState.likes;
-        delete newInputState._id;
         delete newInputState.user_id;
         delete newInputState.bizNumber;
         delete newInputState.createdAt;
         delete newInputState.__v;
         setInputState(newInputState);
       } catch (err) {
-        console.log("error from axios", err);
+      
       }
     })();
   }, [id]);
@@ -59,7 +59,7 @@ const EditCardPage = () => {
     try {
       const joiResponse = validateEditSchema(inputState);
       setErrorFromJoi(joiResponse);
-      console.log(joiResponse);
+  
       if (!joiResponse) {
         //move to homepage
 
@@ -69,7 +69,7 @@ const EditCardPage = () => {
         toast.success("changes made successfully!");
       }
     } catch (err) {
-      console.log("err", err);
+    
       toast.error("error");
     }
   };

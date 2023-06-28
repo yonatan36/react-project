@@ -38,7 +38,7 @@ const CardCreationForm = () => {
       // Send POST request to backend server
       const joiResponse = validateCreateSchema(inputState);
       setErrorFromJoi(joiResponse);
-      console.log(joiResponse);
+     
       if (!joiResponse) {
         await axios.post("/cards/", inputState);
 

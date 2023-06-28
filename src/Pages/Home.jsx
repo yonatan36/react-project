@@ -126,9 +126,7 @@ const Home = () => {
       setIsDeleteDialogOpen(false);
       toast.success("Deletion was successful");
       await axios.delete("/cards/" + cardToDelete);
-    } catch (err) {
-      console.log("error delate", err.response.data);
-    }
+    } catch (err) {}
   };
   //likes function
   const delete1 = (id) => {

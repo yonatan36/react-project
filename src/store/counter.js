@@ -30,7 +30,7 @@ const counterSlice = createSlice({
        * state.counter = state.counter + +action.payload
        * +action.payload => convert from string to number
        */
-      console.log(action.payload);
+ 
       state.counter += +action.payload;
     },
   },

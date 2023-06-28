@@ -91,7 +91,7 @@ const handleReturn = () => {
       navigate(ROUTES.LOGIN);
     } catch (err) {
       toast.error(err.response.data);
-      console.log("register", err.response.data);
+   
     }
   };
 
@@ -146,6 +146,7 @@ const handleReturn = () => {
                   label="First Name"
                   name="firstName"
                   id="firstName"
+                  required="true"
                   value={inputState.firstName}
                   onChange={handleInputChange}
                 />
@@ -179,6 +180,7 @@ const handleReturn = () => {
                   fullWidth
                   label="Last Name"
                   name="lastName"
+                  required="true"
                   id="lastName"
                   value={inputState.lastName}
                   onChange={handleInputChange}
@@ -195,6 +197,7 @@ const handleReturn = () => {
                 <TextField
                   fullWidth
                   label="Phone"
+                  required="true"
                   name="phone"
                   id="phone"
                   value={inputState.phone}
@@ -213,6 +216,7 @@ const handleReturn = () => {
                   fullWidth
                   label="email"
                   name="email"
+                  required="true"
                   id="email"
                   value={inputState.email}
                   onChange={handleInputChange}
@@ -229,6 +233,7 @@ const handleReturn = () => {
                 <TextField
                   fullWidth
                   label="password"
+                  required="true"
                   name="password"
                   id="password"
                   value={inputState.password}
@@ -281,6 +286,7 @@ const handleReturn = () => {
                   fullWidth
                   label="State"
                   name="state"
+                  
                   id="state"
                   value={inputState.state}
                   onChange={handleInputChange}
@@ -297,6 +303,7 @@ const handleReturn = () => {
                 <TextField
                   fullWidth
                   label="Country"
+                  required="true"
                   name="country"
                   id="country"
                   value={inputState.country}
@@ -315,6 +322,7 @@ const handleReturn = () => {
                   fullWidth
                   label="City"
                   name="city"
+                  required="true"
                   id="city"
                   value={inputState.city}
                   onChange={handleInputChange}
@@ -332,6 +340,7 @@ const handleReturn = () => {
                   fullWidth
                   label="Street"
                   name="street"
+                  required="true"
                   id="street"
                   value={inputState.street}
                   onChange={handleInputChange}
@@ -349,6 +358,7 @@ const handleReturn = () => {
                   fullWidth
                   label="House Number"
                   name="houseNumber"
+                  required="true"
                   id="houseNumber"
                   value={inputState.houseNumber}
                   onChange={handleInputChange}
@@ -366,6 +376,7 @@ const handleReturn = () => {
                   fullWidth
                   label="zipCode"
                   name="zipCode"
+                 
                   id="zipCode"
                   value={inputState.zipCode}
                   onChange={handleInputChange}

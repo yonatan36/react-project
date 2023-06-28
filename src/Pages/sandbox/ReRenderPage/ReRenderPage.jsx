@@ -11,7 +11,7 @@ const ReRenderPage = () => {
     setIsActive(!isActive);
   };
   const handleBtn2Click = () => {
-    console.log("btn 2 clicked");
+
   };
   return (
     <Box

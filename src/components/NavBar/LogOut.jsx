@@ -23,8 +23,6 @@ const LogOut = () => {
       toast.success(`Goodbye ${firstName}! We hope to see you again soon.`);
       navigate(ROUTES.HOME);
     } catch (error) {
-      console.error(error);
-
       toast.error("Something went wrong. Please try again.");
     }
   };

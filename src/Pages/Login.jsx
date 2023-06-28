@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { Box, Typography, Grid } from "@mui/material";
@@ -36,10 +36,10 @@ const Login = () => {
     });
     setErrorFromJoi();
   };
-  
-const handleReturn = () =>{
-navigate("/")
-}
+
+  const handleReturn = () => {
+    navigate("/");
+  };
 
   const [isLoading, setIsLoading] = useState(false);
   const getUserInfo = async () => {
@@ -71,7 +71,6 @@ navigate("/")
     } catch (err) {
       setIsLoading(false);
       toast.error(err.response.data);
-      console.log("error from axios", err.response.data);
     }
   };
 
@@ -129,6 +128,7 @@ navigate("/")
                   fullWidth
                   label="email"
                   name="email"
+                  required="true"
                   id="email"
                   value={inputState.email}
                   onChange={handleInputChange}
@@ -146,6 +146,7 @@ navigate("/")
                   fullWidth
                   label="password"
                   name="password"
+                  required="true"
                   id="password"
                   type="password"
                   value={inputState.password}
@@ -172,7 +173,12 @@ navigate("/")
                   </Button>
                 </Grid>
                 <Grid item xs={6}>
-                  <Button fullWidth color="primary" variant="outlined" onClick={handleReturn}>
+                  <Button
+                    fullWidth
+                    color="primary"
+                    variant="outlined"
+                    onClick={handleReturn}
+                  >
                     <SyncIcon />
                   </Button>
                 </Grid>

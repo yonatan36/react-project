@@ -1,7 +1,7 @@
 import { memo } from "react";
 import { Button } from "@mui/material";
 const RRPButton2Partial = ({ children, onClick }) => {
-  //console.log("btn2");
+
 
   return (
     <Button

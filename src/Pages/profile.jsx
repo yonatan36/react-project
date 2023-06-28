@@ -16,7 +16,6 @@ import { toast } from "react-toastify";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 
-
 const Profile = () => {
   const theme = useTheme();
   const { id } = useParams();
@@ -38,9 +37,7 @@ const Profile = () => {
         delete newInputState._id;
         delete newInputState.password;
         SetInputState(newInputState);
-      } catch (err) {
-        console.log("error from axios", err);
-      }
+      } catch (err) {toast.error("error")}
     })();
   }, [id]);
   const handleCancel = () => {
@@ -101,7 +98,6 @@ const Profile = () => {
       }, 1400);
     } catch (error) {}
   };
-
 
   return (
     <Container maxWidth="sm" sx={{ my: 2, display: "flex" }}>
@@ -392,7 +388,7 @@ const Profile = () => {
                   variant="contained"
                   color="primary"
                   onClick={handleSubmit}
-                  disabled={isLoading||disabled}
+                  disabled={isLoading || disabled}
                 >
                   {isLoading ? <CircularProgress size={24} /> : "Save changes"}
                 </Button>

@@ -46,7 +46,7 @@ const FAVCARDS = () => {
         setLikedCards(filterdData);
         setCardArr(filterdData); // Update the value of cardsArr
       } catch (err) {
-        console.log(err);
+        
       }
     };
 

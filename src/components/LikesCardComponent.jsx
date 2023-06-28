@@ -40,7 +40,7 @@ const LikesCardComponent = ({
   };
   const handleLikeBtnClick = () => {
     noLike(id);
-    console.log("here");
+
   };
   return (
     <Card square raised>

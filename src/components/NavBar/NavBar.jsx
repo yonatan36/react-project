@@ -1,6 +1,5 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useSelector } from "react-redux";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -17,10 +16,12 @@ import { NavLink } from "react-router-dom";
 import ROUTES from "../../routes/ROUTES";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
 import BedtimeIcon from "@mui/icons-material/Bedtime";
-import SearchPartial from "./SearchPartial";
+import SearchPartial from "./SearchPartial.jsx";
 import NavLinkComponent from "./NavLinkComponent";
 import Avatar from "@mui/material/Avatar";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 
 // access to all
 const pages = [
