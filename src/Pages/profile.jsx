@@ -100,14 +100,15 @@ const Profile = () => {
   };
 
   return (
-    <Container maxWidth="sm" sx={{ my: 2, display: "flex" }}>
+    <Container maxWidth="md" sx={{ my: 2, display: "flex" }}>
       <Paper
         sx={{
           p: 4,
-          bgcolor: theme.palette.mode === "dark" ? "#424242" : "#f5f5f5",
+          bgcolor: theme.palette.mode === "dark" ? "#9e9e9e" : "#f5f5f5",
           borderRadius: "20px",
           boxShadow: "0px 3px 15px rgba(0,0,0,0.2)",
-          mt: 2,
+          mt: 4,
+          mb:4
         }}
       >
         <Box
