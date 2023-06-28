@@ -128,7 +128,7 @@ const Login = () => {
                   fullWidth
                   label="email"
                   name="email"
-                  required="true"
+                  required={true}
                   id="email"
                   value={inputState.email}
                   onChange={handleInputChange}
@@ -146,7 +146,7 @@ const Login = () => {
                   fullWidth
                   label="password"
                   name="password"
-                  required="true"
+                  required={true}
                   id="password"
                   type="password"
                   value={inputState.password}

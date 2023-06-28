@@ -56,10 +56,10 @@ const RegistrationForm = () => {
     });
     setErrorFromJoi({});
   };
-  
-const handleReturn = () => {
-  navigate("/");
-};
+
+  const handleReturn = () => {
+    navigate("/");
+  };
   const handleSubmit = async (event) => {
     try {
       const joiRespone = validetionRegisterSchema(inputState);
@@ -91,7 +91,6 @@ const handleReturn = () => {
       navigate(ROUTES.LOGIN);
     } catch (err) {
       toast.error(err.response.data);
-   
     }
   };
 
@@ -146,7 +145,7 @@ const handleReturn = () => {
                   label="First Name"
                   name="firstName"
                   id="firstName"
-                  required="true"
+                  required={true}
                   value={inputState.firstName}
                   onChange={handleInputChange}
                 />
@@ -161,6 +160,7 @@ const handleReturn = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
+                  required={false}
                   label="Middle Name"
                   name="middleName"
                   id="middleName"
@@ -180,7 +180,7 @@ const handleReturn = () => {
                   fullWidth
                   label="Last Name"
                   name="lastName"
-                  required="true"
+                  required={true}
                   id="lastName"
                   value={inputState.lastName}
                   onChange={handleInputChange}
@@ -197,7 +197,7 @@ const handleReturn = () => {
                 <TextField
                   fullWidth
                   label="Phone"
-                  required="true"
+                  required={true}
                   name="phone"
                   id="phone"
                   value={inputState.phone}
@@ -216,7 +216,7 @@ const handleReturn = () => {
                   fullWidth
                   label="email"
                   name="email"
-                  required="true"
+                  required={true}
                   id="email"
                   value={inputState.email}
                   onChange={handleInputChange}
@@ -233,7 +233,7 @@ const handleReturn = () => {
                 <TextField
                   fullWidth
                   label="password"
-                  required="true"
+                  required={true}
                   name="password"
                   id="password"
                   value={inputState.password}
@@ -250,6 +250,7 @@ const handleReturn = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
+                  required={false}
                   label="Image URL"
                   name="imgUrl"
                   id="imgUrl"
@@ -267,6 +268,7 @@ const handleReturn = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
+                  required={false}
                   label="Image Alt"
                   name="imgAlt"
                   id="imgAlt"
@@ -284,9 +286,9 @@ const handleReturn = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
+                  required={false}
                   label="State"
                   name="state"
-                  
                   id="state"
                   value={inputState.state}
                   onChange={handleInputChange}
@@ -303,7 +305,7 @@ const handleReturn = () => {
                 <TextField
                   fullWidth
                   label="Country"
-                  required="true"
+                  required={true}
                   name="country"
                   id="country"
                   value={inputState.country}
@@ -322,7 +324,7 @@ const handleReturn = () => {
                   fullWidth
                   label="City"
                   name="city"
-                  required="true"
+                  required={true}
                   id="city"
                   value={inputState.city}
                   onChange={handleInputChange}
@@ -340,7 +342,7 @@ const handleReturn = () => {
                   fullWidth
                   label="Street"
                   name="street"
-                  required="true"
+                  required={true}
                   id="street"
                   value={inputState.street}
                   onChange={handleInputChange}
@@ -358,7 +360,7 @@ const handleReturn = () => {
                   fullWidth
                   label="House Number"
                   name="houseNumber"
-                  required="true"
+                  required={true}
                   id="houseNumber"
                   value={inputState.houseNumber}
                   onChange={handleInputChange}
@@ -374,9 +376,9 @@ const handleReturn = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
+                  required={false}
                   label="zipCode"
                   name="zipCode"
-                 
                   id="zipCode"
                   value={inputState.zipCode}
                   onChange={handleInputChange}

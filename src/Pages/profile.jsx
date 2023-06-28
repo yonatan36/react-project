@@ -128,6 +128,7 @@ const Profile = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
+                  required={true}
                   label="First Name"
                   name="firstName"
                   id="firstName"
@@ -145,6 +146,7 @@ const Profile = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
+                  required={false}
                   label="Middle Name"
                   name="middleName"
                   id="middleName"
@@ -162,6 +164,7 @@ const Profile = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
+                  required={true}
                   label="Last Name"
                   name="lastName"
                   id="lastName"
@@ -179,6 +182,7 @@ const Profile = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
+                  required={true}
                   label="Phone"
                   name="phone"
                   id="phone"
@@ -196,6 +200,7 @@ const Profile = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
+                  required={true}
                   label="email"
                   name="email"
                   id="email"
@@ -230,6 +235,7 @@ const Profile = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
+                  required={false}
                   label="Image URL"
                   name="imageUrl"
                   id="imageUrl"
@@ -247,6 +253,7 @@ const Profile = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
+                  required={false}
                   label="Image Alt"
                   name="imageAlt"
                   id="imageAlt"
@@ -265,6 +272,7 @@ const Profile = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
+                  required={false}
                   label="State"
                   name="state"
                   id="state"
@@ -282,6 +290,7 @@ const Profile = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
+                  required={true}
                   label="Country"
                   name="country"
                   id="country"
@@ -299,6 +308,7 @@ const Profile = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
+                  required={true}
                   label="City"
                   name="city"
                   id="city"
@@ -316,6 +326,7 @@ const Profile = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
+                  required={true}
                   label="Street"
                   name="street"
                   id="street"
@@ -333,6 +344,7 @@ const Profile = () => {
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
+                  required={true}
                   label="House Number"
                   name="houseNumber"
                   id="houseNumber"
